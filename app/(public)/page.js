@@ -18,6 +18,15 @@ import {
 } from "@/components/ui/accordion"
 import Image from "next/image"
 import Link from "next/link"
+import {
+  School,
+  Users,
+  Wallet,
+  GraduationCap,
+  Package,
+  Trophy,
+} from "lucide-react"
+import Footer from "./components/footer"
 
 export default function Home() {
    const photos = [
@@ -28,42 +37,69 @@ export default function Home() {
   const articles = [
   {
     id: 1,
-    title: "Tips Belajar Efektif untuk UTBK",
-    excerpt: "Pelajari strategi belajar yang bisa meningkatkan peluang lolos UTBK...",
+    title: "Peran Orang Tua Dalam Tumbuh Kembang Anak",
+    excerpt: "Orang tua memiliki peran utama dalam proses tumbuh kembang anak...",
     date: "12 Sept 2025",
-    link: "/blog/tips-belajar-utbk"
+    link: "/blog/peran-ortu"
   },
   {
     id: 2,
-    title: "Kenapa Memilih Jurusan Itu Penting?",
-    excerpt: "Jurusan kuliah menentukan masa depan kariermu. Simak panduan memilih jurusan...",
+    title: "Apa itu BBA (Belajar Bersama Alam)?",
+    excerpt: "Dengan memahami konsep Belajar Bersama Alam, guru menjadikan alam sebagai...",
     date: "10 Sept 2025",
-    link: "/blog/memilih-jurusan"
+    link: "/blog/apa-bba"
   },
   {
     id: 3,
-    title: "Rahasia Sukses SNBT",
-    excerpt: "Bagaimana mengatur waktu belajar, manajemen stres, dan strategi ujian SNBT...",
+    title: "Suka Duka Menjadi Fasilitator Sekolah Alam",
+    excerpt: "Di sekolah alam, fasilitator memegang peran yang sangat vital...",
     date: "8 Sept 2025",
     link: "/blog/rahasia-sukses-snbt"
   },
 ]
+
+const fiturList = [
+    { title: "Profil Sekolah", desc: "Informasi sekolah dan yayasan.", icon: School },
+    { title: "Data Siswa", desc: "Pantau perkembangan akademik siswa.", icon: Users },
+    { title: "Keuangan", desc: "Kelola pembayaran dan laporan bendahara.", icon: Wallet },
+    { title: "Guru & Staff", desc: "Data guru, wali kelas, dan karyawan.", icon: GraduationCap },
+    { title: "Inventaris", desc: "Aset sarana prasarana sekolah.", icon: Package },
+    { title: "Prestasi", desc: "Dokumentasi prestasi sekolah & siswa.", icon: Trophy },
+  ]
   return (
     <div className="space-y-20">
       {/* Hero Section */}
-      <section className="text-center py-20 bg-gradient-to-r from-blue-500 to-indigo-600 text-white  shadow-lg">
+      <section className="flex items-center justify-center text-center h-screen py-20 bg-gradient-to-r from-blue-500 to-indigo-600 text-white  shadow-lg ">
+        <div>
         <h1 className="text-4xl font-bold mb-4">Selamat Datang di Sekolah Alam Tanjung Tabalong</h1>
         <p className="text-lg mb-6">
           Digitalisasi sekolah untuk manajemen guru, siswa, keuangan, dan sarpras
         </p>
         <Button size="lg" variant="secondary">Pesan Tempat</Button>
+        </div>
       </section>
 
-      {/* Galeri Carousel */}
-      <section className="p-3">
-        <h2 className="text-2xl font-semibold text-center mb-8">Galeri Sekolah</h2>
-        <div className="max-w-2xl mx-auto">
-          <Carousel className="w-full">
+      {/* Galeri + Deskripsi */}
+<section className="p-3">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center max-w-5xl mx-auto">
+    {/* Deskripsi */}
+    <div className="space-y-4">
+      <h3 className="text-xl font-bold">Mengapa Sekolah Alam?</h3>
+      <p className="text-gray-600 leading-relaxed">
+        Sekolah Alam Tanjung Tabalong (SATT) menghadirkan konsep pembelajaran yang dekat 
+        dengan alam, menumbuhkan rasa ingin tahu, kreativitas, serta karakter 
+        positif pada anak. Siswa tidak hanya belajar di kelas, tetapi juga 
+        mengeksplorasi lingkungan sekitar sebagai laboratorium kehidupan.
+      </p>
+      <p className="text-gray-600 leading-relaxed">
+        Dengan pendekatan ini, anak-anak tumbuh menjadi pribadi mandiri, 
+        peduli lingkungan, dan siap menghadapi tantangan masa depan.
+      </p>
+    </div>
+
+    {/* Carousel */}
+    <div className="relative">
+      <Carousel className="w-full">
         <CarouselContent>
           {photos.map((src, i) => (
             <CarouselItem key={i}>
@@ -84,37 +120,43 @@ export default function Home() {
         {/* Panah kanan */}
         <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white rounded-full shadow-md" />
       </Carousel>
-        </div>
-      </section>
+    </div>
+  </div>
+</section>
+
 
       {/* Fitur Utama */}
       <section className="p-3">
         <h2 className="text-2xl font-semibold text-center mb-8">Fitur Utama</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            { title: "Profil Sekolah", desc: "Informasi sekolah dan yayasan." },
-            { title: "Data Siswa", desc: "Pantau perkembangan akademik siswa." },
-            { title: "Keuangan", desc: "Kelola pembayaran dan laporan bendahara." },
-            { title: "Guru & Staff", desc: "Data guru, wali kelas, dan karyawan." },
-            { title: "Inventaris", desc: "Aset sarana prasarana sekolah." },
-            { title: "Prestasi", desc: "Dokumentasi prestasi sekolah & siswa." },
-          ].map((fitur, i) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        {fiturList.map((fitur, i) => {
+          const Icon = fitur.icon
+          return (
             <Card key={i} className="hover:shadow-lg transition">
               <CardHeader>
-                <CardTitle>{fitur.title}</CardTitle>
+                <div className="flex items-start gap-3">
+                  {/* Icon di kiri */}
+                  <Icon className="w-10 h-10 text-primary shrink-0" />
+
+                  {/* Teks di kanan */}
+                  <div>
+                    <CardTitle>{fitur.title}</CardTitle>
+                    <CardContent className="p-0 mt-1">
+                      <p className="text-muted-foreground text-sm">{fitur.desc}</p>
+                    </CardContent>
+                  </div>
+                </div>
               </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{fitur.desc}</p>
-              </CardContent>
             </Card>
-          ))}
-        </div>
+          )
+        })}
+      </div>
       </section>
 
       {/* Testimoni */}
       <section className="p-3">
         <h2 className="text-2xl font-semibold text-center mb-8">Apa Kata Mereka?</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {[1, 2, 3].map((i) => (
             <Card key={i}>
               <CardContent className="p-6 space-y-4">
@@ -140,7 +182,7 @@ export default function Home() {
        {/* Blog Section */}
       <section className="space-y-6 p-3">
         <h2 className="text-2xl font-semibold text-center mb-8">Artikel Terbaru</h2>
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
           {articles.map((article) => (
             <Card key={article.id} className="rounded-2xl shadow-md">
               <CardHeader>
@@ -161,7 +203,7 @@ export default function Home() {
       {/* FAQ Section */}
       <section className="max-w-2xl mx-auto p-3">
         <h2 className="text-2xl font-semibold text-center mb-8">Pertanyaan Umum</h2>
-        <Accordion type="single" collapsible className="w-full">
+        <Accordion type="single" collapsible className="max-w-5xl mx-auto">
           <AccordionItem value="item-1">
             <AccordionTrigger>Bagaimana cara mendaftar sekolah?</AccordionTrigger>
             <AccordionContent>
@@ -186,12 +228,7 @@ export default function Home() {
         </Accordion>
       </section>
 
-      {/* Footer */}
-      <footer className="text-center py-8 border-t">
-        <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Sekolah Alam Nusantara. All rights reserved.
-        </p>
-      </footer>
+     
     </div>
   )
 }

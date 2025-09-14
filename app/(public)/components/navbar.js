@@ -1,4 +1,3 @@
-// app/(public)/components/navbar.tsx
 "use client"
 
 import Link from "next/link"
@@ -8,15 +7,14 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetDescription,
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
 
 export default function NavbarPublic() {
   return (
-    <header className="w-full border-b border-gray-200 bg-white">
-      <div className="container mx-auto flex items-center justify-between p-4">
+    <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-white/70 shadow-md">
+      <div className="container mx-auto flex items-center justify-between p-4 max-w-5xl">
         {/* Logo */}
         <Link href="/" className="text-xl font-bold">
           SATT
@@ -30,11 +28,14 @@ export default function NavbarPublic() {
           <Link href="/about" className="hover:text-blue-600 transition-colors">
             Tentang
           </Link>
-          <Link href="/program" className="hover:text-blue-600 transition-colors">
-            Program
+          <Link href="/ppdb" className="hover:text-blue-600 transition-colors">
+            PPDB
           </Link>
           <Link href="/contact" className="hover:text-blue-600 transition-colors">
             Kontak
+          </Link>
+          <Link href="/agenda" className="hover:text-blue-600 transition-colors">
+            Agenda
           </Link>
         </nav>
 
@@ -54,13 +55,14 @@ export default function NavbarPublic() {
           </SheetTrigger>
           <SheetContent side="right" className="p-4">
             <SheetHeader>
-            <SheetTitle>Menu</SheetTitle>
-        </SheetHeader>
+              <SheetTitle>Menu</SheetTitle>
+            </SheetHeader>
             <nav className="flex flex-col gap-4">
               <Link href="/">Home</Link>
               <Link href="/about">Tentang</Link>
-              <Link href="/program">Program</Link>
+              <Link href="/ppdb">PPDB</Link>
               <Link href="/contact">Kontak</Link>
+              <Link href="/agenda">Agenda</Link>
               <Button asChild>
                 <Link href="/login">Login</Link>
               </Button>
