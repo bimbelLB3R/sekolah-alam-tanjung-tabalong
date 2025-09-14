@@ -27,6 +27,7 @@ import {
   Trophy,
 } from "lucide-react"
 import Footer from "./components/footer"
+import HeroSection from "./components/herosection"
 
 export default function Home() {
    const photos = [
@@ -54,7 +55,7 @@ export default function Home() {
     title: "Suka Duka Menjadi Fasilitator Sekolah Alam",
     excerpt: "Di sekolah alam, fasilitator memegang peran yang sangat vital...",
     date: "8 Sept 2025",
-    link: "/blog/rahasia-sukses-snbt"
+    link: "/blog/suka-duka"
   },
 ]
 
@@ -69,15 +70,7 @@ const fiturList = [
   return (
     <div className="space-y-20">
       {/* Hero Section */}
-      <section className="flex items-center justify-center text-center h-screen py-20 bg-gradient-to-r from-blue-500 to-indigo-600 text-white  shadow-lg ">
-        <div>
-        <h1 className="text-4xl font-bold mb-4">Selamat Datang di Sekolah Alam Tanjung Tabalong</h1>
-        <p className="text-lg mb-6">
-          Digitalisasi sekolah untuk manajemen guru, siswa, keuangan, dan sarpras
-        </p>
-        <Button size="lg" variant="secondary">Pesan Tempat</Button>
-        </div>
-      </section>
+      <HeroSection/>
 
       {/* Galeri + Deskripsi */}
 <section className="p-3">
@@ -201,7 +194,7 @@ const fiturList = [
       </section>
 
       {/* FAQ Section */}
-      <section className="max-w-2xl mx-auto p-3">
+      <section className=" mx-auto p-3 bg-gray-200">
         <h2 className="text-2xl font-semibold text-center mb-8">Pertanyaan Umum</h2>
         <Accordion type="single" collapsible className="max-w-5xl mx-auto">
           <AccordionItem value="item-1">

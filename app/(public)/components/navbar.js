@@ -37,6 +37,9 @@ export default function NavbarPublic() {
           <Link href="/agenda" className="hover:text-blue-600 transition-colors">
             Agenda
           </Link>
+          <Link href="/blog" className="hover:text-blue-600 transition-colors">
+            Blog
+          </Link>
         </nav>
 
         {/* CTA Button */}
@@ -63,6 +66,7 @@ export default function NavbarPublic() {
               <Link href="/ppdb">PPDB</Link>
               <Link href="/contact">Kontak</Link>
               <Link href="/agenda">Agenda</Link>
+              <Link href="/blog">Blog</Link>
               <Button asChild>
                 <Link href="/login">Login</Link>
               </Button>
