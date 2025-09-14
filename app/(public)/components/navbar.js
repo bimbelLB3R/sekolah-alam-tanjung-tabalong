@@ -10,14 +10,23 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
+import { Dancing_Script } from "next/font/google"
+
+const dancing = Dancing_Script({
+  subsets: ["latin"],
+  weight: ["400", "600"],
+})
 
 export default function NavbarPublic() {
   return (
     <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-white/70 shadow-md">
       <div className="container mx-auto flex items-center justify-between p-4 max-w-5xl">
-        {/* Logo */}
-        <Link href="/" className="text-xl font-bold">
-          SATT
+        {/* Logo + Slogan */}
+        <Link href="/" className="flex items-baseline gap-2">
+          <span className="text-xl font-bold">SATT</span>
+          <span className={`${dancing.className} text-base text-green-600`}>
+            Belajar, Berpetualang dan Bermakna
+          </span>
         </Link>
 
         {/* Desktop Menu */}
