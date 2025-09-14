@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
 const slides = [
   {
@@ -75,8 +76,10 @@ export default function HeroSection() {
           <p className="text-lg mb-6 max-w-2xl mx-auto drop-shadow-md">
             {slides[current].desc}
           </p>
-          <Button size="lg" variant="secondary" className="gap-2">
-            Pesan Tempat <ArrowRight className="w-4 h-4" />
+          <Button asChild size="lg" variant="secondary" className="gap-2">
+            <Link href="/ppdb/reservasi">
+              Pesan Tempat <ArrowRight className="w-4 h-4" />
+            </Link>
           </Button>
         </motion.div>
       </div>
