@@ -33,7 +33,7 @@ export default function Footer() {
           </a>
         </div>
 
-        <p className="text-sm  text-white">
+        <p className="text-lg  text-white">
           © {new Date().getFullYear()} SATT. All rights reserved.
         </p>
       </div>

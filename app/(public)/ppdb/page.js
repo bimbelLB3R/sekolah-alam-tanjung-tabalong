@@ -33,7 +33,7 @@ export default function PpdbPage() {
             <Button
               key={section.id}
               variant={activeSection === section.id ? "default" : "ghost"}
-              className="justify-start gap-2"
+              className="justify-start gap-2 text-lg"
               onClick={() => scrollToSection(section.id)}
             >
               <ChevronRight className="w-4 h-4" />
@@ -47,7 +47,7 @@ export default function PpdbPage() {
       <div className="md:col-span-3 space-y-12">
         <section id="persyaratan">
           <h2 className="text-2xl font-bold mb-4">Persyaratan Umum</h2>
-          <ul className="list-disc ml-6 text-gray-700 space-y-2">
+          <ul className="list-disc ml-6 text-gray-700 space-y-2 text-lg">
             <li>Fotokopi akta kelahiran anak.</li>
             <li>Fotokopi Kartu Keluarga (KK).</li>
             <li>Fotokopi rapor terakhir (untuk jenjang SD ke atas).</li>
@@ -57,7 +57,7 @@ export default function PpdbPage() {
 
         <section id="waktu">
           <h2 className="text-2xl font-bold mb-4">Waktu Pendaftaran</h2>
-          <p className="text-gray-700 leading-relaxed">
+          <p className="text-gray-700 leading-relaxed text-lg">
             Pendaftaran dibuka setiap tahun ajaran baru, biasanya mulai bulan Mei hingga Juli.
             Untuk informasi pasti, silakan hubungi sekolah atau cek website resmi.
           </p>
@@ -65,7 +65,7 @@ export default function PpdbPage() {
 
         <section id="tata-cara">
           <h2 className="text-2xl font-bold mb-4">Tata Cara Pendaftaran</h2>
-          <ol className="list-decimal ml-6 text-gray-700 space-y-2">
+          <ol className="list-decimal ml-6 text-gray-700 space-y-2 text-lg">
             <li>Mengisi formulir pendaftaran online melalui website resmi sekolah.</li>
             <li>Melengkapi persyaratan dokumen yang diminta.</li>
             <li>Melakukan pembayaran biaya pendaftaran (jika ada).</li>
@@ -76,10 +76,10 @@ export default function PpdbPage() {
 
         <section id="kontak">
           <h2 className="text-2xl font-bold mb-4">Kontak Pendaftaran</h2>
-          <p className="text-gray-700 leading-relaxed">
+          <p className="text-gray-700 leading-relaxed text-lg">
             Untuk informasi lebih lanjut, silakan hubungi:
           </p>
-          <ul className="list-disc ml-6 text-gray-700 space-y-1">
+          <ul className="list-disc ml-6 text-gray-700 space-y-1 text-lg">
             <li>Telepon: (021) 12345678</li>
             <li>Email: ppdb@sekolahalamnusantara.sch.id</li>
             <li>Alamat: Jl. Pendidikan No.10, Jakarta</li>

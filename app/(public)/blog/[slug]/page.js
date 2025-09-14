@@ -36,7 +36,7 @@ export default function BlogDetail({ params }) {
   return (
     <div className="max-w-3xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
-      <p className="text-gray-700 leading-relaxed">{post.body}</p>
+      <p className="text-gray-700 leading-relaxed text-lg">{post.body}</p>
     </div>
   )
 }

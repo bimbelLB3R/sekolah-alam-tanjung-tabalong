@@ -12,7 +12,7 @@ const posts = [
 export default function BlogPage() {
   return (
     <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Blog Sekolah</h1>
+      <h1 className="text-4xl font-bold mb-6">Blog Sekolah</h1>
       <ul className="space-y-4">
         {posts.map((post) => (
           <li key={post.slug}>

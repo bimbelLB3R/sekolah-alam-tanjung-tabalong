@@ -13,7 +13,7 @@ export default function ContactPage() {
         <CardHeader>
           <CardTitle>Kontak Kami</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4 text-base">
+        <CardContent className="space-y-4 text-lg">
           <div className="flex items-center gap-3">
             <MapPin className="w-5 h-5 text-primary" />
             <span>Jl. Contoh No. 123, Banjarmasin</span>
@@ -39,7 +39,7 @@ export default function ContactPage() {
           <CardTitle>Hubungi Kami</CardTitle>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4">
+          <form className="space-y-4 text-lg">
             <Input type="text" placeholder="Nama Anda" required />
             <Input type="email" placeholder="Email Anda" required />
             <Textarea placeholder="Pesan Anda" rows={5} required />

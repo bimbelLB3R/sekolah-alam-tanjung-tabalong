@@ -22,9 +22,9 @@ export default function AgendaPage() {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-8 text-center">Agenda Sekolah 2025/2026</h1>
+      <h1 className="text-4xl font-bold mb-8 text-center">Agenda Sekolah 2025/2026</h1>
 
-      <div className="relative border-l border-gray-300 dark:border-gray-700 pl-6 space-y-8">
+      <div className="relative border-l border-gray-300 dark:border-gray-700 pl-6 space-y-8 text-lg">
         {events.map((event, idx) => {
           const Icon = event.icon
           return (
