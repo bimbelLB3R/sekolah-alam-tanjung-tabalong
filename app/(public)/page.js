@@ -77,14 +77,14 @@ const fiturList = [
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center max-w-5xl mx-auto">
     {/* Deskripsi */}
     <div className="space-y-4">
-      <h3 className="text-xl font-bold">Mengapa Sekolah Alam?</h3>
-      <p className="text-gray-600 leading-relaxed">
+      <h3 className="text-4xl font-bold">Mengapa Sekolah Alam?</h3>
+      <p className="text-gray-600 leading-relaxed text-lg">
         Sekolah Alam Tanjung Tabalong (SATT) menghadirkan konsep pembelajaran yang dekat 
         dengan alam, menumbuhkan rasa ingin tahu, kreativitas, serta karakter 
         positif pada anak. Siswa tidak hanya belajar di kelas, tetapi juga 
         mengeksplorasi lingkungan sekitar sebagai laboratorium kehidupan.
       </p>
-      <p className="text-gray-600 leading-relaxed">
+      <p className="text-gray-600 leading-relaxed text-lg">
         Dengan pendekatan ini, anak-anak tumbuh menjadi pribadi mandiri, 
         peduli lingkungan, dan siap menghadapi tantangan masa depan.
       </p>
@@ -120,7 +120,7 @@ const fiturList = [
 
       {/* Fitur Utama */}
       <section className="p-3">
-        <h2 className="text-2xl font-semibold text-center mb-8">Fitur Utama</h2>
+        <h2 className="text-4xl font-semibold text-center mb-8">Fitur Utama</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
         {fiturList.map((fitur, i) => {
           const Icon = fitur.icon
@@ -133,9 +133,9 @@ const fiturList = [
 
                   {/* Teks di kanan */}
                   <div>
-                    <CardTitle>{fitur.title}</CardTitle>
+                    <CardTitle className="text-lg">{fitur.title}</CardTitle>
                     <CardContent className="p-0 mt-1">
-                      <p className="text-muted-foreground text-sm">{fitur.desc}</p>
+                      <p className="text-muted-foreground text-lg">{fitur.desc}</p>
                     </CardContent>
                   </div>
                 </div>
@@ -148,8 +148,8 @@ const fiturList = [
 
       {/* Testimoni */}
       <section className="p-3">
-        <h2 className="text-2xl font-semibold text-center mb-8">Apa Kata Mereka?</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <h2 className="text-4xl font-semibold text-center mb-8">Apa Kata Mereka?</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto text-lg">
           {[1, 2, 3].map((i) => (
             <Card key={i}>
               <CardContent className="p-6 space-y-4">
@@ -174,7 +174,7 @@ const fiturList = [
 
        {/* Blog Section */}
       <section className="space-y-6 p-3">
-        <h2 className="text-2xl font-semibold text-center mb-8">Artikel Terbaru</h2>
+        <h2 className="text-4xl font-semibold text-center mb-8">Artikel Terbaru</h2>
         <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
           {articles.map((article) => (
             <Card key={article.id} className="rounded-2xl shadow-md">
@@ -183,7 +183,7 @@ const fiturList = [
                 <p className="text-sm text-muted-foreground">{article.date}</p>
               </CardHeader>
               <CardContent>
-                <p className="text-sm mb-4">{article.excerpt}</p>
+                <p className="text-lg mb-4">{article.excerpt}</p>
                 <Button asChild variant="outline" size="sm">
                   <Link href={article.link}>Baca Selengkapnya</Link>
                 </Button>
@@ -195,26 +195,26 @@ const fiturList = [
 
       {/* FAQ Section */}
       <section className=" mx-auto p-3 bg-gray-200">
-        <h2 className="text-2xl font-semibold text-center mb-8">Pertanyaan Umum</h2>
+        <h2 className="text-4xl font-semibold text-center mb-8">Pertanyaan Umum</h2>
         <Accordion type="single" collapsible className="max-w-5xl mx-auto">
           <AccordionItem value="item-1">
-            <AccordionTrigger>Bagaimana cara mendaftar sekolah?</AccordionTrigger>
-            <AccordionContent>
+            <AccordionTrigger className="text-lg">Bagaimana cara mendaftar sekolah?</AccordionTrigger>
+            <AccordionContent className="text-lg">
               Pendaftaran bisa dilakukan online melalui halaman pendaftaran di website ini
               atau langsung datang ke sekolah.
             </AccordionContent>
           </AccordionItem>
 
           <AccordionItem value="item-2">
-            <AccordionTrigger>Apakah ada biaya pendaftaran?</AccordionTrigger>
-            <AccordionContent>
+            <AccordionTrigger className="text-lg">Apakah ada biaya pendaftaran?</AccordionTrigger>
+            <AccordionContent className="text-lg">
               Ya, biaya pendaftaran disesuaikan dengan jenjang pendidikan yang dipilih.
             </AccordionContent>
           </AccordionItem>
 
           <AccordionItem value="item-3">
-            <AccordionTrigger>Bagaimana jika saya lupa password login?</AccordionTrigger>
-            <AccordionContent>
+            <AccordionTrigger className="text-lg">Bagaimana jika saya lupa password login?</AccordionTrigger>
+            <AccordionContent className="text-lg">
               Anda bisa melakukan reset password melalui menu lupa password di halaman login.
             </AccordionContent>
           </AccordionItem>

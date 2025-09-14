@@ -23,14 +23,14 @@ export default function NavbarPublic() {
       <div className="container mx-auto flex items-center justify-between p-4 max-w-5xl">
         {/* Logo + Slogan */}
         <Link href="/" className="flex items-baseline gap-2">
-          <span className="text-xl font-bold">SATT</span>
+          <span className="text-2xl md:text-4xl font-bold">SATT</span>
           <span className={`${dancing.className} text-base text-green-600`}>
             Belajar, Berpetualang dan Bermakna
           </span>
         </Link>
 
         {/* Desktop Menu */}
-        <nav className="hidden md:flex gap-6">
+        <nav className="hidden md:flex gap-6 text-lg">
           <Link href="/" className="hover:text-blue-600 transition-colors">
             Home
           </Link>
