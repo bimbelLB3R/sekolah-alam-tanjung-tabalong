@@ -27,7 +27,7 @@ export const metadata = {
     siteName: "SATT",
     images: [
       {
-        url: "https://raw.githubusercontent.com/bimbelLB3R/sekolah-alam-tanjung-tabalong/refs/heads/main/public/og-image.png", // ganti dengan path gambarmu
+        url: "https://sekolah-alam-tanjung-tabalong.vercel.app/og-imagenew-satt.jpg", // ganti dengan path gambarmu
         width: 1200,
         height: 630,
         alt: "SATT - Belajar, Berpetualang, Bermakna",
@@ -40,7 +40,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "SATT - Belajar, Berpetualang, Bermakna",
     description: "Merupakan sekolah alam yang menerapkan empat pilar utama, yaitu Pilar Akhlak, Pilar Logika, Pilar Kepemimpinan, dan Pilar Kewirausahaan.",
-    images: ["https://raw.githubusercontent.com/bimbelLB3R/sekolah-alam-tanjung-tabalong/refs/heads/main/public/og-image.png"], // gambar untuk Twitter
+    images: ["https://sekolah-alam-tanjung-tabalong.vercel.app/og-imagenew-satt.jpg"], // gambar untuk Twitter
   },
 };
 
@@ -51,11 +51,11 @@ export default function RootLayout({ children }) {
         {/* Tambahan manual OG tags biar WA/Telegram/FB lebih yakin */}
         <meta
           property="og:image"
-          content="https://raw.githubusercontent.com/bimbelLB3R/sekolah-alam-tanjung-tabalong/refs/heads/main/public/og-image.png"
+          content="https://sekolah-alam-tanjung-tabalong.vercel.app/og-imagenew-satt.jpg"
         />
         <meta
           name="twitter:image"
-          content="https://raw.githubusercontent.com/bimbelLB3R/sekolah-alam-tanjung-tabalong/refs/heads/main/public/og-image.png"
+          content="https://sekolah-alam-tanjung-tabalong.vercel.app/og-imagenew-satt.jpg"
         />
       </Head>
       <body
