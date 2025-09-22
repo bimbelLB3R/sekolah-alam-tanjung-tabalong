@@ -1,5 +1,4 @@
 import pool from "@/lib/db";
-import { getConnection } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 // GET semua user
@@ -31,27 +30,48 @@ export async function GET() {
 
 // POST tambah user
 export async function POST(req) {
-  const { name, email, role_id } = await req.json();
-  const db = await getConnection();
-  await db.query("INSERT INTO users (id, name, email, role_id) VALUES (UUID(), ?, ?, ?)", [name, email, role_id]);
-  await db.end();
-  return NextResponse.json({ message: "User berhasil ditambahkan" });
+  try {
+    const { name, email, role_id } = await req.json();
+
+    await pool.query(
+      "INSERT INTO users (id, name, email, role_id) VALUES (UUID(), ?, ?, ?)",
+      [name, email, role_id]
+    );
+
+    return NextResponse.json({ message: "User berhasil ditambahkan" });
+  } catch (err) {
+    console.error("POST error:", err);
+    return NextResponse.json({ error: "Gagal menambahkan user" }, { status: 500 });
+  }
 }
 
 // PUT update user
 export async function PUT(req) {
-  const { id, name, email, role_id } = await req.json();
-  const db = await getConnection();
-  await db.query("UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ?", [name, email, role_id, id]);
-  await db.end();
-  return NextResponse.json({ message: "User berhasil diperbarui" });
+  try {
+    const { id, name, email, role_id } = await req.json();
+
+    await pool.query(
+      "UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ?",
+      [name, email, role_id, id]
+    );
+
+    return NextResponse.json({ message: "User berhasil diperbarui" });
+  } catch (err) {
+    console.error("PUT error:", err);
+    return NextResponse.json({ error: "Gagal memperbarui user" }, { status: 500 });
+  }
 }
 
 // DELETE hapus user
 export async function DELETE(req) {
-  const { id } = await req.json();
-  const db = await getConnection();
-  await db.query("DELETE FROM users WHERE id = ?", [id]);
-  await db.end();
-  return NextResponse.json({ message: "User berhasil dihapus" });
+  try {
+    const { id } = await req.json();
+
+    await pool.query("DELETE FROM users WHERE id = ?", [id]);
+
+    return NextResponse.json({ message: "User berhasil dihapus" });
+  } catch (err) {
+    console.error("DELETE error:", err);
+    return NextResponse.json({ error: "Gagal menghapus user" }, { status: 500 });
+  }
 }

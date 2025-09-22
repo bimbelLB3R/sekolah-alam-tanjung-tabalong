@@ -3,7 +3,7 @@ import { getUserFromCookie } from "@/lib/getUserFromCookie";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const cookieStore =await cookies();
+  const cookieStore = cookies();
   const user = await getUserFromCookie(cookieStore);
 
   if (!user) return NextResponse.json({ error: "Not logged in" }, { status: 401 });

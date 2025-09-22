@@ -1,5 +1,4 @@
 import pool from "@/lib/db"
-import { getConnection } from "@/lib/db"
 import { NextResponse } from "next/server"
 
 // GET semua role
@@ -31,30 +30,50 @@ export async function GET() {
   return NextResponse.json(grouped)
 }
 
-
 // POST tambah role
 export async function POST(req) {
-  const { name } = await req.json();
-  const db = await getConnection();
-  await db.query("INSERT INTO roles (id, name) VALUES (UUID(), ?)", [name]);
-  await db.end();
-  return Response.json({ message: "Role berhasil ditambahkan" });
+  try {
+    const { name } = await req.json();
+
+    await pool.query(
+      "INSERT INTO roles (id, name) VALUES (UUID(), ?)",
+      [name]
+    );
+
+    return NextResponse.json({ message: "Role berhasil ditambahkan" });
+  } catch (error) {
+    console.error("Error tambah role:", error);
+    return NextResponse.json({ error: "Gagal menambahkan role" }, { status: 500 });
+  }
 }
 
 // PUT update role
 export async function PUT(req) {
-  const { id, name } = await req.json();
-  const db = await getConnection();
-  await db.query("UPDATE roles SET name = ? WHERE id = ?", [name, id]);
-  await db.end();
-  return Response.json({ message: "Role berhasil diperbarui" });
+  try {
+    const { id, name } = await req.json();
+
+    await pool.query(
+      "UPDATE roles SET name = ? WHERE id = ?",
+      [name, id]
+    );
+
+    return NextResponse.json({ message: "Role berhasil diperbarui" });
+  } catch (error) {
+    console.error("Error update role:", error);
+    return NextResponse.json({ error: "Gagal memperbarui role" }, { status: 500 });
+  }
 }
 
 // DELETE hapus role
 export async function DELETE(req) {
-  const { id } = await req.json();
-  const db = await getConnection();
-  await db.query("DELETE FROM roles WHERE id = ?", [id]);
-  await db.end();
-  return Response.json({ message: "Role berhasil dihapus" });
+  try {
+    const { id } = await req.json();
+
+    await pool.query("DELETE FROM roles WHERE id = ?", [id]);
+
+    return NextResponse.json({ message: "Role berhasil dihapus" });
+  } catch (error) {
+    console.error("Error hapus role:", error);
+    return NextResponse.json({ error: "Gagal menghapus role" }, { status: 500 });
+  }
 }

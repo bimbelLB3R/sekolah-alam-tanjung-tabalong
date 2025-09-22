@@ -6,7 +6,7 @@ export async function GET() {
   try {
 
     const [rows] = await pool.execute("SELECT COUNT(*) as total FROM users");
-    await pool.end();
+    // await pool.end();
 
     return NextResponse.json({ count: rows[0].total });
   } catch (error) {
