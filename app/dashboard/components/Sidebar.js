@@ -17,6 +17,7 @@ export default function Sidebar({ isOpen, onClose }) {
 
   // Accordion state: hanya satu menu utama yang terbuka
   const [openMenu, setOpenMenu] = useState(null); // "users", "bendahara", "reports" atau null
+  const [userCount, setUserCount] = useState(0);
 
   // Load state dari localStorage saat mount
   useEffect(() => {
@@ -35,7 +36,21 @@ export default function Sidebar({ isOpen, onClose }) {
     setOpenMenu((prev) => (prev === menu ? null : menu));
   };
 
-  const userCount = 5;
+  // ambil data jml users
+  useEffect(() => {
+    const fetchUserCount = async () => {
+      try {
+        const res = await fetch("/api/users/count");
+        const data = await res.json();
+        setUserCount(data.count || 0);
+      } catch (error) {
+        console.error("Gagal ambil user count:", error);
+      }
+    };
+    fetchUserCount();
+  }, []);
+
+  // const userCount = 5;
   const reportCount = 2;
 
   return (
@@ -57,7 +72,7 @@ export default function Sidebar({ isOpen, onClose }) {
             <Button
               asChild
               variant={pathname === "/dashboard" ? "default" : "ghost"}
-              className={`justify-start ${pathname === "/dashboard" ? "bg-gray-100" : ""}`}
+              className={`justify-start ${pathname === "/dashboard" ? "bg-gray-400" : ""}`}
             >
               <Link href="/dashboard">
                 <Home className="mr-2" />

@@ -17,7 +17,9 @@ const dancing = Dancing_Script({
   weight: ["400", "600"],
 })
 
-export default function NavbarPublic() {
+export default function NavbarPublic({ user }) {
+  const isLoggedIn = !!user
+
   return (
     <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-white/70 shadow-md">
       <div className="container mx-auto flex items-center justify-between p-4 max-w-5xl">
@@ -31,31 +33,25 @@ export default function NavbarPublic() {
 
         {/* Desktop Menu */}
         <nav className="hidden md:flex gap-6 text-lg">
-          <Link href="/" className="hover:text-blue-600 transition-colors">
-            Home
-          </Link>
-          <Link href="/about" className="hover:text-blue-600 transition-colors">
-            Tentang
-          </Link>
-          <Link href="/ppdb" className="hover:text-blue-600 transition-colors">
-            PPDB
-          </Link>
-          <Link href="/contact" className="hover:text-blue-600 transition-colors">
-            Kontak
-          </Link>
-          <Link href="/agenda" className="hover:text-blue-600 transition-colors">
-            Agenda
-          </Link>
-          <Link href="/blog" className="hover:text-blue-600 transition-colors">
-            Blog
-          </Link>
+          <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
+          <Link href="/about" className="hover:text-blue-600 transition-colors">Tentang</Link>
+          <Link href="/ppdb" className="hover:text-blue-600 transition-colors">PPDB</Link>
+          <Link href="/contact" className="hover:text-blue-600 transition-colors">Kontak</Link>
+          <Link href="/agenda" className="hover:text-blue-600 transition-colors">Agenda</Link>
+          <Link href="/blog" className="hover:text-blue-600 transition-colors">Blog</Link>
         </nav>
 
         {/* CTA Button */}
         <div className="hidden md:flex">
-          <Button asChild>
-            <Link href="/login">Login</Link>
-          </Button>
+          {isLoggedIn ? (
+            <Button asChild>
+              <Link href="/dashboard">Dashboard</Link>
+            </Button>
+          ) : (
+            <Button asChild>
+              <Link href="/login">Login</Link>
+            </Button>
+          )}
         </div>
 
         {/* Mobile Menu */}
@@ -77,7 +73,9 @@ export default function NavbarPublic() {
               <Link href="/agenda">Agenda</Link>
               <Link href="/blog">Blog</Link>
               <Button asChild>
-                <Link href="/login">Login</Link>
+                <Link href={isLoggedIn ? "/dashboard" : "/login"}>
+                  {isLoggedIn ? "Dashboard" : "Login"}
+                </Link>
               </Button>
             </nav>
           </SheetContent>

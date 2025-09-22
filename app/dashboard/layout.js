@@ -67,9 +67,9 @@ export default function DashboardLayout({ children }) {
               className="md:hidden"
               onClick={() => setSidebarOpen(true)}
             >
-              ☰ Menu
+              ☰ 
             </Button>
-            <h1 className="ml-4 text-xl font-bold">Dashboard</h1>
+            {/* <h1 className="ml-4 text-xl font-bold">Dashboard</h1> */}
           </div>
 
           {/* User Info + Logout */}
