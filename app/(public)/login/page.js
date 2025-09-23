@@ -51,6 +51,18 @@ export default function LoginPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+
+        {/* Forgot Password link */}
+        <div className="text-right">
+          <button
+            type="button"
+            onClick={() => router.push("/forgot-password")}
+            className="text-sm text-blue-500 hover:underline"
+          >
+            Forgot Password?
+          </button>
+        </div>
+
         <button
           type="submit"
           className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"

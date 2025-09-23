@@ -66,43 +66,46 @@ export default function UsersPage() {
               <CardTitle className="text-lg">{role.name}</CardTitle>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-1/3">Name</TableHead>
-                    <TableHead className="w-1/3">Email</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {role.users.length > 0 ? (
-                    role.users.map((user) => (
-                      <TableRow key={user.id} className="hover:bg-gray-50">
-                        <TableCell>{user.name}</TableCell>
-                        <TableCell>{user.email}</TableCell>
-                        <TableCell className="flex justify-end gap-2">
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => handleDelete(user.id)}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell
-                        colSpan={3}
-                        className="text-center text-gray-500"
-                      >
-                        Tidak ada user
+            <div className="overflow-x-auto">
+            <Table className="min-w-[300px]">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-1/3">Name</TableHead>
+                  <TableHead className="w-1/3">Email</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {role.users.length > 0 ? (
+                  role.users.map((user) => (
+                    <TableRow key={user.id} className="hover:bg-gray-50">
+                      <TableCell className="whitespace-nowrap">{user.name}</TableCell>
+                      <TableCell className="whitespace-nowrap">{user.email}</TableCell>
+                      <TableCell className="flex justify-end gap-2">
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => handleDelete(user.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
                       </TableCell>
                     </TableRow>
-                  )}
-                </TableBody>
-              </Table>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={3}
+                      className="text-center text-gray-500"
+                    >
+                      Tidak ada user
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+
             </CardContent>
           </Card>
         ))
