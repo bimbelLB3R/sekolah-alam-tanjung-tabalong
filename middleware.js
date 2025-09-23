@@ -21,7 +21,7 @@ export async function middleware(req) {
       const { payload } = await jwtVerify(token, secret)
 
       const userRole = payload.role_name // contoh: "guru", "bendahara", "super-admin", dll
-      console.log(userRole)
+
       // kalau super-admin → akses semua halaman
       if (userRole === "super-admin") {
         return NextResponse.next()
@@ -29,10 +29,19 @@ export async function middleware(req) {
 
       // ambil segmen kedua setelah /dashboard/
       const pathSegments = url.pathname.split("/")
-      const targetRole = pathSegments[2] // misal: /dashboard/guru → "guru"
+      const targetPath = pathSegments[2] // misal: /dashboard/guru → "guru"
 
-      // kalau ada target role & userRole beda → forbidden
-      if (targetRole && targetRole !== userRole) {
+      // mapping role ke halaman yang diizinkan
+      const allowedPaths = {
+        guru: ["guru", "siswa", "materi"], // guru bisa akses beberapa halaman /dashboard/siswa dst
+        bendahara: ["bendahara", "keuangan","siswa"],
+        manajemen: ["manajemen", "laporan"],
+      }
+
+      const roleAllowed = allowedPaths[userRole] || []
+
+      // cek apakah targetPath ada dalam daftar allowed untuk userRole
+      if (targetPath && !roleAllowed.includes(targetPath)) {
         return NextResponse.redirect(new URL("/unauthorized", req.url))
       }
 

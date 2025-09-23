@@ -2,7 +2,15 @@
 
 import { useState, useEffect } from "react";
 import Sidebar from "./components/Sidebar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { User, Settings, LogOut } from "lucide-react";
 
 export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -42,8 +50,8 @@ export default function DashboardLayout({ children }) {
       });
 
       if (res.ok) {
-        setUser(null); // reset state user
-        window.location.href = "/login"; // redirect ke login
+        setUser(null);
+        window.location.href = "/login";
       } else {
         console.error("Logout failed");
       }
@@ -67,35 +75,43 @@ export default function DashboardLayout({ children }) {
               className="md:hidden"
               onClick={() => setSidebarOpen(true)}
             >
-              ☰ 
+              ☰
             </Button>
-            {/* <h1 className="ml-4 text-xl font-bold">Dashboard</h1> */}
           </div>
 
-          {/* User Info + Logout */}
+          {/* Avatar + Dropdown */}
           {mounted ? (
             user ? (
-              <div className="text-right">
-                <p className="font-semibold">{user.name}</p>
-                <p className="text-sm text-gray-600">{user.email}</p>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="mt-1 text-red-600"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </Button>
-              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Avatar className="cursor-pointer">
+                    {user.avatar ? (
+                      <AvatarImage src={user.avatar} alt={user.name} />
+                    ) : (
+                      <AvatarFallback>{user.name[0]}</AvatarFallback>
+                    )}
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem>
+                    <User className="mr-2 h-4 w-4" />
+                    {user.name}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Settings className="mr-2 h-4 w-4" />
+                    Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
-              <div className="text-right text-gray-400 text-sm">
-                Loading user...
-              </div>
+              <div className="text-gray-400 text-sm">Loading user...</div>
             )
           ) : (
-            <div className="text-right text-gray-400 text-sm">
-              Loading user...
-            </div>
+            <div className="text-gray-400 text-sm">Loading user...</div>
           )}
         </header>
 
