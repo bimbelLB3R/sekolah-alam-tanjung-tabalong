@@ -10,14 +10,32 @@ export async function middleware(req) {
     return NextResponse.redirect(new URL("/dashboard", req.url))
   }
 
-  // proteksi dashboard
+  // cek path dashboard
   if (url.pathname.startsWith("/dashboard")) {
     if (!token) {
       return NextResponse.redirect(new URL("/login", req.url))
     }
+
     try {
       const secret = new TextEncoder().encode(process.env.JWT_SECRET)
-      await jwtVerify(token, secret)
+      const { payload } = await jwtVerify(token, secret)
+
+      const userRole = payload.role_name // contoh: "guru", "bendahara", "super-admin", dll
+      console.log(userRole)
+      // kalau super-admin → akses semua halaman
+      if (userRole === "super-admin") {
+        return NextResponse.next()
+      }
+
+      // ambil segmen kedua setelah /dashboard/
+      const pathSegments = url.pathname.split("/")
+      const targetRole = pathSegments[2] // misal: /dashboard/guru → "guru"
+
+      // kalau ada target role & userRole beda → forbidden
+      if (targetRole && targetRole !== userRole) {
+        return NextResponse.redirect(new URL("/unauthorized", req.url))
+      }
+
       return NextResponse.next()
     } catch (err) {
       console.error("JWT verify error:", err.message)
@@ -28,6 +46,7 @@ export async function middleware(req) {
   return NextResponse.next()
 }
 
+// matcher supaya cuma jalan di route tertentu
 export const config = {
-  matcher: ["/login", "/dashboard/:path*"], // login juga dicek
+  matcher: ["/login", "/dashboard/:path*"],
 }

@@ -11,7 +11,15 @@ export async function POST(req) {
       return NextResponse.json({ error: "Email dan password wajib diisi" }, { status: 400 })
     }
 
-    const [rows] = await pool.query("SELECT * FROM users WHERE email = ?", [email])
+    // JOIN tabel users dan roles untuk ambil role name
+    const [rows] = await pool.query(
+      `SELECT u.id, u.name AS user_name, u.email, u.password, r.id AS role_id, r.name AS role_name
+       FROM users u
+       JOIN roles r ON u.role_id = r.id
+       WHERE u.email = ?`,
+      [email]
+    )
+
     const user = rows[0]
 
     if (!user) {
@@ -24,7 +32,14 @@ export async function POST(req) {
     }
 
     const secret = new TextEncoder().encode(process.env.JWT_SECRET)
-    const token = await new SignJWT({ id: user.id, role_id: user.role_id })
+
+    // Payload JWT berisi role_name
+    const token = await new SignJWT({
+      id: user.id,
+      name: user.user_name,
+      role_id: user.role_id,
+      role_name: user.role_name, // <-- ini yang baru
+    })
       .setProtectedHeader({ alg: "HS256" })
       .setExpirationTime("1h")
       .sign(secret)
@@ -33,9 +48,10 @@ export async function POST(req) {
       message: "Login berhasil",
       user: {
         id: user.id,
-        name: user.name,
+        name: user.user_name,
         email: user.email,
         role_id: user.role_id,
+        role_name: user.role_name,
       },
     })
 
