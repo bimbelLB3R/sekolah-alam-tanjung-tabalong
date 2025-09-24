@@ -15,7 +15,7 @@ export async function POST(req) {
     const formData = await req.formData();
     const file = formData.get("photo");
     const userId = formData.get("user_id");
-    const type = formData.get("type"); // MASUK / KELUAR
+    const jenis = formData.get("jenis"); // MASUK / KELUAR
     const latitude = formData.get("latitude");
     const longitude = formData.get("longitude");
     const device = formData.get("device");
@@ -44,7 +44,7 @@ export async function POST(req) {
       `INSERT INTO presensi 
        (user_id, tanggal, jam, jenis, latitude, longitude, device_info, photo_url) 
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [userId, tanggal, jam, type, latitude, longitude, device, photoUrl]
+      [userId, tanggal, jam, jenis, latitude, longitude, device, photoUrl]
     );
 
     return NextResponse.json({ success: true, photoUrl });
