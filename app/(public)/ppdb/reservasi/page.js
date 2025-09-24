@@ -1,14 +1,15 @@
-// app/(public)/ppdb/reservasi/page.tsx
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { User, Phone, Mail, Calendar } from "lucide-react"
+import { User, Phone, Mail, Calendar, Loader2 } from "lucide-react"
 
 export default function ReservasiPage() {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     nama: "",
     orangtua: "",
@@ -16,15 +17,37 @@ export default function ReservasiPage() {
     email: "",
     tanggal: "",
   })
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log("Data Reservasi:", formData)
-    alert("Reservasi berhasil dikirim! 🎉")
+    setLoading(true)
+
+    try {
+      const res = await fetch("/api/reservasi", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await res.json()
+      if (data.success) {
+        alert("Reservasi berhasil dikirim! 🎉")
+        setFormData({ nama: "", orangtua: "", telepon: "", email: "", tanggal: "" })
+        router.push("/") // alihkan ke halaman utama
+      } else {
+        alert("Gagal mengirim reservasi!")
+      }
+    } catch (err) {
+      console.error(err)
+      alert("Terjadi kesalahan server!")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -36,7 +59,7 @@ export default function ReservasiPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4 ">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Nama Siswa */}
             <div className="space-y-2">
               <Label htmlFor="nama" className="flex items-center gap-2 ">
@@ -115,8 +138,15 @@ export default function ReservasiPage() {
             </div>
 
             {/* Tombol Submit */}
-            <Button type="submit" className="w-full">
-              Kirim Reservasi
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Mengirim...
+                </span>
+              ) : (
+                "Kirim Reservasi"
+              )}
             </Button>
           </form>
         </CardContent>
