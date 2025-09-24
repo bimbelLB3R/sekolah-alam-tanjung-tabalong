@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import Sidebar from "./components/Sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User, Settings, LogOut } from "lucide-react";
+import { User, Settings, LogOut, Camera } from "lucide-react";
 
 export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -100,6 +101,13 @@ export default function DashboardLayout({ children }) {
                   <DropdownMenuItem>
                     <Settings className="mr-2 h-4 w-4" />
                     Profile
+                  </DropdownMenuItem>
+                  {/* Presensi dengan Link ke /dashboard/presensi */}
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard/presensi">
+                      <Camera className="mr-2 h-4 w-4" />
+                      Presensi
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
