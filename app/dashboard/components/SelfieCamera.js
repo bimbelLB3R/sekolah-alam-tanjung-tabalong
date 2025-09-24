@@ -1,26 +1,24 @@
 "use client";
+
 import { useRef, useState, useEffect } from "react";
 
-export default function SelfieCamera() {
+export default function SelfieCamera({ onCapture }) {
   const videoRef = useRef(null);
-  const canvasRef = useRef(null);
-  const [selfie, setSelfie] = useState(null);
   const [stream, setStream] = useState(null);
+  const [photo, setPhoto] = useState(null);
 
-  // Mulai kamera
   const startCamera = async () => {
     try {
-      const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
-      setStream(mediaStream);
-      if (videoRef.current) {
-        videoRef.current.srcObject = mediaStream;
-      }
+      const s = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" }, // kamera depan
+      });
+      setStream(s);
+      if (videoRef.current) videoRef.current.srcObject = s;
     } catch (err) {
-      console.error("Tidak bisa mengakses kamera:", err);
+      console.error("Kamera error:", err);
     }
   };
 
-  // Matikan kamera
   const stopCamera = () => {
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
@@ -28,73 +26,89 @@ export default function SelfieCamera() {
     }
   };
 
-  // nyalakan kamera saat pertama kali load
   useEffect(() => {
     startCamera();
-
-    // cleanup saat komponen unmount (misal pindah halaman)
-    return () => {
-      stopCamera();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => stopCamera();
   }, []);
 
-  const takeSelfie = () => {
+  const handleCapture = () => {
     const video = videoRef.current;
-    const canvas = canvasRef.current;
-    if (!video || !canvas) return;
-
+    const canvas = document.createElement("canvas");
+    const size = 256; // ukuran square final
+    canvas.width = size;
+    canvas.height = size;
     const ctx = canvas.getContext("2d");
-    if (!ctx) return;
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    // hitung crop supaya tetap square
+    const videoAspect = video.videoWidth / video.videoHeight;
+    let sx, sy, sw, sh;
 
-    const dataUrl = canvas.toDataURL("image/png");
-    setSelfie(dataUrl);
+    if (videoAspect > 1) {
+      // video lebih lebar dari tinggi (16:9)
+      sh = video.videoHeight;
+      sw = sh;
+      sx = (video.videoWidth - sw) / 2;
+      sy = 0;
+    } else {
+      // video lebih tinggi dari lebar
+      sw = video.videoWidth;
+      sh = sw;
+      sx = 0;
+      sy = (video.videoHeight - sh) / 2;
+    }
 
-    stopCamera(); // matikan kamera setelah ambil foto
+    ctx.drawImage(video, sx, sy, sw, sh, 0, 0, size, size);
+
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const file = new File([blob], `selfie-${Date.now()}.png`, {
+        type: "image/png",
+      });
+      setPhoto(URL.createObjectURL(file));
+      onCapture(file);
+      stopCamera();
+    }, "image/png");
   };
 
-  const retakeSelfie = () => {
-    setSelfie(null);
-    startCamera(); // nyalakan lagi kamera untuk ambil ulang
+  const handleRetake = () => {
+    setPhoto(null);
+    startCamera();
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      {!selfie ? (
-        <>
+    <div className="space-y-2">
+      <h1 className="font-bold text-center">PRESENSI SATT</h1>
+      {!photo ? (
+        <div className="w-64 h-64 rounded overflow-hidden">
           <video
             ref={videoRef}
             autoPlay
             playsInline
-            className="rounded-xl w-64 h-64 object-cover border"
+            muted
+            className="w-full h-full object-cover"
           />
-          <button
-            onClick={takeSelfie}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg"
-          >
-            Ambil Selfie
-          </button>
-        </>
+        </div>
       ) : (
-        <>
-          <img
-            src={selfie}
-            alt="Selfie"
-            className="w-64 h-64 rounded-xl object-cover border"
-          />
+        <img src={photo} alt="Selfie" className="w-64 h-64 rounded" />
+      )}
+
+      <div className="flex items-center justify-center gap-2">
+        {!photo ? (
           <button
-            onClick={retakeSelfie}
-            className="px-4 py-2 bg-gray-600 text-white rounded-lg"
+            onClick={handleCapture}
+            className="px-4 py-2 bg-green-600 text-white rounded"
+          >
+            Ambil Foto
+          </button>
+        ) : (
+          <button
+            onClick={handleRetake}
+            className="px-4 py-2 bg-yellow-600 text-white rounded"
           >
             Ulangi
           </button>
-        </>
-      )}
-      <canvas ref={canvasRef} className="hidden" />
+        )}
+      </div>
     </div>
   );
 }

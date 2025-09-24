@@ -152,7 +152,7 @@ export default function Sidebar({ isOpen, onClose }) {
               <CollapsibleContent>
                 <div className="flex flex-col pl-6 space-y-1">
                   <NavLink href="/dashboard/manajemen/dapodik" variant={pathname === "/dashboard/manajemen/dapodik" ? "default" : "ghost"}>Dapodik</NavLink>
-                  <NavLink href="/dashboard/manajemen/perijinan" variant={pathname === "/dashboard/manajemen/perijinan" ? "default" : "ghost"}>Perijinan</NavLink>
+                  <NavLink href="/dashboard/manajemen/data-presensi" variant={pathname === "/dashboard/manajemen/data-presensi" ? "default" : "ghost"}>Data Presensi</NavLink>
                   <NavLink href="/dashboard/manajemen/lain-lain" variant={pathname === "/dashboard/manajemen/lain-lain" ? "default" : "ghost"}>Lain-lain</NavLink>
                 </div>
               </CollapsibleContent>
