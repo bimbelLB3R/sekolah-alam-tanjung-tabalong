@@ -6,7 +6,7 @@ export async function GET() {
   try {
     const [rows] = await pool.query(`
       SELECT  p.id,
-    p.tanggal,
+    DATE_FORMAT(p.tanggal, '%Y-%m-%d') AS tanggal,
     p.jam,
     p.jenis,
     u.name AS nama,

@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
 import { Dancing_Script } from "next/font/google"
+import Image from "next/image"
 
 const dancing = Dancing_Script({
   subsets: ["latin"],
@@ -24,11 +25,17 @@ export default function NavbarPublic({ user }) {
     <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-white/70 shadow-md">
       <div className="container mx-auto flex items-center justify-between p-4 max-w-5xl">
         {/* Logo + Slogan */}
-        <Link href="/" className="flex items-baseline gap-2">
-          <span className="text-2xl md:text-4xl font-bold">SATT</span>
-          <span className={`${dancing.className} text-base text-green-600`}>
+        <Link href="/" className="flex items-center gap-2">
+          {/* <span className="text-2xl md:text-4xl font-bold">SATT</span> */}
+          <Image
+          src="/logo-sattnav.png"   // path dari folder /public
+          alt="logo-satt"
+          width={60}                    // lebar logo dalam px
+          height={60}                   // tinggi logo dalam px
+        />
+          <p className={`${dancing.className} text-base text-green-600`}>
             Belajar, Berpetualang dan Bermakna
-          </span>
+          </p>
         </Link>
 
         {/* Desktop Menu */}

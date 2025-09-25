@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Users, Home, FileText, Settings, Wallet, Cable } from "lucide-react";
+import Image from "next/image";
 
 import {
   Collapsible,
@@ -115,24 +116,88 @@ export default function Sidebar({ isOpen, onClose }) {
               <CollapsibleTrigger asChild>
                 <Button
                   variant="ghost"
-                  className={`justify-between w-full ${pathname.startsWith("/dashboard/bendahara") ? "bg-gray-100" : ""}`}
+                  className={`justify-start w-full ${pathname.startsWith("/dashboard/bendahara") ? "bg-gray-100" : ""}`}
                 >
                   <Wallet className="mr-2" />
-                  <span className="md:inline">Bendahara</span>
-                  <span className="ml-auto flex items-center">
-                    {infoBundum > 0 && <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">{infoBundum}</span>}
-                    <ChevronDown className={`ml-1 transition-transform duration-200 ${openMenu === "bendahara" ? "rotate-180" : ""}`} />
-                  </span>
+                  <span className="flex-1 text-left">Bendahara</span>
+                  <ChevronDown className={`ml-1 transition-transform duration-200 ${openMenu === "bendahara" ? "rotate-180" : ""}`} />
                 </Button>
               </CollapsibleTrigger>
               <CollapsibleContent>
-                <div className="flex flex-col pl-6 space-y-1">
-                  <NavLink href="/dashboard/bendahara/pemasukan" variant={pathname === "/dashboard/bendahara/pemasukan" ? "default" : "ghost"}>Pemasukan</NavLink>
-                  <NavLink href="/dashboard/bendahara/pengeluaran" variant={pathname === "/dashboard/bendahara/pengeluaran" ? "default" : "ghost"}>Pengeluaran</NavLink>
-                  <NavLink href="/dashboard/bendahara/piutang" variant={pathname === "/dashboard/bendahara/piutang" ? "default" : "ghost"}>Piutang</NavLink>
+                <div className="flex flex-col pl-10 space-y-1">
+                  
+                  {/* Pemasukan (punya submenu lagi) */}
+                  <Collapsible>
+                    <CollapsibleTrigger asChild>
+                      <Button variant="ghost" className="justify-between w-full">
+                        <span>Pemasukan</span>
+                        <ChevronDown className="ml-1 transition-transform" />
+                      </Button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <div className="flex flex-col pl-6 space-y-1">
+                        <NavLink href="/dashboard/bendahara/pemasukan/spp" variant={pathname === "/dashboard/bendahara/pemasukan/spp" ? "default" : "ghost"}>
+                          SPP
+                        </NavLink>
+                        <NavLink href="/dashboard/bendahara/pemasukan/donasi" variant={pathname === "/dashboard/bendahara/pemasukan/donasi" ? "default" : "ghost"}>
+                          Donasi
+                        </NavLink>
+                        <NavLink href="/dashboard/bendahara/pemasukan/lainnya" variant={pathname === "/dashboard/bendahara/pemasukan/lainnya" ? "default" : "ghost"}>
+                          Lainnya
+                        </NavLink>
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
+
+                  {/* Payroll (punya submenu lagi) */}
+                  <Collapsible>
+                    <CollapsibleTrigger asChild>
+                      <Button variant="ghost" className="justify-between w-full">
+                        <span>Penggajian</span>
+                        <ChevronDown className="ml-1 transition-transform" />
+                      </Button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <div className="flex flex-col pl-6 space-y-1">
+                        <NavLink href="/dashboard/bendahara/pemasukan/spp" variant={pathname === "/dashboard/bendahara/pemasukan/spp" ? "default" : "ghost"}>
+                          Karyawan
+                        </NavLink>
+                        <NavLink href="/dashboard/bendahara/pemasukan/donasi" variant={pathname === "/dashboard/bendahara/pemasukan/donasi" ? "default" : "ghost"}>
+                          Guru
+                        </NavLink>
+                        <NavLink href="/dashboard/bendahara/pemasukan/lainnya" variant={pathname === "/dashboard/bendahara/pemasukan/lainnya" ? "default" : "ghost"}>
+                          Lainnya
+                        </NavLink>
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
+
+                  {/* Bonus (punya submenu lagi) */}
+                  <Collapsible>
+                    <CollapsibleTrigger asChild>
+                      <Button variant="ghost" className="justify-between w-full">
+                        <span>Bonus</span>
+                        <ChevronDown className="ml-1 transition-transform" />
+                      </Button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <div className="flex flex-col pl-6 space-y-1">
+                        <NavLink href="/dashboard/bendahara/pemasukan/spp" variant={pathname === "/dashboard/bendahara/pemasukan/spp" ? "default" : "ghost"}>
+                          Kehadiran
+                        </NavLink>
+                        <NavLink href="/dashboard/bendahara/pemasukan/donasi" variant={pathname === "/dashboard/bendahara/pemasukan/donasi" ? "default" : "ghost"}>
+                          Administrasi
+                        </NavLink>
+                        <NavLink href="/dashboard/bendahara/pemasukan/lainnya" variant={pathname === "/dashboard/bendahara/pemasukan/lainnya" ? "default" : "ghost"}>
+                          Lainnya
+                        </NavLink>
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
                 </div>
               </CollapsibleContent>
             </Collapsible>
+
 
             {/* Manajemen */}
             <Collapsible open={openMenu === "manajemen"} onOpenChange={() => toggleMenu("manajemen")}>
@@ -188,6 +253,20 @@ export default function Sidebar({ isOpen, onClose }) {
             </NavLink>
           </nav>
         </ScrollArea>
+
+        {/* Logo + Text di bawah sidebar */}
+  <div className="mt-auto p-4 flex items-center space-x-2 border-t border-gray-200">
+    <Image
+      src="/logo-sattnav.png"  // path dari /public/logo/
+      alt="Logo SATT"
+      width={40}
+      height={40}
+    />
+    <div className="flex flex-col text-sm">
+      <span className="font-bold">SATT</span>
+      <span className="text-gray-500">member of JSAN</span>
+    </div>
+  </div>
       </div>
     </div>
   );
