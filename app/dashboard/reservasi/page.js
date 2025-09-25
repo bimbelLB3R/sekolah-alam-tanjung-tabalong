@@ -128,7 +128,7 @@ console.log(reservasi);
             {paginatedData.map((item) => (
               <Card key={item.id} className="shadow-md">
                 <CardHeader className="flex flex-row items-center gap-2">
-                  <User className="w-6 h-6 text-blue-500" />
+                  <User className="w-6 h-6 text-green-500" />
                   <CardTitle>{item.nama}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2 text-sm">
@@ -144,7 +144,7 @@ console.log(reservasi);
                       href={`https://wa.me/${item.telepon}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-600 underline"
+                      className="text-green-600 underline"
                     >
                       {item.telepon}
                     </a>

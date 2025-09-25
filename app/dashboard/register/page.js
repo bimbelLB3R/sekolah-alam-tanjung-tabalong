@@ -126,7 +126,7 @@ export default function RegisterPage() {
           </select>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 flex items-center justify-center"
+            className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 flex items-center justify-center"
             disabled={submitting}
           >
             {submitting ? (

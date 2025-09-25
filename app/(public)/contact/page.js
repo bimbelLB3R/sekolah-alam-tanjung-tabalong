@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Mail, Phone, MapPin, Clock } from "lucide-react"
+import Link from "next/link"
 
 export default function ContactPage() {
   return (
@@ -16,19 +17,21 @@ export default function ContactPage() {
         <CardContent className="space-y-4 text-lg">
           <div className="flex items-center gap-3">
             <MapPin className="w-5 h-5 text-primary" />
-            <span>Jl. Contoh No. 123, Banjarmasin</span>
+            <span>Jl.Guru Danau, Maburai</span>
           </div>
           <div className="flex items-center gap-3">
             <Mail className="w-5 h-5 text-primary" />
-            <span>info@lb3r.com</span>
+            <span>sekolahalam.tanjungtabalong@gmail.com</span>
           </div>
-          <div className="flex items-center gap-3">
+          <div >
+            <Link href="https://wa.me/6285752112725" className="flex items-center gap-3">
             <Phone className="w-5 h-5 text-primary" />
-            <span>+62 812-3456-7890</span>
+            <p>+62 857-5211-2725</p>
+            </Link>
           </div>
           <div className="flex items-center gap-3">
             <Clock className="w-5 h-5 text-primary" />
-            <span>Senin - Sabtu: 08.00 - 17.00</span>
+            <span>Senin - Jumat: 08.00 - 15.00</span>
           </div>
         </CardContent>
       </Card>

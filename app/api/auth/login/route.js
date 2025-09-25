@@ -59,7 +59,7 @@ export async function POST(req) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       path: "/",
-      maxAge: 60 * 60,
+      maxAge: 60 * 60 * 6, //enam jam kadaluarsa
     })
 
     return res

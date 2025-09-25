@@ -24,9 +24,8 @@ import {
   Wallet,
   GraduationCap,
   Package,
-  Trophy,
+  TentTree,
 } from "lucide-react"
-import Footer from "./components/footer"
 import HeroSection from "./components/herosection"
 
 export default function Home() {
@@ -60,12 +59,12 @@ export default function Home() {
 ]
 
 const fiturList = [
-    { title: "Profil Sekolah", desc: "Informasi sekolah dan yayasan.", icon: School },
-    { title: "Data Siswa", desc: "Pantau perkembangan akademik siswa.", icon: Users },
-    { title: "Keuangan", desc: "Kelola pembayaran dan laporan bendahara.", icon: Wallet },
-    { title: "Guru & Staff", desc: "Data guru, wali kelas, dan karyawan.", icon: GraduationCap },
-    { title: "Inventaris", desc: "Aset sarana prasarana sekolah.", icon: Package },
-    { title: "Prestasi", desc: "Dokumentasi prestasi sekolah & siswa.", icon: Trophy },
+    { title: "Profil Sekolah", desc: "Informasi sekolah dan yayasan.", icon: School,href:"/about" },
+    { title: "Data Siswa", desc: "Pantau perkembangan akademik siswa.", icon: Users,href:"/data-siswa"  },
+    { title: "Keuangan", desc: "Kelola pembayaran dan laporan bendahara.", icon: Wallet,href:"/login"  },
+    { title: "Guru & Staff", desc: "Profil guru, wali kelas, dan karyawan.", icon: GraduationCap,href:"/profile-guru"  },
+    { title: "Inventaris", desc: "Aset sarana prasarana sekolah.", icon: Package,href:"/login"  },
+    { title: "Aktivitas Anak", desc: "Berbagai aktivitas 3B khas SATT", icon: TentTree,href:"/activities"  },
   ]
   return (
     <div className="space-y-20">
@@ -125,7 +124,8 @@ const fiturList = [
         {fiturList.map((fitur, i) => {
           const Icon = fitur.icon
           return (
-            <Card key={i} className="hover:shadow-lg transition">
+            <Link key={i} href={fitur.href} className="block">
+            <Card  className="hover:shadow-lg transition">
               <CardHeader>
                 <div className="flex items-start gap-3">
                   {/* Icon di kiri */}
@@ -141,6 +141,7 @@ const fiturList = [
                 </div>
               </CardHeader>
             </Card>
+            </Link>
           )
         })}
       </div>
@@ -194,7 +195,7 @@ const fiturList = [
       </section>
 
       {/* FAQ Section */}
-      <section className=" mx-auto p-3 bg-gray-200">
+      <section className=" mx-auto p-3 bg-green-100">
         <h2 className="text-4xl font-semibold text-center mb-8">Pertanyaan Umum</h2>
         <Accordion type="single" collapsible className="max-w-5xl mx-auto">
           <AccordionItem value="item-1">

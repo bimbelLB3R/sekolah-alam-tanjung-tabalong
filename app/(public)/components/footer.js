@@ -4,7 +4,7 @@ import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa"
 
 export default function Footer() {
   return (
-    <footer className="text-center py-8 border-t bg-gradient-to-r from-blue-500 to-indigo-600 ">
+    <footer className="text-center py-8 border-t bg-gradient-to-r from-green-500 to-emerald-600 ">
       <div className="flex flex-col items-center gap-4">
         <div className="flex gap-6">
           <a
@@ -13,7 +13,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-primary transition"
           >
-            <FaFacebook className="w-6 h-6 text-white hover:text-blue-500 transition-colors" />
+            <FaFacebook className="w-6 h-6 text-white hover:text-green-500 transition-colors" />
           </a>
           <a
             href="https://instagram.com"
@@ -21,7 +21,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-primary transition"
           >
-            <FaInstagram className="w-6 h-6 text-white hover:text-blue-500 transition-colors" />
+            <FaInstagram className="w-6 h-6 text-white hover:text-green-500 transition-colors" />
           </a>
           <a
             href="https://youtube.com"
@@ -29,7 +29,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-primary transition"
           >
-            <FaYoutube className="w-6 h-6 text-gray-50 hover:text-blue-500 transition-colors" />
+            <FaYoutube className="w-6 h-6 text-gray-50 hover:text-green-500 transition-colors" />
           </a>
         </div>
 

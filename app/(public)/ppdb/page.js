@@ -80,9 +80,9 @@ export default function PpdbPage() {
             Untuk informasi lebih lanjut, silakan hubungi:
           </p>
           <ul className="list-disc ml-6 text-gray-700 space-y-1 text-lg">
-            <li>Telepon: (021) 12345678</li>
-            <li>Email: ppdb@sekolahalamnusantara.sch.id</li>
-            <li>Alamat: Jl. Pendidikan No.10, Jakarta</li>
+            <li>Telepon: +62 857-5211-2725</li>
+            <li>Email: sekolahalam.tanjungtabalong@gmail.com</li>
+            <li>Alamat: Jl. Guru Danau, Maburai.</li>
           </ul>
         </section>
       </div>

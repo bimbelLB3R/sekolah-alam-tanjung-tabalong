@@ -30,7 +30,7 @@ export default function AgendaPage() {
           return (
             <div key={idx} className="relative">
               {/* Icon bulat di garis */}
-              <span className="absolute -left-3 flex items-center justify-center w-6 h-6 rounded-full bg-blue-600 text-white">
+              <span className="absolute -left-3 flex items-center justify-center w-6 h-6 rounded-full bg-green-600 text-white">
                 <Icon className="w-3 h-3" />
               </span>
 

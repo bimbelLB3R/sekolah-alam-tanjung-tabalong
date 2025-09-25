@@ -18,7 +18,7 @@ export default function BlogPage() {
           <li key={post.slug}>
             <Link
               href={`/blog/${post.slug}`}
-              className="text-xl font-semibold hover:text-blue-600"
+              className="text-xl font-semibold hover:text-green-600"
             >
               {post.title}
             </Link>
