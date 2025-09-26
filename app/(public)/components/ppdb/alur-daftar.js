@@ -77,10 +77,11 @@ export default function AlurPendaftaran() {
 
                   {/* Card di kanan angka */}
                   <Card className="flex-1 shadow-md border-green-200">
-                    <CardHeader className="flex flex-row items-center gap-2">
-                      <Icon className="w-6 h-6 text-green-500" />
-                      <CardTitle className="text-lg">{step.title}</CardTitle>
-                    </CardHeader>
+                        <CardHeader className="flex flex-col sm:flex-row items-center gap-2">
+                        <Icon className="w-6 h-6 text-green-500" />
+                        <CardTitle className="text-lg">{step.title}</CardTitle>
+                        </CardHeader>
+
                     <CardContent>
                       <p className="text-sm text-muted-foreground">
                         {step.date}

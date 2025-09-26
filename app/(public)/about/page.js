@@ -64,7 +64,7 @@ export default function AboutPage() {
           </p>
 
           <h3 className="text-xl font-semibold mt-4">Misi Jenjang TK & KB</h3>
-          <h3 className="text-lg  mt-4">TK & KB SATT berkomitmen untuk bermitra dengan orang tua dalam mendidik anak menyongsong usia pre aqil baligh (usia 7 tahun) dengan cara :</h3>
+          <h3 className="text-lg  mt-4 text-gray-700">TK & KB SATT berkomitmen untuk bermitra dengan orang tua dalam mendidik anak menyongsong usia pre aqil baligh (usia 7 tahun) dengan cara :</h3>
           <ul className="list-disc ml-6 text-gray-700 space-y-2 text-lg">
               <li>Mengenalkan anak pada Allah SWT, Tuhan Pencipta Alam Semesta, lewat ciptaan-Nya dengan alat indera penglihatan, pendengaran, dan peraba.</li>
               <li>Menumbuhkan antusiasme anak dalam beribadah dan berdoa kepada Sang Pencipta.</li>
@@ -76,7 +76,7 @@ export default function AboutPage() {
           </ul>
 
           <h3 className="text-xl font-semibold mt-4">Misi Jenjang Sekolah Dasar</h3>
-          <h3 className="text-lg  mt-4">SATT berkomitmen untuk bermitra dengan orang tua dalam mendidik anak menyongsong aqil baligh dengan cara :</h3>
+          <h3 className="text-lg  mt-4 text-gray-700">SATT berkomitmen untuk bermitra dengan orang tua dalam mendidik anak menyongsong aqil baligh dengan cara :</h3>
           <ul className="list-disc ml-6 text-gray-700 space-y-2 text-lg">
               <li>Membangun pondasi iman yang kokoh anak</li>
               <li>Membangun adab dan akhlaq mulia anak</li>

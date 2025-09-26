@@ -53,7 +53,7 @@ export default function BiayaProgram() {
               className="flex flex-col md:flex-row border shadow-sm"
             >
               {/* Kiri - Jenjang */}
-              <div className="md:w-1/3 w-full border-b md:border-b-0 md:border-r p-4 flex items-center justify-center bg-blue-50">
+              <div className="md:w-1/3 w-full border-b md:border-b-0 md:border-r p-4 flex items-center justify-center bg-green-50">
                 <h3 className="text-lg font-semibold text-center">
                   {biaya.jenjang}
                 </h3>
@@ -64,7 +64,7 @@ export default function BiayaProgram() {
                 <ul className="space-y-2">
                   {biaya.items.map((item, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <CircleDot className="w-4 h-4 text-blue-500 mt-1 flex-shrink-0" />
+                      <CircleDot className="w-4 h-4 text-green-500 mt-1 flex-shrink-0" />
                       <span className="text-lg">{item}</span>
                     </li>
                   ))}

@@ -55,7 +55,7 @@ export default function HeroSection() {
             alt="Hero Background"
             fill
             className="object-cover"
-            priority
+             priority={current === 0} // hanya slide pertama yang priority
           />
           <div className="absolute inset-0 bg-black/50" />
         </motion.div>

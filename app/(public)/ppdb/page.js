@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { ChevronRight } from "lucide-react"
 import AlurPendaftaran from "../components/ppdb/alur-daftar"
 import BiayaProgram from "../components/ppdb/biaya-program"
+import KontakPendaftaran from "../components/ppdb/kontak-daftar"
 
 export default function PpdbPage() {
   const sections = [
@@ -83,19 +84,7 @@ export default function PpdbPage() {
           <h2 className="text-2xl font-bold mb-4">Informasi Biaya</h2>
           <BiayaProgram/>
         </section>
-
-        <section id="kontak">
-          <h2 className="text-2xl font-bold mb-4">Kontak Pendaftaran</h2>
-          <p className="text-gray-700 leading-relaxed text-lg">
-            Untuk informasi lebih lanjut, silakan hubungi:
-          </p>
-          <ul className="list-disc ml-6 text-gray-700 space-y-1 text-lg">
-            <li>Telepon: +62 857-5211-2725</li>
-            <li>Email: sekolahalam.tanjungtabalong@gmail.com</li>
-            <li>Alamat: Jalan Tanjung Baru, Maburai RT. 01, Kec. Murung Pudak
-Kab. Tabalong, Prov. Kalimantan Selatan 71571.</li>
-          </ul>
-        </section>
+        <KontakPendaftaran/>        
       </div>
     </div>
   )
