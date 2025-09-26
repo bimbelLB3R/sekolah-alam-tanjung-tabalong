@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -78,11 +79,12 @@ export default function NavbarPublic({ user }) {
               <Menu className="h-6 w-6" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="p-4">
+          <SheetContent side="right" className="p-6">
             <SheetHeader>
               <SheetTitle>Menu</SheetTitle>
+              <SheetDescription>Selamat Datang di Sekolah Slam Tanjung Tabalong</SheetDescription>
             </SheetHeader>
-            <nav className="flex flex-col gap-4">
+            <nav className="flex flex-col gap-4 p-4">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
@@ -99,6 +101,19 @@ export default function NavbarPublic({ user }) {
                 </Link>
               </Button>
             </nav>
+            {/* Logo + Text di bawah sidebar */}
+                    <div className="mt-auto p-4 flex items-center space-x-2 border-t border-gray-200">
+                      <Image
+                        src="/logo-sattnav.png"
+                        alt="Logo SATT"
+                        width={40}
+                        height={40}
+                      />
+                      <div className="flex flex-col text-sm">
+                        <span className="font-bold">SATT</span>
+                        <span className="text-gray-500">member of JSAN</span>
+                      </div>
+                    </div>
           </SheetContent>
         </Sheet>
       </div>

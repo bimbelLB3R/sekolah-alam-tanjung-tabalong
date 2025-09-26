@@ -60,16 +60,30 @@ export default function AboutPage() {
           <h2 className="text-2xl font-bold mb-4">Visi & Misi Sekolah Alam</h2>
           <h3 className="text-xl font-semibold mt-2">Visi</h3>
           <p className="text-gray-700 leading-relaxed text-lg">
-            Menjadi sekolah yang mencetak generasi mandiri, kreatif, peduli lingkungan, dan
-            siap menghadapi tantangan masa depan.
+            Terciptanya generasi peradaban yang menjadi rahmat bagi semesta alam
           </p>
 
-          <h3 className="text-xl font-semibold mt-4">Misi</h3>
+          <h3 className="text-xl font-semibold mt-4">Misi Jenjang TK & KB</h3>
+          <h3 className="text-lg  mt-4">TK & KB SATT berkomitmen untuk bermitra dengan orang tua dalam mendidik anak menyongsong usia pre aqil baligh (usia 7 tahun) dengan cara :</h3>
           <ul className="list-disc ml-6 text-gray-700 space-y-2 text-lg">
-            <li>Menyediakan pembelajaran berbasis alam dan pengalaman langsung.</li>
-            <li>Menumbuhkan karakter positif melalui kegiatan sosial dan lingkungan.</li>
-            <li>Mengintegrasikan kreativitas, sains, dan seni dalam kurikulum.</li>
-            <li>Melibatkan orang tua dan masyarakat dalam pendidikan anak.</li>
+              <li>Mengenalkan anak pada Allah SWT, Tuhan Pencipta Alam Semesta, lewat ciptaan-Nya dengan alat indera penglihatan, pendengaran, dan peraba.</li>
+              <li>Menumbuhkan antusiasme anak dalam beribadah dan berdoa kepada Sang Pencipta.</li>
+              <li>Mengenalkan anak pada sosok teladan kebaikan, Rasulullah SAW.</li>
+              <li>Mengenalkan kegiatan yang mengasah logika berpikir dan kreativitas anak dengan cara menyenangkan.</li>
+              <li>Menumbuhkan antusiasme kebersihan dan keindahan.</li>
+              <li>Menumbuhkan antusiasme dalam memilih makanan sehat dan halal.</li>
+              <li>Melatih motorik kasar dan halus anak agar siap berkepribadian di lingkungan sekitarnya.</li>
+          </ul>
+
+          <h3 className="text-xl font-semibold mt-4">Misi Jenjang Sekolah Dasar</h3>
+          <h3 className="text-lg  mt-4">SATT berkomitmen untuk bermitra dengan orang tua dalam mendidik anak menyongsong aqil baligh dengan cara :</h3>
+          <ul className="list-disc ml-6 text-gray-700 space-y-2 text-lg">
+              <li>Membangun pondasi iman yang kokoh anak</li>
+              <li>Membangun adab dan akhlaq mulia anak</li>
+              <li>Mengembangkan logika berpikir dan kreativitas anak</li>
+              <li>Melatih kepemimpinan, kemandirian, dan kewirausahaan anak</li>
+              <li>Menggali bakat dan potensi kekuatan anak</li>
+              <li>Membangun komunitas pembelajar pada guru, orang tua, pengelola, dan masyarakat sekitar</li>
           </ul>
         </section>
       </div>

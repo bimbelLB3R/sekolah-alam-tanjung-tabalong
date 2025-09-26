@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="flex flex-col items-center gap-4">
         <div className="flex gap-6">
           <a
-            href="https://facebook.com"
+            href="https://facebook.com/SATanjungTabalong"
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-primary transition"
@@ -16,7 +16,7 @@ export default function Footer() {
             <FaFacebook className="w-6 h-6 text-white hover:text-green-500 transition-colors" />
           </a>
           <a
-            href="https://instagram.com"
+            href="https://instagram.com/sekolahalam.tanjungtabalong"
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-primary transition"
@@ -24,7 +24,7 @@ export default function Footer() {
             <FaInstagram className="w-6 h-6 text-white hover:text-green-500 transition-colors" />
           </a>
           <a
-            href="https://youtube.com"
+            href="https://youtube.com/@sekolahalamtanjungtabalong3094"
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-primary transition"

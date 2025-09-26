@@ -4,12 +4,15 @@ import { useState } from "react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Button } from "@/components/ui/button"
 import { ChevronRight } from "lucide-react"
+import AlurPendaftaran from "../components/ppdb/alur-daftar"
+import BiayaProgram from "../components/ppdb/biaya-program"
 
 export default function PpdbPage() {
   const sections = [
     { id: "persyaratan", title: "Persyaratan Umum" },
-    { id: "waktu", title: "Waktu Pendaftaran" },
+    { id: "waktu", title: "Waktu & Alur Pendaftaran" },
     { id: "tata-cara", title: "Tata Cara Pendaftaran" },
+    { id: "biaya-program", title: "Informasi Biaya" },
     { id: "kontak", title: "Kontak Pendaftaran" },
   ]
 
@@ -48,19 +51,22 @@ export default function PpdbPage() {
         <section id="persyaratan">
           <h2 className="text-2xl font-bold mb-4">Persyaratan Umum</h2>
           <ul className="list-disc ml-6 text-gray-700 space-y-2 text-lg">
+            <li>Mengisi formulir pendaftaran.</li>
+            <li>Usia Minimal 4 Tahun (KB/TK) dan 6,5 tahun (SD).</li>
             <li>Fotokopi akta kelahiran anak.</li>
-            <li>Fotokopi Kartu Keluarga (KK).</li>
-            <li>Fotokopi rapor terakhir (untuk jenjang SD ke atas).</li>
-            <li>Pas foto terbaru anak dan orang tua.</li>
+            <li>Fotokopi Kartu Keluarga (KK) dan KTP orang tua</li>
+            <li>Foto berwarna ukuran 2x3 (3 lembar).</li>
+            <li>KIA</li>
+            <li>Ijazah sebelumnya (khusus jenjang SD)</li>
           </ul>
         </section>
 
         <section id="waktu">
-          <h2 className="text-2xl font-bold mb-4">Waktu Pendaftaran</h2>
+          <h2 className="text-2xl font-bold mb-4">Waktu & Alur Pendaftaran</h2>
           <p className="text-gray-700 leading-relaxed text-lg">
-            Pendaftaran dibuka setiap tahun ajaran baru, biasanya mulai bulan Mei hingga Juli.
-            Untuk informasi pasti, silakan hubungi sekolah atau cek website resmi.
+            Berikut alur dan waktu pendaftaran peserta didik baru SATT,
           </p>
+          <AlurPendaftaran/>
         </section>
 
         <section id="tata-cara">
@@ -73,6 +79,10 @@ export default function PpdbPage() {
             <li>Menerima konfirmasi dari pihak sekolah melalui email atau telepon.</li>
           </ol>
         </section>
+        <section id="biaya-program">
+          <h2 className="text-2xl font-bold mb-4">Informasi Biaya</h2>
+          <BiayaProgram/>
+        </section>
 
         <section id="kontak">
           <h2 className="text-2xl font-bold mb-4">Kontak Pendaftaran</h2>
@@ -82,7 +92,8 @@ export default function PpdbPage() {
           <ul className="list-disc ml-6 text-gray-700 space-y-1 text-lg">
             <li>Telepon: +62 857-5211-2725</li>
             <li>Email: sekolahalam.tanjungtabalong@gmail.com</li>
-            <li>Alamat: Jl. Guru Danau, Maburai.</li>
+            <li>Alamat: Jalan Tanjung Baru, Maburai RT. 01, Kec. Murung Pudak
+Kab. Tabalong, Prov. Kalimantan Selatan 71571.</li>
           </ul>
         </section>
       </div>

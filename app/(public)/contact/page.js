@@ -14,26 +14,32 @@ export default function ContactPage() {
         <CardHeader>
           <CardTitle>Kontak Kami</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4 text-lg">
-          <div className="flex items-center gap-3">
-            <MapPin className="w-5 h-5 text-primary" />
-            <span>Jl.Guru Danau, Maburai</span>
+          <CardContent className="space-y-4 text-lg">
+          <div className="flex items-start gap-3">
+            <MapPin className="w-5 h-5 text-primary flex-shrink-0" />
+            <span className="break-words">
+              Jalan Tanjung Baru, Maburai RT. 01, Kec. Murung Pudak Kab. Tabalong, Prov.
+              Kalimantan Selatan 71571
+            </span>
           </div>
           <div className="flex items-center gap-3">
-            <Mail className="w-5 h-5 text-primary" />
-            <span>sekolahalam.tanjungtabalong@gmail.com</span>
+            <Mail className="w-5 h-5 text-primary flex-shrink-0" />
+            <span className="break-words">
+              sekolahalam.tanjungtabalong@gmail.com
+            </span>
           </div>
-          <div >
+          <div>
             <Link href="https://wa.me/6285752112725" className="flex items-center gap-3">
-            <Phone className="w-5 h-5 text-primary" />
-            <p>+62 857-5211-2725</p>
+              <Phone className="w-5 h-5 text-primary flex-shrink-0" />
+              <p className="break-words">+62 857-5211-2725</p>
             </Link>
           </div>
           <div className="flex items-center gap-3">
-            <Clock className="w-5 h-5 text-primary" />
+            <Clock className="w-5 h-5 text-primary flex-shrink-0" />
             <span>Senin - Jumat: 08.00 - 15.00</span>
           </div>
         </CardContent>
+
       </Card>
       <div className="rounded-2xl overflow-hidden shadow-lg">        
         {/* Contact Form */}
