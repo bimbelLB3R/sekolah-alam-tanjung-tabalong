@@ -15,6 +15,7 @@ export default function PendaftaranPage() {
   const [dataAyah, setDataAyah] = useState({})
   const [dataIbu, setDataIbu] = useState({})
   const [dataKontak, setDataKontak] = useState({})
+  // console.log(dataKontak)
 
   const handleNext = (values) => {
     if (step === 0) setDataSiswa(values)
@@ -26,11 +27,16 @@ export default function PendaftaranPage() {
 
   const handleBack = () => setStep((s) => s - 1)
 
-  const handleSubmitAll = async () => {
-    const finalData = { ...dataSiswa, ...dataAyah, ...dataIbu, ...dataKontak }
+  
+  const onSubmitData=(values) => {
+  const finalData = { ...dataSiswa, ...dataAyah, ...dataIbu, ...values }
     console.log("Kirim ke API:", finalData)
-    // TODO: fetch("/api/pendaftaran", { method: "POST", body: JSON.stringify(finalData) })
-  }
+     // TODO: fetch("/api/pendaftaran", { method: "POST", body: JSON.stringify(finalData) })
+     localStorage.removeItem("formSiswa")
+    localStorage.removeItem("formAyah")
+    localStorage.removeItem("formIbu")
+    localStorage.removeItem("formKontak")
+}
 
   return (
     <div className="max-w-2xl mx-auto p-6">
@@ -54,7 +60,7 @@ export default function PendaftaranPage() {
         )}
         {step === 3 && (
           <motion.div key="kontak" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }}>
-            <FormKontak onNext={handleSubmitAll} onBack={handleBack} defaultValues={dataKontak} />
+            <FormKontak onNext={handleNext} onBack={handleBack} onSubmitData={onSubmitData} defaultValues={dataKontak} />
           </motion.div>
         )}
       </AnimatePresence>

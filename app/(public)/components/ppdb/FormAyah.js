@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import { useEffect } from "react"
 
 const ayahSchema = z.object({
   namaAyah: z.string().min(1, "Nama ayah wajib diisi"),
@@ -16,10 +17,23 @@ const ayahSchema = z.object({
 })
 // ================== FORM AYAH ==================
 export default function FormAyah({ onNext, onBack, defaultValues }) {
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const LOCAL_KEY = "formAyah"
+  // 1. Ambil data dari localStorage kalau ada
+  const savedData =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem(LOCAL_KEY) || "{}")
+      : {}
+  const { register, handleSubmit, formState: { errors },watch } = useForm({
     resolver: zodResolver(ayahSchema),
-    defaultValues,
+    defaultValues: {
+      ...defaultValues, // dari props parent
+      ...savedData,     // overwrite dengan localStorage
+    },
   })
+  const values = watch()
+    useEffect(() => {
+      localStorage.setItem(LOCAL_KEY, JSON.stringify(values))
+    }, [values])
 
   const submit = (values) => onNext(values)
 

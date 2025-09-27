@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import { useEffect } from "react"
 
 const ibuSchema = z.object({
   namaIbu: z.string().min(1, "Nama ibu wajib diisi"),
@@ -17,10 +18,23 @@ const ibuSchema = z.object({
 
 // ================== FORM IBU ==================
 export default function FormIbu({ onNext, onBack, defaultValues }) {
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const LOCAL_KEY = "formIbu"
+  const savedData =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem(LOCAL_KEY) || "{}")
+      : {}
+  const { register, handleSubmit, formState: { errors }, watch} = useForm({
     resolver: zodResolver(ibuSchema),
-    defaultValues,
+    defaultValues: {
+      ...defaultValues, // dari props parent
+      ...savedData,     // overwrite dengan localStorage
+    },
   })
+
+  const values = watch()
+    useEffect(() => {
+      localStorage.setItem(LOCAL_KEY, JSON.stringify(values))
+    }, [values])
 
   const submit = (values) => onNext(values)
 

@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { useEffect } from "react"
 import { z } from "zod"
 
 // ================== ZOD SCHEMAS ==================
@@ -27,6 +28,12 @@ const siswaSchema = z.object({
 
 // ================== FORM SISWA ==================
 export default function FormSiswa({ onNext, defaultValues }) {
+  const LOCAL_KEY = "formSiswa"
+  // 1. Ambil data dari localStorage kalau ada
+  const savedData =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem(LOCAL_KEY) || "{}")
+      : {}
   const form = useForm({
     resolver: zodResolver(
       siswaSchema.refine(
@@ -39,10 +46,18 @@ export default function FormSiswa({ onNext, defaultValues }) {
         { message: "Kelas yang dituju wajib diisi untuk siswa pindahan", path: ["kelasDitujukan"] }
       )
     ),
-    defaultValues,
+    defaultValues: {
+      ...defaultValues, // dari props parent
+      ...savedData,     // overwrite dengan localStorage
+    },
   })
-
   const { register, handleSubmit, formState: { errors }, watch } = form
+  const values = watch()
+  useEffect(() => {
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(values))
+  }, [values])
+  
+  
   const jenisPendaftaran = watch("jenisPendaftaran")
   const submit = (values) => onNext(values)
 
