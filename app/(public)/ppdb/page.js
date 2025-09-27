@@ -7,6 +7,8 @@ import { ChevronRight } from "lucide-react"
 import AlurPendaftaran from "../components/ppdb/alur-daftar"
 import BiayaProgram from "../components/ppdb/biaya-program"
 import KontakPendaftaran from "../components/ppdb/kontak-daftar"
+import Link from "next/link"
+import { ArrowRight } from "lucide-react"
 
 export default function PpdbPage() {
   const sections = [
@@ -52,7 +54,14 @@ export default function PpdbPage() {
         <section id="persyaratan">
           <h2 className="text-2xl font-bold mb-4">Persyaratan Umum</h2>
           <ul className="list-disc ml-6 text-gray-700 space-y-2 text-lg">
-            <li>Mengisi formulir pendaftaran.</li>
+            <li> <Link
+          href="/ppdb/formulir"
+          className="flex items-center   text-green-600 hover:underline"
+        >
+          <span>Mengisi formulir pendaftaran</span>
+          <ArrowRight className="w-4 h-4 ml-2" />
+        </Link>
+            </li>
             <li>Usia Minimal 4 Tahun (KB/TK) dan 6,5 tahun (SD).</li>
             <li>Fotokopi akta kelahiran anak.</li>
             <li>Fotokopi Kartu Keluarga (KK) dan KTP orang tua</li>

@@ -44,7 +44,7 @@ export default function AboutPage() {
       {/* Konten Kanan */}
       <div className="md:col-span-3 space-y-12">
         <section id="sejarah">
-          <h2 className="text-2xl font-bold mb-4">Sejarah Berdirinya Sekolah Alam</h2>
+          <h2 className="text-2xl font-bold mb-4">Sejarah Berdirinya Sekolah Alam SATT</h2>
           <p className="text-gray-700 leading-relaxed text-lg">
             Sekolah Alam Nusantara didirikan pada tahun ... dengan tujuan untuk memberikan
             pendidikan yang menyatu dengan alam dan menumbuhkan kreativitas, rasa ingin tahu,
