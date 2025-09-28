@@ -33,17 +33,18 @@ export default function AgendaPage() {
               </span>
               <Card className="shadow-md">
                 <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    {event.title}
-                    <Badge variant="secondary">
-                      {new Date(event.event_date).toLocaleDateString("id-ID", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </Badge>
-                  </CardTitle>
-                </CardHeader>
+                <CardTitle className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                  <span>{event.title}</span>
+                  <Badge variant="secondary" className="w-fit">
+                    {new Date(event.event_date).toLocaleDateString("id-ID", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </Badge>
+                </CardTitle>
+              </CardHeader>
+
                 <CardContent>
                   <p className="text-gray-700">{event.description}</p>
                   {/* Tombol Daftar hanya muncul kalau url_peserta ada */}
