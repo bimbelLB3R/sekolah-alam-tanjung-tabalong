@@ -25,6 +25,7 @@ import {
   GraduationCap,
   Package,
   TentTree,
+  Calendar,
 } from "lucide-react"
 import HeroSection from "./components/herosection"
 
@@ -59,7 +60,7 @@ export default function Home() {
 ]
 
 const fiturList = [
-    { title: "Profil Sekolah", desc: "Informasi sekolah dan yayasan.", icon: School,href:"/about" },
+    { title: "Agenda Terdekat", desc: "Kegiatan sekolah alam dalam waktu dekat.", icon: Calendar,href:"/agenda" },
     { title: "Data Siswa", desc: "Pantau perkembangan akademik siswa.", icon: Users,href:"/data-siswa"  },
     { title: "Keuangan", desc: "Kelola pembayaran dan laporan bendahara.", icon: Wallet,href:"/login"  },
     { title: "Guru & Staff", desc: "Profil guru, wali kelas, dan karyawan.", icon: GraduationCap,href:"/profile-guru"  },

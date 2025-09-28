@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Users, Home, FileText, Settings, Wallet, Cable } from "lucide-react";
+import { ChevronDown, Users, Home, FileText, Settings, Wallet, Cable, Calendar } from "lucide-react";
 import Image from "next/image";
 
 import {
@@ -19,7 +19,7 @@ export default function Sidebar({ isOpen, onClose }) {
   // Accordion state: hanya satu menu utama yang terbuka
   const [openMenu, setOpenMenu] = useState(null); 
   const [userCount, setUserCount] = useState(0);
-  const reportCount = 2;
+  const eventsCount = 2;
   const infoBundum = 1;
   const infoManaj = 7;
 
@@ -127,13 +127,13 @@ export default function Sidebar({ isOpen, onClose }) {
     },
     {
       type: "collapsible",
-      key: "reports",
-      label: "Reports",
-      icon: <FileText />,
-      badge: reportCount,
+      key: "events",
+      label: "Events",
+      icon: <Calendar />,
+      badge: eventsCount,
       items: [
-        { label: "Sales Report", href: "/reports/sales" },
-        { label: "User Report", href: "/reports/users" },
+        { label: "Kelola Even", href: "/dashboard/events" },
+        { label: "Lainnya", href: "/" },
       ],
     },
     { type: "link", label: "Settings", href: "/settings", icon: <Settings /> },
@@ -246,6 +246,7 @@ export default function Sidebar({ isOpen, onClose }) {
         </ScrollArea>
 
         {/* Logo + Text di bawah sidebar */}
+        <Link href="/">
         <div className="mt-auto p-4 flex items-center space-x-2 border-t border-gray-200">
           <Image
             src="/logo-sattnav.png"
@@ -258,6 +259,7 @@ export default function Sidebar({ isOpen, onClose }) {
             <span className="text-gray-500">member of JSAN</span>
           </div>
         </div>
+        </Link>
       </div>
     </div>
   );
