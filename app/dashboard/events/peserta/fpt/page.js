@@ -10,6 +10,7 @@ import { exportPesertaToExcel } from "@/lib/exportExcel"
 
 export default function PesertaFpt() {
   const [peserta, setPeserta] = useState([])
+// console.log(peserta);
 
   useEffect(() => {
     async function fetchPeserta() {
@@ -19,6 +20,29 @@ export default function PesertaFpt() {
     }
     fetchPeserta()
   }, [])
+
+  const handleDelete = async (id) => {
+    const confirmDelete = confirm("Yakin ingin menghapus peserta ini?");
+    if (!confirmDelete) return;
+
+    try {
+      const res = await fetch(`/api/events/peserta/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        alert("Gagal hapus: " + err.error);
+        return;
+      }
+
+      // update state setelah hapus
+      setPeserta((prev) => prev.filter((p) => p.id !== id));
+    } catch (error) {
+      console.error("Error hapus peserta:", error);
+      alert("Terjadi kesalahan saat hapus peserta");
+    }
+  };
 
   const exportPDF = () => {
     // ✅ inisialisasi dengan orientation "landscape"
@@ -86,7 +110,7 @@ export default function PesertaFpt() {
       </div>
         <h1 className="text-2xl font-bold">Data Peserta Event</h1>
 
-      <PesertaPage peserta={peserta} />
+      <PesertaPage peserta={peserta} onDelete={handleDelete}/>
     </div>
   )
 }

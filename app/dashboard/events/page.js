@@ -106,7 +106,7 @@ export default function AddEventsPage() {
       <div className="space-y-4">
         {events.map((ev) => (
           <Card key={ev.id}>
-            <CardContent className="flex justify-between items-center p-4">
+            <CardContent className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
               <div>
                 <p className="font-bold">{ev.title}</p>
                 <p className="text-sm">{ev.description}</p>

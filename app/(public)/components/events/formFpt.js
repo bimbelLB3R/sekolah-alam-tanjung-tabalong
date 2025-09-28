@@ -46,6 +46,7 @@ export default function FormEventFpt() {
   })
 
   const handleAddSiswa = () => {
+    if (siswa.length >= 5) return // ✅ Batasi maksimal 5 siswa
     setSiswa([...siswa, ""])
     setValue("siswa", [...siswa, ""])
   }
@@ -148,6 +149,7 @@ export default function FormEventFpt() {
               variant="outline"
               onClick={handleAddSiswa}
               className="mt-2"
+              disabled={siswa.length >= 5} // ✅ disable kalau sudah 5
             >
               + Tambah Siswa
             </Button>
