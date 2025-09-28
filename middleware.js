@@ -35,7 +35,7 @@ export async function middleware(req) {
       const allowedPaths = {
         guru: ["presensi", "siswa","reservasi"], // guru bisa akses beberapa halaman /dashboard/siswa dst
         bendahara: ["bendahara","siswa","reservasi","manajemen"],
-        manajemen: ["presensi", "siswa","reservasi","manajemen"],
+        manajemen: ["presensi", "siswa","reservasi","manajemen","events"],
       }
 
       const roleAllowed = allowedPaths[userRole] || []

@@ -41,7 +41,7 @@ export async function POST(req) {
       role_name: user.role_name, // <-- ini yang baru
     })
       .setProtectedHeader({ alg: "HS256" })
-      .setExpirationTime("1h")
+      .setExpirationTime("6h")
       .sign(secret)
 
     const res = NextResponse.json({
@@ -59,7 +59,7 @@ export async function POST(req) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       path: "/",
-      maxAge: 60 * 60 * 6, //enam jam kadaluarsa
+      maxAge: 60 * 60 * 6 , //enam jam kadaluarsa
     })
 
     return res

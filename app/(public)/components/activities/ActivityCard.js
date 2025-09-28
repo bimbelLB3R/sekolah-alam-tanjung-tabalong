@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react";
 
 export default function ActivityCard({ slug, title, description, image }) {
   return (
-    <Link href={`/activities/${slug}`} className="block">
+    <Link href={`/activities/${slug}`}>
       <Card className="flex flex-row hover:shadow-lg transition-shadow duration-200">
         {/* Foto di kiri */}
         <div className="w-1/3 relative">
