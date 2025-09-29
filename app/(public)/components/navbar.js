@@ -14,7 +14,7 @@ import {
 import { Menu } from "lucide-react";
 import { Dancing_Script } from "next/font/google";
 import Image from "next/image";
-import { useState } from "react";
+import { useState} from "react";
 
 const dancing = Dancing_Script({
   subsets: ["latin"],

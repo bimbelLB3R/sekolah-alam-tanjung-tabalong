@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Users, Home, FileText, Settings, Wallet, Cable, Calendar } from "lucide-react";
 import Image from "next/image";
+import { useAuth } from "@/lib/getUserClientSide";
 
 import {
   Collapsible,
@@ -15,12 +16,11 @@ import {
 
 export default function Sidebar({ isOpen, onClose }) {
   const pathname = usePathname();
-
+  const { user, loading } = useAuth();
   // Accordion state: hanya satu menu utama yang terbuka
   const [openMenu, setOpenMenu] = useState(null); 
   const [userCount, setUserCount] = useState(0);
   const eventsCount = 2;
-  const infoBundum = 1;
   const infoManaj = 7;
 
   // Load state dari localStorage saat mount
@@ -75,6 +75,7 @@ export default function Sidebar({ isOpen, onClose }) {
       label: "Users",
       icon: <Users />,
       badge: userCount,
+      allowedRoles: ["super-admin"], // hanya super-admin
       items: [
         { label: "List Users", href: "/dashboard/users" },
         { label: "Add User", href: "/dashboard/register" },
@@ -86,6 +87,7 @@ export default function Sidebar({ isOpen, onClose }) {
       key: "bendahara",
       label: "Bendahara",
       icon: <Wallet />,
+      allowedRoles: ["bendahara"], // hanya bendahara
       items: [
         {
           label: "Pemasukan",
@@ -119,6 +121,7 @@ export default function Sidebar({ isOpen, onClose }) {
       label: "Manajemen",
       icon: <Cable />,
       badge: infoManaj,
+      allowedRoles: ["super-admin","manajemen"], // hanya super-admin dan bendahara
       items: [
         { label: "Dapodik", href: "/dashboard/manajemen/dapodik" },
         { label: "Data Presensi", href: "/dashboard/manajemen/data-presensi" },
@@ -131,12 +134,13 @@ export default function Sidebar({ isOpen, onClose }) {
       label: "Events",
       icon: <Calendar />,
       badge: eventsCount,
+      allowedRoles: ["super-admin","manajemen"], // hanya super-admin dan manajemen
       items: [
         { label: "Kelola Even", href: "/dashboard/events" },
         { label: "Lainnya", href: "/" },
       ],
     },
-    { type: "link", label: "Settings", href: "/settings", icon: <Settings /> },
+    { type: "link", label: "Settings", href: "/settings", icon: <Settings />,allowedRoles: ["super-admin"] },
   ];
 
   // Fungsi rekursif untuk render submenu multi-level
@@ -191,6 +195,10 @@ export default function Sidebar({ isOpen, onClose }) {
         <ScrollArea className="flex-1">
           <nav className="flex flex-col p-2 space-y-2">
             {menus.map((menu) => {
+              // 🔑 cek role user
+              if (menu.allowedRoles && !menu.allowedRoles.includes(user?.role_name)) {
+                return null;
+              }
               if (menu.type === "link") {
                 return (
                   <NavLink
