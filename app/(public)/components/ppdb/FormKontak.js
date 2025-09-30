@@ -6,12 +6,12 @@ import { z } from "zod"
 import { useEffect } from "react"
 
 const kontakSchema = z.object({
-  noHpAyah: z.string().min(1, "No HP ayah wajib diisi"),
-  noHpIbu: z.string().min(1, "No HP ibu wajib diisi"),
+  no_hp_ayah: z.string().min(1, "No HP ayah wajib diisi"),
+  no_hp_ibu: z.string().min(1, "No HP ibu wajib diisi"),
   email: z.string().email("Format email tidak valid"),
 })
 // ================== FORM KONTAK ==================
-export default function FormKontak({ onNext, onBack, defaultValues,onSubmitData }) {
+export default function FormKontak({ loading, onBack, defaultValues,onSubmitData }) {
   const LOCAL_KEY = "formKontak"
   const savedData =
     typeof window !== "undefined"
@@ -29,17 +29,19 @@ export default function FormKontak({ onNext, onBack, defaultValues,onSubmitData 
         localStorage.setItem(LOCAL_KEY, JSON.stringify(values))
       }, [values])
 
-  const submit = (values) => onSubmitData(values)
+  const submit = (values,e) => onSubmitData(values,e)
 
   return (
     <form onSubmit={handleSubmit(submit)} className="space-y-4">
-      <InputField label="No HP Ayah" name="noHpAyah" register={register} error={errors.noHpAyah} />
-      <InputField label="No HP Ibu" name="noHpIbu" register={register} error={errors.noHpIbu} />
+      <InputField label="No HP Ayah" name="no_hp_ayah" register={register} error={errors.no_hp_ayah} />
+      <InputField label="No HP Ibu" name="no_hp_ibu" register={register} error={errors.no_hp_ibu} />
       <InputField label="Email" name="email" type="email" register={register} error={errors.email} />
 
       <div className="flex justify-between">
         <Button type="button" onClick={onBack} variant="outline">Back</Button>
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={loading}>
+          {loading?("menyimpan data..."):("Kirim")}
+          </Button>
       </div>
     </form>
   )

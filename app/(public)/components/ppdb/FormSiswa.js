@@ -8,22 +8,26 @@ import { z } from "zod"
 
 // ================== ZOD SCHEMAS ==================
 const siswaSchema = z.object({
-  jenisPendaftaran: z.string().min(1, "Pilih jenis pendaftaran"),
+  jenis_pendaftaran: z.string().min(1, "Pilih jenis pendaftaran"),
   jenjang: z.string().min(1, "Pilih jenjang"),
-  namaLengkap: z.string().min(1, "Nama lengkap wajib diisi"),
-  namaPanggilan: z.string().min(1, "Nama panggilan wajib diisi"),
-  nik: z.string().min(1, "NIK wajib diisi"),
-  nomorKk: z.string().min(1, "Nomor KK wajib diisi"),
-  jenisKelamin: z.string().min(1, "Pilih jenis kelamin"),
-  tempatLahir: z.string().min(1, "Tempat lahir wajib diisi"),
-  tglLahir: z.string().min(1, "Tanggal lahir wajib diisi"),
-  kebKhusus: z.string().min(1, "Pilih salah satu"),
-  sekolahAsal: z.string().min(1, "Sekolah asal wajib diisi"),
+  nama_lengkap: z.string().min(1, "Nama lengkap wajib diisi"),
+  nama_panggilan: z.string().min(1, "Nama panggilan wajib diisi"),
+  nik: z.string()
+    .min(16, "NIK harus 16 digit")
+    .regex(/^\d+$/, "NIK hanya boleh berisi angka"),
+  nomor_kk: z.string()
+    .min(16, "Nomor KK harus 16 digit")
+    .regex(/^\d+$/, "Nomor KK hanya boleh berisi angka"),
+  jenis_kelamin: z.string().min(1, "Pilih jenis kelamin"),
+  tempat_lahir: z.string().min(1, "Tempat lahir wajib diisi"),
+  tgl_lahir: z.string().min(1, "Tanggal lahir wajib diisi"),
+  keb_khusus: z.string().min(1, "Pilih salah satu"),
+  sekolah_asal: z.string().min(1, "Sekolah asal wajib diisi"),
   agama: z.string().min(1, "Pilih agama"),
-  anakKe: z.string().min(1, "Isi anak ke-berapa"),
-  jmlSaudara: z.string().min(1, "Isi jumlah saudara kandung"),
+  anak_ke: z.number().min(1, "Isi anak ke-berapa").max(10, "Terlalu besar"),
+  jml_saudara: z.number().min(0, "Isi jumlah saudara kandung"),
   alamat: z.string().min(1, "Alamat wajib diisi"),
-  kelasDitujukan: z.string().optional(), // wajib kalau pindahan
+  kelas_ditujukan: z.string().optional(), // wajib kalau pindahan
 })
 
 // ================== FORM SISWA ==================
@@ -38,12 +42,12 @@ export default function FormSiswa({ onNext, defaultValues }) {
     resolver: zodResolver(
       siswaSchema.refine(
         (data) => {
-          if (data.jenisPendaftaran === "pindahan" && !data.kelasDitujukan) {
+          if (data.jenis_pendaftaran === "pindahan" && !data.kelas_ditujukan) {
             return false
           }
           return true
         },
-        { message: "Kelas yang dituju wajib diisi untuk siswa pindahan", path: ["kelasDitujukan"] }
+        { message: "Kelas yang dituju wajib diisi untuk siswa pindahan", path: ["kelas_ditujukan"] }
       )
     ),
     defaultValues: {
@@ -58,7 +62,7 @@ export default function FormSiswa({ onNext, defaultValues }) {
   }, [values])
   
   
-  const jenisPendaftaran = watch("jenisPendaftaran")
+  const jenis_pendaftaran = watch("jenis_pendaftaran")
   const submit = (values) => onNext(values)
 
   return (
@@ -66,19 +70,19 @@ export default function FormSiswa({ onNext, defaultValues }) {
       {/* Jenis Pendaftaran */}
       <div>
         <label className="block mb-1">Jenis Pendaftaran</label>
-        <select {...register("jenisPendaftaran")} className="w-full border rounded p-2">
+        <select {...register("jenis_pendaftaran")} className="w-full border rounded p-2">
           <option value="">-- pilih --</option>
           <option value="baru">Siswa Baru</option>
           <option value="pindahan">Pindahan</option>
         </select>
-        {errors.jenisPendaftaran && <p className="text-red-500 text-sm">{errors.jenisPendaftaran.message}</p>}
+        {errors.jenis_pendaftaran && <p className="text-red-500 text-sm">{errors.jenis_pendaftaran.message}</p>}
       </div>
 
-      {jenisPendaftaran === "pindahan" && (
+      {jenis_pendaftaran === "pindahan" && (
         <div>
           <label className="block mb-1">Kelas yang dituju</label>
-          <Input {...register("kelasDitujukan")} />
-          {errors.kelasDitujukan && <p className="text-red-500 text-sm">{errors.kelasDitujukan.message}</p>}
+          <Input {...register("kelas_ditujukan")} />
+          {errors.kelas_ditujukan && <p className="text-red-500 text-sm">{errors.kelas_ditujukan.message}</p>}
         </div>
       )}
 
@@ -93,35 +97,35 @@ export default function FormSiswa({ onNext, defaultValues }) {
         {errors.jenjang && <p className="text-red-500 text-sm">{errors.jenjang.message}</p>}
       </div>
 
-      <InputField label="Nama Lengkap" name="namaLengkap" register={register} error={errors.namaLengkap} />
-      <InputField label="Nama Panggilan" name="namaPanggilan" register={register} error={errors.namaPanggilan} />
+      <InputField label="Nama Lengkap" name="nama_lengkap" register={register} error={errors.nama_lengkap} />
+      <InputField label="Nama Panggilan" name="nama_panggilan" register={register} error={errors.nama_panggilan} />
       <InputField label="NIK" name="nik" register={register} error={errors.nik} />
-      <InputField label="Nomor KK" name="nomorKk" register={register} error={errors.nomorKk} />
+      <InputField label="Nomor KK" name="nomor_kk" register={register} error={errors.nomor_kk} />
 
       <div>
         <label className="block mb-1">Jenis Kelamin</label>
-        <select {...register("jenisKelamin")} className="w-full border rounded p-2">
+        <select {...register("jenis_kelamin")} className="w-full border rounded p-2">
           <option value="">-- pilih --</option>
-          <option value="Laki-laki">Laki-laki</option>
-          <option value="Perempuan">Perempuan</option>
+          <option value="L">Laki-laki</option>
+          <option value="P">Perempuan</option>
         </select>
-        {errors.jenisKelamin && <p className="text-red-500 text-sm">{errors.jenisKelamin.message}</p>}
+        {errors.jenis_kelamin && <p className="text-red-500 text-sm">{errors.jenis_kelamin.message}</p>}
       </div>
 
-      <InputField label="Tempat Lahir" name="tempatLahir" register={register} error={errors.tempatLahir} />
-      <InputField label="Tanggal Lahir" name="tglLahir" type="date" register={register} error={errors.tglLahir} />
+      <InputField label="Tempat Lahir" name="tempat_lahir" register={register} error={errors.tempat_lahir} />
+      <InputField label="Tanggal Lahir" name="tgl_lahir" type="date" register={register} error={errors.tgl_lahir} />
 
       <div>
         <label className="block mb-1">Kebutuhan Khusus</label>
-        <select {...register("kebKhusus")} className="w-full border rounded p-2">
+        <select {...register("keb_khusus")} className="w-full border rounded p-2">
           <option value="">-- pilih --</option>
-          <option value="ya">Ya</option>
-          <option value="tidak">Tidak</option>
+          <option value="Ya">Ya</option>
+          <option value="Tidak">Tidak</option>
         </select>
-        {errors.kebKhusus && <p className="text-red-500 text-sm">{errors.kebKhusus.message}</p>}
+        {errors.keb_khusus && <p className="text-red-500 text-sm">{errors.keb_khusus.message}</p>}
       </div>
 
-      <InputField label="Sekolah Asal" name="sekolahAsal" register={register} error={errors.sekolahAsal} />
+      <InputField label="Sekolah Asal" name="sekolah_asal" register={register} error={errors.sekolah_asal} />
 
       <div>
         <label className="block mb-1">Agama</label>
@@ -133,8 +137,26 @@ export default function FormSiswa({ onNext, defaultValues }) {
         {errors.agama && <p className="text-red-500 text-sm">{errors.agama.message}</p>}
       </div>
 
-      <InputField label="Anak Ke-" name="anakKe" type="number" register={register} error={errors.anakKe} />
-      <InputField label="Jumlah Saudara Kandung" name="jmlSaudara" type="number" register={register} error={errors.jmlSaudara} />
+       <div>
+        <label className="block mb-1">Anak Ke-</label>
+        <Input
+          type="number"
+          {...register("anak_ke", { valueAsNumber: true })}
+        />
+        {errors.anak_ke && (
+          <p className="text-red-500 text-sm">{errors.anak_ke.message}</p>
+        )}
+      </div>
+      <div>
+        <label className="block mb-1">Jumlah Saudara Kandung</label>
+        <Input
+          type="number"
+          {...register("jml_saudara", { valueAsNumber: true })}
+        />
+        {errors.jml_saudara && (
+          <p className="text-red-500 text-sm">{errors.jml_saudara.message}</p>
+        )}
+      </div>
 
       <div>
         <label className="block mb-1">Alamat</label>

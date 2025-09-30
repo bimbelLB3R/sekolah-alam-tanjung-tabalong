@@ -6,6 +6,7 @@ import FormSiswa from "../../components/ppdb/FormSiswa"
 import FormAyah from "../../components/ppdb/FormAyah"
 import FormIbu from "../../components/ppdb/FormIbu"
 import FormKontak from "../../components/ppdb/FormKontak"
+import { useRouter } from "next/navigation"
 
 
 // ================== MAIN PAGE ==================
@@ -15,6 +16,8 @@ export default function PendaftaranPage() {
   const [dataAyah, setDataAyah] = useState({})
   const [dataIbu, setDataIbu] = useState({})
   const [dataKontak, setDataKontak] = useState({})
+  const router=useRouter();
+  const [loading, setLoading] = useState(false);
   // console.log(dataKontak)
 
   const handleNext = (values) => {
@@ -28,15 +31,39 @@ export default function PendaftaranPage() {
   const handleBack = () => setStep((s) => s - 1)
 
   
-  const onSubmitData=(values) => {
-  const finalData = { ...dataSiswa, ...dataAyah, ...dataIbu, ...values }
-    console.log("Kirim ke API:", finalData)
-     // TODO: fetch("/api/pendaftaran", { method: "POST", body: JSON.stringify(finalData) })
-     localStorage.removeItem("formSiswa")
-    localStorage.removeItem("formAyah")
-    localStorage.removeItem("formIbu")
-    localStorage.removeItem("formKontak")
-}
+  const onSubmitData = async (values,e) => {
+    e.preventDefault();
+    const finalData = { ...dataSiswa, ...dataAyah, ...dataIbu, ...values };
+    console.log("Kirim ke API:", finalData);
+
+    try {
+      setLoading(true);
+      const res = await fetch("/api/pendaftaran", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(finalData),
+      });
+
+      const result = await res.json();
+      console.log("Respon API:", result);
+
+      if (result.success) {
+        // localStorage.removeItem("formSiswa");
+        // localStorage.removeItem("formAyah");
+        // localStorage.removeItem("formIbu");
+        // localStorage.removeItem("formKontak");
+        alert("Data Berhasil Dikirim!");
+        router.push("/");
+      } else {
+        alert("Gagal simpan: " + result.message);
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Terjadi kesalahan saat mengirim data");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="max-w-2xl mx-auto p-6">
@@ -60,7 +87,7 @@ export default function PendaftaranPage() {
         )}
         {step === 3 && (
           <motion.div key="kontak" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }}>
-            <FormKontak onNext={handleNext} onBack={handleBack} onSubmitData={onSubmitData} defaultValues={dataKontak} />
+            <FormKontak onNext={handleNext} onBack={handleBack} onSubmitData={onSubmitData} defaultValues={dataKontak} loading={loading}/>
           </motion.div>
         )}
       </AnimatePresence>

@@ -7,17 +7,24 @@ import { z } from "zod"
 import { useEffect } from "react"
 
 const ibuSchema = z.object({
-  namaIbu: z.string().min(1, "Nama ibu wajib diisi"),
-  tempatLahirIbu: z.string().min(1, "Tempat lahir ibu wajib diisi"),
-  tglLahirIbu: z.string().min(1, "Tanggal lahir ibu wajib diisi"),
-  pendidikanIbu: z.string().min(1, "Pilih pendidikan terakhir"),
-  alamatIbu: z.string().min(1, "Alamat ibu wajib diisi"),
-  pekerjaanIbu: z.string().min(1, "Pekerjaan ibu wajib diisi"),
-  gajiIbu: z.string().min(1, "Rentang gaji wajib diisi"),
+  nama_ibu: z.string().min(1, "Nama ibu wajib diisi"),
+  tempat_lahir_ibu: z.string().min(1, "Tempat lahir ibu wajib diisi"),
+  tgl_lahir_ibu: z.string().min(1, "Tanggal lahir ibu wajib diisi"),
+  pendidikan_ibu: z.string().min(1, "Pilih pendidikan terakhir"),
+  alamat_ibu: z.string().min(1, "Alamat ibu wajib diisi"),
+  pekerjaan_ibu: z.string().min(1, "Pekerjaan ibu wajib diisi"),
+  gaji_ibu: z.string().min(1, "Rentang gaji wajib diisi"),
 })
 
 // ================== FORM IBU ==================
 export default function FormIbu({ onNext, onBack, defaultValues }) {
+  const GAJI_OPTIONS = [
+  "<1 Juta",
+  "1-3 Juta",
+  "3-5 Juta",
+  "5-10 Juta",
+  ">10 Juta",
+]
   const LOCAL_KEY = "formIbu"
   const savedData =
     typeof window !== "undefined"
@@ -40,16 +47,22 @@ export default function FormIbu({ onNext, onBack, defaultValues }) {
 
   return (
     <form onSubmit={handleSubmit(submit)} className="space-y-4">
-      <InputField label="Nama Ibu" name="namaIbu" register={register} error={errors.namaIbu} />
-      <InputField label="Tempat Lahir Ibu" name="tempatLahirIbu" register={register} error={errors.tempatLahirIbu} />
-      <InputField label="Tanggal Lahir Ibu" name="tglLahirIbu" type="date" register={register} error={errors.tglLahirIbu} />
+      <InputField label="Nama Ibu" name="nama_ibu" register={register} error={errors.nama_ibu} />
+      <InputField label="Tempat Lahir Ibu" name="tempat_lahir_ibu" register={register} error={errors.tempat_lahir_ibu} />
+      <InputField label="Tanggal Lahir Ibu" name="tgl_lahir_ibu" type="date" register={register} error={errors.tgl_lahir_ibu} />
 
-      <SelectField label="Pendidikan Terakhir Ibu" name="pendidikanIbu" register={register} error={errors.pendidikanIbu}
+      <SelectField label="Pendidikan Terakhir Ibu" name="pendidikan_ibu" register={register} error={errors.pendidikan_ibu}
         options={["SD", "SMP", "SMA", "S1", "S2"]} />
 
-      <TextareaField label="Alamat Ibu" name="alamatIbu" register={register} error={errors.alamatIbu} />
-      <InputField label="Pekerjaan Ibu" name="pekerjaanIbu" register={register} error={errors.pekerjaanIbu} />
-      <InputField label="Rentang Gaji Ibu" name="gajiIbu" register={register} error={errors.gajiIbu} />
+      <TextareaField label="Alamat Ibu" name="alamat_ibu" register={register} error={errors.alamat_ibu} />
+      <InputField label="Pekerjaan Ibu" name="pekerjaan_ibu" register={register} error={errors.pekerjaan_ibu} />
+      <RadioField
+        label="Rentang Gaji Ibu"
+        name="gaji_ibu"
+        options={GAJI_OPTIONS}
+        register={register}
+        error={errors.gaji_ibu}
+      />
 
       <div className="flex justify-between">
         <Button type="button" onClick={onBack} variant="outline">Back</Button>
@@ -90,6 +103,24 @@ function SelectField({ label, name, register, error, options }) {
           <option key={opt} value={opt}>{opt}</option>
         ))}
       </select>
+      {error && <p className="text-red-500 text-sm">{error.message}</p>}
+    </div>
+  )
+}
+
+
+function RadioField({ label, name, options, register, error }) {
+  return (
+    <div>
+      <label className="block mb-1">{label}</label>
+      <div className="space-y-2">
+        {options.map((opt) => (
+          <label key={opt} className="flex items-center space-x-2">
+            <input type="radio" value={opt} {...register(name)} />
+            <span>{opt}</span>
+          </label>
+        ))}
+      </div>
       {error && <p className="text-red-500 text-sm">{error.message}</p>}
     </div>
   )

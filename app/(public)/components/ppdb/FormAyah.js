@@ -7,16 +7,23 @@ import { z } from "zod"
 import { useEffect } from "react"
 
 const ayahSchema = z.object({
-  namaAyah: z.string().min(1, "Nama ayah wajib diisi"),
-  tempatLahirAyah: z.string().min(1, "Tempat lahir ayah wajib diisi"),
-  tglLahirAyah: z.string().min(1, "Tanggal lahir ayah wajib diisi"),
-  pendidikanAyah: z.string().min(1, "Pilih pendidikan terakhir"),
-  alamatAyah: z.string().min(1, "Alamat ayah wajib diisi"),
-  pekerjaanAyah: z.string().min(1, "Pekerjaan ayah wajib diisi"),
-  gajiAyah: z.string().min(1, "Rentang gaji wajib diisi"),
+  nama_ayah: z.string().min(1, "Nama ayah wajib diisi"),
+  tempat_lahir_ayah: z.string().min(1, "Tempat lahir ayah wajib diisi"),
+  tgl_lahir_ayah: z.string().min(1, "Tanggal lahir ayah wajib diisi"),
+  pendidikan_ayah: z.string().min(1, "Pilih pendidikan terakhir"),
+  alamat_ayah: z.string().min(1, "Alamat ayah wajib diisi"),
+  pekerjaan_ayah: z.string().min(1, "Pekerjaan ayah wajib diisi"),
+  gaji_ayah: z.string().min(1, "Rentang gaji wajib diisi"),
 })
 // ================== FORM AYAH ==================
 export default function FormAyah({ onNext, onBack, defaultValues }) {
+  const GAJI_OPTIONS = [
+  "<1 Juta",
+  "1-3 Juta",
+  "3-5 Juta",
+  "5-10 Juta",
+  ">10 Juta",
+]
   const LOCAL_KEY = "formAyah"
   // 1. Ambil data dari localStorage kalau ada
   const savedData =
@@ -39,16 +46,22 @@ export default function FormAyah({ onNext, onBack, defaultValues }) {
 
   return (
     <form onSubmit={handleSubmit(submit)} className="space-y-4">
-      <InputField label="Nama Ayah" name="namaAyah" register={register} error={errors.namaAyah} />
-      <InputField label="Tempat Lahir Ayah" name="tempatLahirAyah" register={register} error={errors.tempatLahirAyah} />
-      <InputField label="Tanggal Lahir Ayah" name="tglLahirAyah" type="date" register={register} error={errors.tglLahirAyah} />
+      <InputField label="Nama Ayah" name="nama_ayah" register={register} error={errors.nama_ayah} />
+      <InputField label="Tempat Lahir Ayah" name="tempat_lahir_ayah" register={register} error={errors.tempat_lahir_ayah} />
+      <InputField label="Tanggal Lahir Ayah" name="tgl_lahir_ayah" type="date" register={register} error={errors.tgl_lahir_ayah} />
 
-      <SelectField label="Pendidikan Terakhir Ayah" name="pendidikanAyah" register={register} error={errors.pendidikanAyah}
+      <SelectField label="Pendidikan Terakhir Ayah" name="pendidikan_ayah" register={register} error={errors.pendidikan_ayah}
         options={["SD", "SMP", "SMA", "S1", "S2"]} />
 
-      <TextareaField label="Alamat Ayah" name="alamatAyah" register={register} error={errors.alamatAyah} />
-      <InputField label="Pekerjaan Ayah" name="pekerjaanAyah" register={register} error={errors.pekerjaanAyah} />
-      <InputField label="Rentang Gaji Ayah" name="gajiAyah" register={register} error={errors.gajiAyah} />
+      <TextareaField label="Alamat Ayah" name="alamat_ayah" register={register} error={errors.alamat_ayah} />
+      <InputField label="Pekerjaan Ayah" name="pekerjaan_ayah" register={register} error={errors.pekerjaan_ayah} />
+      <RadioField
+        label="Rentang Gaji Ayah"
+        name="gaji_ayah"
+        options={GAJI_OPTIONS}
+        register={register}
+        error={errors.gaji_ayah}
+      />
 
       <div className="flex justify-between">
         <Button type="button" onClick={onBack} variant="outline">Back</Button>
@@ -89,6 +102,23 @@ function SelectField({ label, name, register, error, options }) {
           <option key={opt} value={opt}>{opt}</option>
         ))}
       </select>
+      {error && <p className="text-red-500 text-sm">{error.message}</p>}
+    </div>
+  )
+}
+
+function RadioField({ label, name, options, register, error }) {
+  return (
+    <div>
+      <label className="block mb-1">{label}</label>
+      <div className="space-y-2">
+        {options.map((opt) => (
+          <label key={opt} className="flex items-center space-x-2">
+            <input type="radio" value={opt} {...register(name)} />
+            <span>{opt}</span>
+          </label>
+        ))}
+      </div>
       {error && <p className="text-red-500 text-sm">{error.message}</p>}
     </div>
   )
