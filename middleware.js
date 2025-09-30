@@ -1,16 +1,15 @@
 import { NextResponse } from "next/server"
 import { jwtVerify } from "jose"
+import { rolePermissions } from "@/lib/rolePermissions"
 
 export async function middleware(req) {
   const token = req.cookies.get("token")?.value
   const url = req.nextUrl
 
-  // kalau sudah login & coba buka /login → redirect ke /dashboard
   if (token && url.pathname === "/login") {
     return NextResponse.redirect(new URL("/dashboard", req.url))
   }
 
-  // cek path dashboard
   if (url.pathname.startsWith("/dashboard")) {
     if (!token) {
       return NextResponse.redirect(new URL("/login", req.url))
@@ -20,28 +19,23 @@ export async function middleware(req) {
       const secret = new TextEncoder().encode(process.env.JWT_SECRET)
       const { payload } = await jwtVerify(token, secret)
 
-      const userRole = payload.role_name // contoh: "guru", "bendahara", "super-admin", dll
+      const userRole = payload.role_name // "guru", "bendahara", dst
+      const allowed = rolePermissions[userRole] || []
 
-      // kalau super-admin → akses semua halaman
-      if (userRole === "super-admin") {
+      // 1. superadmin → full akses
+      if (allowed.includes("*")) return NextResponse.next()
+
+      // 2. cek root dashboard → hanya boleh "/dashboard" persis
+      if (url.pathname === "/dashboard" && allowed.includes("/dashboard")) {
         return NextResponse.next()
       }
 
-      // ambil segmen kedua setelah /dashboard/
-      const pathSegments = url.pathname.split("/")
-      const targetPath = pathSegments[2] // misal: /dashboard/guru → "guru"
+      // 3. cek path lainnya (harus match prefix)
+      const isAllowed = allowed.some(path => 
+        path !== "/dashboard" && url.pathname.startsWith(path)
+      )
 
-      // mapping role ke halaman yang diizinkan
-      const allowedPaths = {
-        guru: ["presensi", "siswa","reservasi"], // guru bisa akses beberapa halaman /dashboard/siswa dst
-        bendahara: ["bendahara","siswa","reservasi","manajemen"],
-        manajemen: ["presensi", "siswa","reservasi","manajemen","events"],
-      }
-
-      const roleAllowed = allowedPaths[userRole] || []
-
-      // cek apakah targetPath ada dalam daftar allowed untuk userRole
-      if (targetPath && !roleAllowed.includes(targetPath)) {
+      if (!isAllowed) {
         return NextResponse.redirect(new URL("/unauthorized", req.url))
       }
 
@@ -55,7 +49,6 @@ export async function middleware(req) {
   return NextResponse.next()
 }
 
-// matcher supaya cuma jalan di route tertentu
 export const config = {
   matcher: ["/login", "/dashboard/:path*"],
 }

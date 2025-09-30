@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, Users, Home, FileText, Settings, Wallet, Cable, Calendar } from "lucide-react";
 import Image from "next/image";
 import { useAuth } from "@/lib/getUserClientSide";
+import { rolePermissions } from "@/lib/rolePermissions";
 
 import {
   Collapsible,
@@ -17,6 +18,7 @@ import {
 export default function Sidebar({ isOpen, onClose }) {
   const pathname = usePathname();
   const { user, loading } = useAuth();
+  const userRoleName=user?.role_name;
   // Accordion state: hanya satu menu utama yang terbuka
   const [openMenu, setOpenMenu] = useState(null); 
   const [userCount, setUserCount] = useState(0);
@@ -75,7 +77,6 @@ export default function Sidebar({ isOpen, onClose }) {
       label: "Users",
       icon: <Users />,
       badge: userCount,
-      allowedRoles: ["super-admin"], // hanya super-admin
       items: [
         { label: "List Users", href: "/dashboard/users" },
         { label: "Add User", href: "/dashboard/register" },
@@ -87,7 +88,6 @@ export default function Sidebar({ isOpen, onClose }) {
       key: "bendahara",
       label: "Bendahara",
       icon: <Wallet />,
-      allowedRoles: ["bendahara"], // hanya bendahara
       items: [
         {
           label: "Pemasukan",
@@ -121,7 +121,6 @@ export default function Sidebar({ isOpen, onClose }) {
       label: "Manajemen",
       icon: <Cable />,
       badge: infoManaj,
-      allowedRoles: ["super-admin","manajemen"], // hanya super-admin dan bendahara
       items: [
         { label: "Dapodik", href: "/dashboard/manajemen/dapodik" },
         { label: "Data Presensi", href: "/dashboard/manajemen/data-presensi" },
@@ -134,13 +133,24 @@ export default function Sidebar({ isOpen, onClose }) {
       label: "Events",
       icon: <Calendar />,
       badge: eventsCount,
-      allowedRoles: ["super-admin","manajemen"], // hanya super-admin dan manajemen
       items: [
         { label: "Kelola Even", href: "/dashboard/events" },
-        { label: "Lainnya", href: "/" },
+        { label: "Lainnya", href: "/dashboard/events/lainnya" },
       ],
     },
-    { type: "link", label: "Settings", href: "/settings", icon: <Settings />,allowedRoles: ["super-admin"] },
+    {
+      type: "collapsible",
+      key: "guru",
+      label: "Administrasi Guru",
+      icon: <Cable />,
+      badge: infoManaj,
+      items: [
+        { label: "Tahfidz", href: "/dashboard/guru/tahfidz" },
+        { label: "Tilawati", href: "/dashboard/guru/tilawati" },
+        { label: "Weekly", href: "/dashboard/guru/weekly" },
+      ],
+    },
+    { type: "link", label: "Settings", href: "/settings", icon: <Settings />}
   ];
 
   // Fungsi rekursif untuk render submenu multi-level
@@ -179,6 +189,34 @@ export default function Sidebar({ isOpen, onClose }) {
     });
   };
 
+// function hasAccess(roleName, href) {
+//   if (!href) return false; // guard penting
+//   const allowed = rolePermissions[roleName] || [];
+//   if (allowed.includes("*")) return true;
+//   return allowed.some(path => href.startsWith(path));
+// }
+
+// Fungsi cek izin -> SAMA dengan middleware
+function hasAccess(roleName, href) {
+  
+  if (!roleName) return false
+  if (!href) return false; // guard penting
+  const allowed = rolePermissions[roleName] || []
+
+  // superadmin
+  if (allowed.includes("*")) return true
+
+  // cek root dashboard persis
+  if (href === "/dashboard" && allowed.includes("/dashboard")) return true
+
+  // cek child
+  return allowed.some(path =>
+    path !== "/dashboard" && href.startsWith(path)
+  )
+}
+
+
+
   return (
     <div className={`fixed inset-0 z-30 md:static md:flex transition-all ${isOpen ? "flex" : "hidden"}`}>
       {/* Mobile overlay */}
@@ -194,12 +232,9 @@ export default function Sidebar({ isOpen, onClose }) {
 
         <ScrollArea className="flex-1">
           <nav className="flex flex-col p-2 space-y-2">
-            {menus.map((menu) => {
-              // 🔑 cek role user
-              if (menu.allowedRoles && !menu.allowedRoles.includes(user?.role_name)) {
-                return null;
-              }
+            {menus.map((menu) => {              
               if (menu.type === "link") {
+                if (!hasAccess(userRoleName, menu.href)) return null; // sembunyikan
                 return (
                   <NavLink
                     key={menu.label}
@@ -212,6 +247,10 @@ export default function Sidebar({ isOpen, onClose }) {
                 );
               }
               if (menu.type === "collapsible") {
+                  // filter items di dalam collapsible
+                  const filteredItems = menu.items.filter(item => hasAccess(userRoleName, item.href));
+
+                  if (filteredItems.length === 0) return null; // kalau kosong, hide collapsible
                 return (
                   <Collapsible
                     key={menu.key}
@@ -243,7 +282,7 @@ export default function Sidebar({ isOpen, onClose }) {
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                       <div className="flex flex-col pl-6 space-y-1">
-                        {renderMenuItems(menu.items)}
+                        {renderMenuItems(filteredItems)}
                       </div>
                     </CollapsibleContent>
                   </Collapsible>
