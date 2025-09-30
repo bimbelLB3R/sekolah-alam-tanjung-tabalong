@@ -1,3 +1,13 @@
+"use client"
+import { useAuth } from "@/lib/getUserClientSide"
+import PesertaTahfidzTable from "../../components/tahfidz/TabelPeserta";
+
 export default function Tahfidz(){
-    return <>Ini adalah halaman tahfidz</>
+    const { user, loading } = useAuth();
+    const userName=user?.name;
+    return (
+    <div className="p-4">
+      <PesertaTahfidzTable userName={userName} />
+    </div>
+  );
 }

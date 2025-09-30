@@ -6,12 +6,13 @@ import { Loader2, Mail, Phone, ChevronLeft, ChevronRight, Search } from "lucide-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
-export default function BiodataPage() {
+export default function DataSiswa({userRoleName}) {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState("")
   const perPage = 4
+  console.log(userRoleName)
 
   useEffect(() => {
     const fetchData = async () => {
