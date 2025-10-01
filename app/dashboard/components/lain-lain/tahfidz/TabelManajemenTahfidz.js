@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, Search, ChevronLeft, ChevronRight } from "lucide-react";
-import { toLowerCase } from "zod";
 
-export default function PesertaTahfidzTable({ userName }) {
+export default function TabelManajemenTahfidz() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -28,17 +27,8 @@ export default function PesertaTahfidzTable({ userName }) {
     fetchData();
   }, []);
 
-  //filter data berdasarkan pembimbing
- const filteredPembimbing = data.filter((row) => {
-  const pembimbing = (row.pembimbing || "").toLowerCase();
-  const user = (userName || "").toLowerCase();
-  return pembimbing.includes(user);
-});
-
-// console.log(data)
-
   // filter pencarian
-  const filteredData = filteredPembimbing.filter(
+  const filteredData = data.filter(
     (row) =>
       row.nama_siswa?.toLowerCase().includes(search.toLowerCase()) ||
       row.nama_rombel?.toLowerCase().includes(search.toLowerCase())
@@ -63,7 +53,7 @@ export default function PesertaTahfidzTable({ userName }) {
     <Card className="w-full overflow-hidden shadow-md rounded-2xl">
       <CardContent className="p-4">
         <h2 className="text-xl font-semibold mb-4">
-          Daftar Peserta Tahfidz (Bapak/Ibu {userName})
+          Daftar Peserta Tahfidz 
         </h2>
 
         {/* input pencarian */}
@@ -94,6 +84,7 @@ export default function PesertaTahfidzTable({ userName }) {
                   <tr className="bg-gray-100 text-left">
                     <th className="p-2 border">No</th>
                     <th className="p-2 border">Nama Anak</th>
+                    <th className="p-2 border">Nama Pembimbing</th>
                     <th className="p-2 border">Rombel</th>
                   </tr>
                 </thead>
@@ -115,6 +106,7 @@ export default function PesertaTahfidzTable({ userName }) {
                             {row.nama_siswa}
                           </Link>
                         </td>
+                        <td className="p-2 border">{row.pembimbing}</td>
                         <td className="p-2 border">{row.nama_rombel}</td>
                       </tr>
                     ))

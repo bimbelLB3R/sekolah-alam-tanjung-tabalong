@@ -6,7 +6,7 @@ export async function GET() {
     
 
     const [rows] = await pool.execute(
-      "SELECT id,created_at, nama_siswa, nama_rombel FROM peserta_tahfidz ORDER BY created_at DESC"
+      "SELECT id,created_at, nama_siswa, nama_rombel,pembimbing FROM peserta_tahfidz ORDER BY created_at DESC"
     );
 
     // await pool.end();
@@ -22,6 +22,8 @@ export async function GET() {
     });
   }
 }
+
+
 
 
 

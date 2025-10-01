@@ -190,7 +190,7 @@ const handleDelete = async (perkembanganId) => {
 
 
   return (
-    <div className="p-4">
+    <div className="p-1">
       <Card className="max-w-4xl mx-auto rounded-2xl shadow-md">
         <CardContent className="p-6">
           <div className="flex justify-between items-center mb-4">

@@ -124,7 +124,7 @@ export default function Sidebar({ isOpen, onClose }) {
       items: [
         { label: "Dapodik", href: "/dashboard/manajemen/dapodik" },
         { label: "Data Presensi", href: "/dashboard/manajemen/data-presensi" },
-        { label: "Lain-lain", href: "/dashboard/manajemen/lain-lain" },
+        { label: "Lain-lain", href: "/dashboard/manajemen/lainnya" },
       ],
     },
     {

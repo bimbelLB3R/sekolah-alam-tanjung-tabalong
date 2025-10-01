@@ -57,7 +57,7 @@ export default function AddEventsPage() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto p-1">
       <h1 className="text-2xl font-bold mb-6">Kelola Event</h1>
 
       {/* Form Tambah */}
