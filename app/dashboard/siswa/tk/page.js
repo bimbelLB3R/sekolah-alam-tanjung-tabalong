@@ -1,3 +1,4 @@
+"use client"
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -9,10 +10,23 @@ import {
 import Link from "next/link";
 import DashboardCard from "../../components/DashboardCard";
 
+// 👉 Import icon dari lucide-react
+import { Baby, School, Smile } from "lucide-react";
+
 export default function TkPage() {
   const kelasList = ["tk-1", "tk-2"];
   const rombelList = ["rombel-a", "rombel-b"];
-  const colors = ["bg-pink-200","bg-yellow-200","bg-green-200","bg-blue-200","bg-purple-200","bg-orange-200"];
+  const colors = [
+    "bg-pink-200",
+    "bg-yellow-200",
+    "bg-green-200",
+    "bg-blue-200",
+    "bg-purple-200",
+    "bg-orange-200",
+  ];
+
+  // 👉 Tambahkan daftar icon sesuai kelas
+  const icons = [Baby, School, Smile];
 
   return (
     <div className="p-6">
@@ -43,7 +57,7 @@ export default function TkPage() {
       <p className="mb-6">Detail jumlah siswa per rombel TK.</p>
 
       {/* Grid rombel */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {kelasList.map((kelas, i) =>
           rombelList.map((rombel, j) => (
             <DashboardCard
@@ -51,7 +65,8 @@ export default function TkPage() {
               title={`${kelas.replace("-", " ").toUpperCase()} - ${rombel.toUpperCase()}`}
               value={Math.floor(Math.random() * 30 + 20)} // contoh jumlah siswa
               href={`/dashboard/siswa/tk/${kelas}/${rombel}`}
-              bgColor={colors[i % colors.length]}
+              bgColor={colors[(i + j) % colors.length]}
+              icon={icons[i % icons.length]} // 👉 icon sesuai kelas
             />
           ))
         )}
