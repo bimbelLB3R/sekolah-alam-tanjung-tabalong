@@ -12,7 +12,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Plus,
-  Pencil
+  Pencil,
 } from "lucide-react";
 import {
   Dialog,
@@ -21,6 +21,7 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
+  DialogDescription
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -28,10 +29,12 @@ import { formatName } from "@/lib/formatName";
 
 export default function TabelManajemenTahfidz() {
   const [dataSiswa, setDataSiswa] = useState([]);
+  const [dataUser, setDataUser] = useState([]);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+//  console.log(dataUser)
 
   // modal state
   const [open, setOpen] = useState(false);
@@ -144,6 +147,23 @@ useEffect(() => {
         const res = await fetch("/api/dapodik")
         const result = await res.json()
         setDataSiswa(result)
+      } catch (error) {
+        console.error("Error:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+
+  // ambil data user
+useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res2=await fetch("/api/tahfidz/pembimbing")
+        const result2 = await res2.json()
+        console.log(result2)
+        setDataUser(result2)
       } catch (error) {
         console.error("Error:", error)
       } finally {
@@ -276,31 +296,47 @@ useEffect(() => {
               <DialogTitle>
                 {form.id ? "Edit Peserta" : "Tambah Peserta"}
               </DialogTitle>
+              <DialogDescription>Form Edit/tambah Data</DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-3 mt-2">
               <Select
-              value={form.nama_siswa}
-              onValueChange={(val) => setForm({ ...form, nama_siswa: val })}
+                value={form.nama_siswa}
+                onValueChange={(val) => setForm({ ...form, nama_siswa: val })}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Pilih Anak" />
+                </SelectTrigger>
+                <SelectContent>
+                  {dataSiswa.map((ds) => (
+                    <SelectItem key={ds.id} value={formatName(ds.nama_lengkap)}>
+                      {formatName(ds.nama_lengkap)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Select
+              value={form.pembimbing}
+              onValueChange={(val) => setForm({ ...form, pembimbing: val })}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Pilih Anak" />
+                <SelectValue placeholder="Pilih Pembimbing" />
               </SelectTrigger>
               <SelectContent>
-                {dataSiswa.map((ds) => (
-                  <SelectItem key={ds.id} value={formatName(ds.nama_lengkap)}>
-                    {formatName(ds.nama_lengkap)}
+                {dataUser.map((user) => (
+                  <SelectItem key={user.id} value={user.name}>
+                    {user.name} 
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-              <input
+              {/* <input
                 type="text"
                 placeholder="Pembimbing"
                 value={form.pembimbing}
                 onChange={(e) => setForm({ ...form, pembimbing: e.target.value })}
                 className="w-full border p-2 rounded-lg text-sm"
                 required
-              />
+              /> */}
               <input
                 type="text"
                 placeholder="Rombel"
