@@ -5,7 +5,7 @@ export async function GET() {
   try {
 
     const [rows] = await pool.query(
-      `SELECT id, nama_lengkap, alamat, no_hp_ibu, email FROM biodata_siswa ORDER BY created_at DESC`
+      `SELECT * FROM biodata_siswa ORDER BY created_at DESC`
     );
 
     // await pool.end();

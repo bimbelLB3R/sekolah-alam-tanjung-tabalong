@@ -15,6 +15,9 @@ import {
   DialogTitle,
   DialogDescription
 } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { surahList } from "@/app/data/surah";
+import { useAuth } from "@/lib/getUserClientSide";
 
 export default function PesertaDetailPage() {
   const { id } = useParams(); //id peserta
@@ -22,6 +25,8 @@ export default function PesertaDetailPage() {
   const [perkembangan, setPerkembangan] = useState([]);
   const [loading, setLoading] = useState(true);
   // console.log(id);
+  const { user} = useAuth();
+    const userName=user?.name;
 
   // pagination
   const [page, setPage] = useState(1);
@@ -153,7 +158,7 @@ export default function PesertaDetailPage() {
     const res = await fetch(url, {
       method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, peserta_id: id }),
+      body: JSON.stringify({ ...form, peserta_id: id,nama_pembimbing:userName }),
     });
 
     if (res.ok) {
@@ -334,7 +339,7 @@ const handleDelete = async (perkembanganId) => {
               {editData ? "Edit Data Perkembangan" : "Input Data Perkembangan"}
             </DialogTitle>
             <DialogDescription>
-            Ubah data tahfidz sesuai kebutuhan, lalu klik simpan.
+            Ubah/tambahkan data tahfidz {data.nama_siswa} sesuai kebutuhan, lalu klik simpan.
           </DialogDescription>
           </DialogHeader>
           <div className="space-y-3">
@@ -343,11 +348,21 @@ const handleDelete = async (perkembanganId) => {
               value={form.tanggal}
               onChange={(e) => setForm({ ...form, tanggal: e.target.value })}
             />
-            <Input
-              placeholder="Surah"
+            <Select
               value={form.surah}
-              onChange={(e) => setForm({ ...form, surah: e.target.value })}
-            />
+              onValueChange={(val) => setForm({ ...form, surah: val })}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Pilih Surah" />
+              </SelectTrigger>
+              <SelectContent>
+                {surahList.map((s) => (
+                  <SelectItem key={s.nomor} value={s.nama}>
+                    {s.nomor}. {s.nama}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <Input
               placeholder="Ayat"
               value={form.ayat}
@@ -358,6 +373,10 @@ const handleDelete = async (perkembanganId) => {
               value={form.catatan}
               onChange={(e) => setForm({ ...form, catatan: e.target.value })}
             />
+            {/* <Input
+              type="hidden"
+              value={userName}
+            /> */}
             <Button className="w-full" onClick={handleSubmit}>
               {editData ? "Update" : "Simpan"}
             </Button>

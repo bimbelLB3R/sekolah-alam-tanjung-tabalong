@@ -34,11 +34,11 @@ export async function PUT(req, { params }) {
   try {
     const { id } =await  params; // ambil dari URL /api/tahfidz/[id]
     const body = await req.json();
-    const { tanggal, surah, ayat, catatan } = body;
+    const { tanggal, surah, ayat, catatan,nama_pembimbing } = body;
 
     await pool.execute(
-      "UPDATE perkembangan_tahfidz SET tanggal = ?, surah = ?, ayat = ?, catatan = ? WHERE id = ?",
-      [tanggal, surah, ayat, catatan, id]
+      "UPDATE perkembangan_tahfidz SET tanggal = ?, surah = ?, ayat = ?, catatan = ?,nama_pembimbing=? WHERE id = ?",
+      [tanggal, surah, ayat, catatan,nama_pembimbing, id]
     );
 
     const [rows] = await pool.execute(
@@ -77,11 +77,11 @@ export async function POST(req, { params }) {
   const { id } =await params;
   try {
     const body = await req.json();
-    const { tanggal, surah, ayat, catatan } = body;
+    const { tanggal, surah, ayat, catatan,nama_pembimbing } = body;
 
     const [result] = await pool.execute(
-      "INSERT INTO perkembangan_tahfidz (peserta_id, tanggal, surah, ayat, catatan) VALUES (?, ?, ?, ?, ?)",
-      [id, tanggal, surah, ayat, catatan]
+      "INSERT INTO perkembangan_tahfidz (peserta_id, tanggal, surah, ayat, catatan,nama_pembimbing) VALUES (?, ?, ?, ?, ?,?)",
+      [id, tanggal, surah, ayat, catatan,nama_pembimbing]
     );
 
     // ambil kembali data yang baru ditambah biar strukturnya sama seperti GET

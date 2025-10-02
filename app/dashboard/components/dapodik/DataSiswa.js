@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Loader2, Mail, Phone, ChevronLeft, ChevronRight, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { formatName } from "@/lib/formatName"
 
 export default function DataSiswa({userRoleName}) {
   const [data, setData] = useState([])
@@ -12,7 +13,8 @@ export default function DataSiswa({userRoleName}) {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState("")
   const perPage = 4
-  console.log(userRoleName)
+  // console.log(userRoleName)
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,7 +89,7 @@ export default function DataSiswa({userRoleName}) {
                           {startIndex + index + 1}
                         </td>
                         <td className="border px-3 py-2 font-medium">
-                          {row.nama_lengkap}
+                          {formatName(row.nama_lengkap)}
                         </td>
                         <td className="border px-3 py-2">{row.alamat}</td>
                         <td className="border px-3 py-2 flex items-center gap-1">
