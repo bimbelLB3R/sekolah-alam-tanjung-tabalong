@@ -12,22 +12,22 @@ export default function PesertaPage({ peserta = [],onDelete }) {
   }
 
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+    <div className="grid md:grid-cols-2  gap-6 p-6">
       {peserta.map((p) => (
         <Card key={p.id} className="shadow-md border rounded-2xl relative">
           {/* Tombol hapus kanan atas */}
           <Button
             variant="destructive"
             size="icon"
-            className="absolute top-2 right-2"
+            className="absolute top-2 right-2 opacity-50"
              onClick={() => onDelete(p.id)}
           >
             <Trash2 className="w-4 h-4" />
           </Button>
 
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <User className="w-5 h-5 text-blue-600" />
+            <CardTitle className=" items-center gap-2">
+              <p>Pendamping :</p>
               {p.guru_pj}
             </CardTitle>
             <p className="text-sm text-gray-500">{p.jabatan}</p>

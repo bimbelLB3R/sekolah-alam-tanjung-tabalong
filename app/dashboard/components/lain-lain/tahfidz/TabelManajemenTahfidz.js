@@ -67,7 +67,7 @@ export default function TabelManajemenTahfidz() {
   }, []);
 
   // filter pencarian
-  const filteredData = data.filter(
+  const filteredData = data?.filter(
     (row) =>
       row.nama_siswa?.toLowerCase().includes(search.toLowerCase()) ||
       row.nama_rombel?.toLowerCase().includes(search.toLowerCase())

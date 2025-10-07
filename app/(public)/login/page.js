@@ -7,9 +7,11 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const router = useRouter();
+  const [loading, setLoading] = useState(false) // 🔄 state loading
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
 
     const res = await fetch("/api/auth/login", {
       method: "POST",
@@ -20,7 +22,7 @@ export default function LoginPage() {
     const data = await res.json();
     if (res.ok) {
       setMessage(`✅ ${data.message}, Selamat datang ${data.user.name}`);
-
+      setLoading(false)
       // arahkan ke dashboard setelah 1 detik
       setTimeout(() => {
         router.push("/dashboard");
@@ -66,8 +68,9 @@ export default function LoginPage() {
         <button
           type="submit"
           className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600"
+          disabled={loading}
         >
-          Login
+          {loading ? "proses masuk..." : "Login"}
         </button>
         {message && <p className="text-center mt-2">{message}</p>}
       </form>

@@ -29,7 +29,7 @@ export default function PesertaTahfidzTable({ userName }) {
   }, []);
 
   //filter data berdasarkan pembimbing
- const filteredPembimbing = data.filter((row) => {
+ const filteredPembimbing = data?.filter((row) => {
   const pembimbing = (row.pembimbing || "").toLowerCase();
   const user = (userName || "").toLowerCase();
   return pembimbing.includes(user);

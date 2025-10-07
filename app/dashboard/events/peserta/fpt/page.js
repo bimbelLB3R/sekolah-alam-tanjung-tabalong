@@ -11,6 +11,7 @@ import { exportPesertaToExcel } from "@/lib/exportExcel"
 export default function PesertaFpt() {
   const [peserta, setPeserta] = useState([])
 // console.log(peserta);
+const [loading, setLoading] = useState(false) // 🔄 state loading
 
   useEffect(() => {
     async function fetchPeserta() {
@@ -45,6 +46,7 @@ export default function PesertaFpt() {
   };
 
   const exportPDF = () => {
+    setLoading(true)
     // ✅ inisialisasi dengan orientation "landscape"
   const doc = new jsPDF({
     orientation: "landscape", // "p" untuk portrait, "l" untuk landscape
@@ -92,7 +94,7 @@ export default function PesertaFpt() {
     })
 
     
-
+setLoading(false)
     doc.save("peserta_event.pdf")
   }
 
@@ -105,7 +107,7 @@ export default function PesertaFpt() {
       </Button>
         <Button onClick={exportPDF} className="flex items-center gap-2">
           <FileDown className="w-4 h-4" />
-          Export PDF
+          {loading ? "proses export..." : "Export PDF"}
         </Button>
       </div>
         <h1 className="text-2xl font-bold">Data Peserta Event</h1>
