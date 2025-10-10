@@ -25,10 +25,24 @@ const siswaSchema = z.object({
   sekolah_asal: z.string().min(1, "Sekolah asal wajib diisi"),
   agama: z.string().min(1, "Pilih agama"),
   anak_ke: z.number().min(1, "Isi anak ke-berapa").max(10, "Terlalu besar"),
-  jml_saudara: z.number().min(0, "Isi jumlah saudara kandung"),
+  jml_saudara: z.coerce.number().min(0, "Isi jumlah saudara kandung"), //ubah string jadi angka
   alamat: z.string().min(1, "Alamat wajib diisi"),
   kelas_ditujukan: z.string().optional(), // wajib kalau pindahan
-})
+  jenis_kebkus: z.string().optional(), // wajib kalau Ya
+}).refine(
+    (data) => !(data.jenis_pendaftaran === "pindahan" && !data.kelas_ditujukan),
+    {
+      message: "Kelas yang dituju wajib diisi untuk siswa pindahan",
+      path: ["kelas_ditujukan"],
+    }
+  )
+  .refine(
+    (data) => !(data.keb_khusus === "Ya" && !data.jenis_kebkus),
+    {
+      message: "Jenis Kebutuhan Khusus wajib diisi",
+      path: ["jenis_kebkus"],
+    }
+  )
 
 // ================== FORM SISWA ==================
 export default function FormSiswa({ onNext, defaultValues }) {
@@ -40,15 +54,7 @@ export default function FormSiswa({ onNext, defaultValues }) {
       : {}
   const form = useForm({
     resolver: zodResolver(
-      siswaSchema.refine(
-        (data) => {
-          if (data.jenis_pendaftaran === "pindahan" && !data.kelas_ditujukan) {
-            return false
-          }
-          return true
-        },
-        { message: "Kelas yang dituju wajib diisi untuk siswa pindahan", path: ["kelas_ditujukan"] }
-      )
+      siswaSchema
     ),
     defaultValues: {
       ...defaultValues, // dari props parent
@@ -63,6 +69,7 @@ export default function FormSiswa({ onNext, defaultValues }) {
   
   
   const jenis_pendaftaran = watch("jenis_pendaftaran")
+  const keb_khusus = watch("keb_khusus")
   const submit = (values) => onNext(values)
 
   return (
@@ -124,6 +131,13 @@ export default function FormSiswa({ onNext, defaultValues }) {
         </select>
         {errors.keb_khusus && <p className="text-red-500 text-sm">{errors.keb_khusus.message}</p>}
       </div>
+      {keb_khusus === "Ya" && (
+        <div>
+          <label className="block mb-1">Jenis Kebutuhan Khusus</label>
+          <Input {...register("jenis_kebkus")} />
+          {errors.jenis_kebkus && <p className="text-red-500 text-sm">{errors.jenis_kebkus.message}</p>}
+        </div>
+      )}
 
       <InputField label="Sekolah Asal" name="sekolah_asal" register={register} error={errors.sekolah_asal} />
 

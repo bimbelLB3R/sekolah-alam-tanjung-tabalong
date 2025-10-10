@@ -31,11 +31,11 @@ export default function PendaftaranPage() {
   const handleBack = () => setStep((s) => s - 1)
 
   
-  const onSubmitData = async (values,e) => {
-    e.preventDefault();
+  const onSubmitData = async (values) => {
+    // e.preventDefault();
     const finalData = { ...dataSiswa, ...dataAyah, ...dataIbu, ...values };
     console.log("Kirim ke API:", finalData);
-
+    // return false
     try {
       setLoading(true);
       const res = await fetch("/api/pendaftaran", {

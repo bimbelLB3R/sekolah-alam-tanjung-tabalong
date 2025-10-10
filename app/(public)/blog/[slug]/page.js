@@ -1,7 +1,7 @@
 // app/(public)/blog/[slug]/page.js
 
-export default function BlogDetail({ params }) {
-  const { slug } = params
+export default async function BlogDetail({ params }) {
+  const { slug } =await params
 
   // sementara hardcode (nanti bisa fetch dari DB atau markdown)
   const content = {

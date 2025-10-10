@@ -73,13 +73,18 @@ export default function AgendaPage() {
                   <p className="text-gray-700 mb-2">{event.description}</p>
                   <p className="text-sm text-gray-500 italic">{statusText}</p>
 
-                  {event.url && (
-                    <div className="mt-4 flex items-center justify-end">
-                      <Link href={event.url}>
-                        <Button className="w-full">Daftar</Button>
-                      </Link>
-                    </div>
-                  )}
+                {event.url && (
+                  <div
+                    className={`${
+                      statusText === "Sudah selesai" ? "hidden" : "mt-4 flex items-center justify-end"
+                    }`}
+                  >
+                    <Link href={event.url}>
+                      <Button className="w-full">Daftar</Button>
+                    </Link>
+                  </div>
+                )}
+
                 </CardContent>
               </Card>
             </div>

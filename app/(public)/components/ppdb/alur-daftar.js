@@ -7,19 +7,19 @@ import { motion } from "framer-motion"
 const steps = [
   {
     id: 1,
-    date: "1 Nov – 23 Feb 2026",
+    date: "1 Nov 2025 – 13 Feb 2026",
     title: "Pengambilan/Pengisian Formulir Gelombang I",
     icon: FileText,
   },
   {
     id: 2,
-    date: "13 Januari – 28 Februari 2026",
+    date: "10 November 2025 – 18 Februari 2026",
     title: "Wawancara Orang Tua, Observasi & Sit In Gelombang I",
     icon: Users,
   },
   {
     id: 3,
-    date: "20 Januari – 28 Februari 2026",
+    date: "1 minggu setelah sit in",
     title: "Pengumuman Penerimaan Gelombang I",
     icon: CheckCircle,
   },

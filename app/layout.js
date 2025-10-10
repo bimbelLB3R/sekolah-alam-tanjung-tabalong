@@ -6,16 +6,19 @@ import Head from "next/head";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  preload:false
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  preload:false
 });
 
 const dancing = Dancing_Script({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"], // bisa pilih ketebalan
+  preload:false
 })
 
 export const metadata = {
