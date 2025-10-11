@@ -1,20 +1,19 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
-import { Loader2, Mail, Phone, ChevronLeft, ChevronRight, Search } from "lucide-react"
+import { Loader2, ChevronLeft, ChevronRight, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { formatName } from "@/lib/formatName"
 
-export default function DataSiswa({userRoleName}) {
+export default function DataSiswa({ userRoleName }) {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState("")
   const perPage = 4
-  // console.log(userRoleName)
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,17 +30,12 @@ export default function DataSiswa({userRoleName}) {
     fetchData()
   }, [])
 
-  // filter berdasarkan nama_lengkap
   const filteredData = data.filter((row) =>
     row.nama_lengkap.toLowerCase().includes(search.toLowerCase())
   )
 
-  // reset ke halaman 1 setiap kali search berubah
-  useEffect(() => {
-    setPage(1)
-  }, [search])
+  useEffect(() => setPage(1), [search])
 
-  // hitung data untuk halaman aktif
   const startIndex = (page - 1) * perPage
   const endIndex = startIndex + perPage
   const currentData = filteredData.slice(startIndex, endIndex)
@@ -52,7 +46,6 @@ export default function DataSiswa({userRoleName}) {
       <CardContent>
         <h2 className="text-xl font-bold mb-4">Daftar Biodata Siswa</h2>
 
-        {/* Search Input */}
         <div className="flex items-center gap-2 mb-4">
           <Search className="w-5 h-5 text-gray-500" />
           <Input
@@ -76,9 +69,6 @@ export default function DataSiswa({userRoleName}) {
                   <tr className="bg-gray-100 text-left">
                     <th className="border px-3 py-2">No</th>
                     <th className="border px-3 py-2">Nama Lengkap</th>
-                    <th className="border px-3 py-2">Alamat</th>
-                    <th className="border px-3 py-2">Kontak</th>
-                    {/* <th className="border px-3 py-2">Email</th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -88,29 +78,17 @@ export default function DataSiswa({userRoleName}) {
                         <td className="border px-3 py-2">
                           {startIndex + index + 1}
                         </td>
-                        <td className="border px-3 py-2 font-medium">
-                          {formatName(row.nama_lengkap)}
-                        </td>
-                        <td className="border px-3 py-2">{row.alamat}</td>
-                        <td className="border px-3 py-2 flex items-center gap-1">
-                          <Phone className="w-4 h-4 text-gray-500" />
-                          {row.no_hp_ibu}
-                        </td>
-                        <td className="border px-3 py-2 flex items-center gap-1">
-                          <Mail className="w-4 h-4 text-gray-500" />
-                          {row.email}
+                        <td className="border px-3 py-2 font-medium text-blue-600 hover:underline">
+                          <Link href={`dapodik/${row.id}`}>
+                            {formatName(row.nama_lengkap)}
+                          </Link>
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td
-                        colSpan="5"
-                        className="text-center py-4 text-gray-500"
-                      >
-                        {search
-                          ? "Data tidak ditemukan"
-                          : "Belum ada data"}
+                      <td colSpan="5" className="text-center py-4 text-gray-500">
+                        {search ? "Data tidak ditemukan" : "Belum ada data"}
                       </td>
                     </tr>
                   )}
@@ -118,7 +96,6 @@ export default function DataSiswa({userRoleName}) {
               </table>
             </div>
 
-            {/* PAGINATION */}
             {totalPages > 1 && (
               <div className="flex justify-between items-center mt-4">
                 <Button
