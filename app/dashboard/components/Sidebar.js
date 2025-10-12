@@ -122,7 +122,7 @@ export default function Sidebar({ isOpen, onClose }) {
       icon: <Cable />,
       badge: infoManaj,
       items: [
-        { label: "Dapodik", href: "/dashboard/manajemen/dapodik" },
+        { label: "Data Siswa", href: "/dashboard/manajemen/dapodik" },
         { label: "Data Presensi", href: "/dashboard/manajemen/data-presensi" },
         { label: "Lain-lain", href: "/dashboard/manajemen/lainnya" },
       ],

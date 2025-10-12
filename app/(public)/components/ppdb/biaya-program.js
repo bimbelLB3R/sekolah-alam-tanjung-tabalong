@@ -7,19 +7,19 @@ const biayaData = [
   {
     jenjang: "TK & KB",
     items: [
-      "Uang Pangkal Rp3.500.000 (Diskon 1jt minimal DP 2jt sebelum Maret 2026)",
+      "Uang Pangkal Rp3.500.000 (Diskon 500.000 minimal DP 2jt sebelum Desember 2025)",
       "Uang Tahunan Rp2.000.000",
       "Sarpras Rp500.000",
       "Seragam Akhwat Rp480.000",
       "Seragam Ikhwan Rp400.000",
-      "SPP Bulanan Rp500.000",
-      "Komite 1 Tahun Rp180.000",
+      "SPP Bulanan Rp 600.000",
+      "Komite 1 Tahun Rp 180.000",
     ],
   },
   {
     jenjang: "Sekolah Dasar",
     items: [
-      "Uang Pangkal Rp8.500.000 (Diskon 2jt minimal DP 5jt sebelum Maret 2026)",
+      "Uang Pangkal Rp8.500.000 (Diskon 1jt minimal DP 5jt sebelum Desember 2025)",
       "Uang Tahunan Rp2.000.000",
       "Sarpras Rp850.000",
       "Seragam Akhwat Rp480.000",
@@ -32,7 +32,7 @@ const biayaData = [
     jenjang: "Info Tambahan",
     items: [
       "Biaya Pendaftaran Rp200.000",
-      "Pembayaran dapat dicicil hingga Juli 2026",
+      "Sisa Pembayaran dapat dicicil hingga Juli 2026",
       "ABK wajib melampirkan surat keterangan psikolog atau yang berkepentingan",
       "Khusus ABK yang direkomendasikan menggunakan Guru Pendamping, membayar tambahan Rp1.500.000 /bulan di luar SPP atau menyediakan Guru Pendamping sendiri dengan ketentuan berlaku",
       "Kuota ABK terbatas di setiap kelasnya",
