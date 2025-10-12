@@ -260,8 +260,13 @@ export default function PresensiPage() {
 
     try {
       const pos = await new Promise((resolve, reject) =>
-        navigator.geolocation.getCurrentPosition(resolve, reject)
-      );
+  navigator.geolocation.getCurrentPosition(resolve, reject, {
+    enableHighAccuracy: true,
+    timeout: 10000, // tunggu hingga 10 detik
+    maximumAge: 0   // jangan pakai lokasi cache
+  })
+);
+
 
       const userLat = pos.coords.latitude;
       const userLng = pos.coords.longitude;
