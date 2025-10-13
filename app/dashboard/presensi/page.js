@@ -208,8 +208,8 @@ export default function PresensiPage() {
   const [distance, setDistance] = useState(null);
 
   // Titik acuan (misal lokasi kantor)
-  const baseLat = -2.17460220;
-  const baseLng = 115.43540860;
+  const baseLat = -2.173433;
+  const baseLng = 115.432810;
   const maxDistance = 100; // meter
 
   const now = new Date();
