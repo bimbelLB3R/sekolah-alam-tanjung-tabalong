@@ -5,7 +5,7 @@ export async function GET() {
   const [rows] = await pool.query(`
     SELECT u.id, u.name, u.email, r.name AS role
     FROM users u
-    LEFT JOIN roles r ON u.role_id = r.id
+    LEFT JOIN roles r ON u.role_id = r.id WHERE r.name='guru' or r.name='manajemen'
   `);
 
   return NextResponse.json(rows); 

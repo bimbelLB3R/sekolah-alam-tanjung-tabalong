@@ -179,9 +179,13 @@ export default function FormKontak({ loading, onBack, defaultValues, onSubmitDat
         <Input type="file" accept="image/*" onChange={(e) => setFotoKia(e.target.files[0])} />
       </div>
       <div>
+        <label className="block mb-1">Foto Kartu Keluarga</label>
+        <Input type="file" accept="image/*" onChange={(e) => setKkPdf(e.target.files[0])} />
+      </div>
+      {/* <div>
         <label className="block mb-1">Kartu Keluarga (PDF)</label>
         <Input type="file" accept="application/pdf" onChange={(e) => setKkPdf(e.target.files[0])} />
-      </div>
+      </div> */}
 
       {uploading && (
         <div className="w-full bg-gray-200 rounded-full h-2 mt-2">

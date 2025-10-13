@@ -210,7 +210,7 @@ export default function PresensiPage() {
   // Titik acuan (misal lokasi kantor)
   const baseLat = -2.173433;
   const baseLng = 115.432810;
-  const maxDistance = 100; // meter
+  const maxDistance = 500; // meter
 
   const now = new Date();
   const tanggal = now.toISOString().split("T")[0];
