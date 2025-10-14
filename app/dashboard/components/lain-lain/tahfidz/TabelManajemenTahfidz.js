@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import {
   Card,
@@ -27,44 +27,22 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { formatName } from "@/lib/formatName";
 
-export default function TabelManajemenTahfidz() {
-  const [dataSiswa, setDataSiswa] = useState([]);
-  const [dataUser, setDataUser] = useState([]);
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function TabelManajemenTahfidz({data,loading,dataSiswa,handleOpenAdd,dataUser,handleOpenEdit,handleSubmit,open,submitting, setOpen,form,setForm}) {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-//  console.log(dataUser)
 
-  // modal state
-  const [open, setOpen] = useState(false);
-  const [form, setForm] = useState({
-    id: null,
-    nama_siswa: "",
-    pembimbing: "",
-    nama_rombel: "",
-  });
-  const [submitting, setSubmitting] = useState(false);
+  // // modal state
+  // const [open, setOpen] = useState(false);
+  // const [form, setForm] = useState({
+  //   id: null,
+  //   nama_siswa: "",
+  //   pembimbing: "",
+  //   nama_rombel: "",
+  // });
+  // const [submitting, setSubmitting] = useState(false);
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 4;
 
-  // fetch data
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch("/api/tahfidz");
-      const json = await res.json();
-      setData(json);
-    } catch (err) {
-      console.error("Fetch error:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   // filter pencarian
   const filteredData = data?.filter(
@@ -85,93 +63,62 @@ export default function TabelManajemenTahfidz() {
     if (page >= 1 && page <= totalPages) setCurrentPage(page);
   };
 
-  // buka modal untuk tambah
-  const handleOpenAdd = () => {
-    setForm({ id: null, nama_siswa: "", pembimbing: "", nama_rombel: "" });
-    setOpen(true);
-  };
+  // // buka modal untuk tambah
+  // const handleOpenAdd = () => {
+  //   setForm({ id: null, nama_siswa: "", pembimbing: "", nama_rombel: "" });
+  //   setOpen(true);
+  // };
 
-  // buka modal untuk edit
-  const handleOpenEdit = (row) => {
-    setForm({
-      id: row.id,
-      nama_siswa: row.nama_siswa,
-      pembimbing: row.pembimbing,
-      nama_rombel: row.nama_rombel,
-    });
-    setOpen(true);
-  };
+  // // buka modal untuk edit
+  // const handleOpenEdit = (row) => {
+  //   setForm({
+  //     id: row.id,
+  //     nama_siswa: row.nama_siswa,
+  //     pembimbing: row.pembimbing,
+  //     nama_rombel: row.nama_rombel,
+  //   });
+  //   setOpen(true);
+  // };
 
-  // submit form
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      setSubmitting(true);
-      let res, result;
+  // // submit form
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     setSubmitting(true);
+  //     let res, result;
 
-      if (form.id) {
-        // update
-        res = await fetch(`/api/tahfidz/peserta/${form.id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        });
-      } else {
-        // insert
-        res = await fetch("/api/tahfidz", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        });
-      }
+  //     if (form.id) {
+  //       // update
+  //       res = await fetch(`/api/tahfidz/peserta/${form.id}`, {
+  //         method: "PUT",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify(form),
+  //       });
+  //     } else {
+  //       // insert
+  //       res = await fetch("/api/tahfidz", {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify(form),
+  //       });
+  //     }
 
-      result = await res.json();
-      if (res.ok) {
-        alert(form.id ? "Data berhasil diperbarui" : "Peserta berhasil ditambahkan");
-        fetchData();
-        setOpen(false);
-      } else {
-        alert(result.error || "Terjadi kesalahan");
-      }
-    } catch (err) {
-      console.error("Submit error:", err);
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  //     result = await res.json();
+  //     if (res.ok) {
+  //       // alert(form.id ? "Data berhasil diperbarui" : "Peserta berhasil ditambahkan");
+  //       fetchData();
+  //       setOpen(false);
+  //     } else {
+  //       // alert(result.error || "Terjadi kesalahan");
+  //       console.log(result.error)
+  //     }
+  //   } catch (err) {
+  //     console.error("Submit error:", err);
+  //   } finally {
+  //     setSubmitting(false);
+  //   }
+  // };
 
-// ambil data siswa
-useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch("/api/dapodik")
-        const result = await res.json()
-        setDataSiswa(result)
-      } catch (error) {
-        console.error("Error:", error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [])
-
-  // ambil data user
-useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res2=await fetch("/api/tahfidz/pembimbing")
-        const result2 = await res2.json()
-        console.log(result2)
-        setDataUser(result2)
-      } catch (error) {
-        console.error("Error:", error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [])
 
   return (
     <Card className="w-full overflow-hidden shadow-md rounded-2xl">
@@ -197,14 +144,12 @@ useEffect(() => {
             className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300 text-sm"
           />
         </div>
-
-        {loading ? (
-          <div className="flex items-center justify-center py-6">
-            <Loader2 className="h-6 w-6 animate-spin text-gray-500" />
-            <span className="ml-2 text-gray-500">Memuat...</span>
-          </div>
-        ) : (
-          <>
+        {loading && (
+        <div className="flex items-center gap-2 mb-3 text-gray-500">
+          <Loader2 className="animate-spin h-4 w-4" />
+          <span>Menyegarkan data...</span>
+        </div>
+      )}
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm border-collapse">
                 <thead>
@@ -285,8 +230,6 @@ useEffect(() => {
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
-            )}
-          </>
         )}
 
         {/* modal tambah/edit */}

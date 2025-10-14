@@ -42,13 +42,26 @@ export async function POST(request) {
   [nama_siswa, nama_rombel, pembimbing]
 );
 
-    return new Response(
-      JSON.stringify({ message: "Peserta berhasil ditambahkan", id: result.insertId }),
-      {
-        status: 201,
-        headers: { "Content-Type": "application/json" },
-      }
+   // result.insertId biasanya kosong kalau pakai UUID()
+    // maka ambil data berdasarkan kombinasi field unik (atau ambil UUID dari DB)
+    // Di sini kita asumsikan nama_siswa + pembimbing + nama_rombel unik
+    const [rows] = await pool.query(
+      `SELECT * FROM peserta_tahfidz 
+       WHERE nama_siswa = ? AND nama_rombel = ? AND pembimbing = ? 
+       ORDER BY created_at DESC LIMIT 1`,
+      [nama_siswa, nama_rombel, pembimbing]
     );
+
+    if (!rows.length) {
+      return new Response(JSON.stringify({ error: "Gagal mengambil data baru" }), {
+        status: 500,
+      });
+    }
+
+    return new Response(JSON.stringify(rows[0]), {
+      status: 201,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
     console.error("DB error:", error);
     return new Response(JSON.stringify({ error: "Gagal menambahkan peserta" }), {

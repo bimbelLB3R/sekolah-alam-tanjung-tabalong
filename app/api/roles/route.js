@@ -39,8 +39,12 @@ export async function POST(req) {
       "INSERT INTO roles (id, name) VALUES (UUID(), ?)",
       [name]
     );
+        // Ambil data role yang baru dimasukkan (atau generate id sendiri di frontend)
+    const [rows] = await pool.query("SELECT * FROM roles WHERE name = ?", [name]);
+    const newRole = rows[0];
 
-    return NextResponse.json({ message: "Role berhasil ditambahkan" });
+    return NextResponse.json(newRole, { status: 201 });
+
   } catch (error) {
     console.error("Error tambah role:", error);
     return NextResponse.json({ error: "Gagal menambahkan role" }, { status: 500 });
@@ -57,14 +61,14 @@ export async function PUT(req) {
       [name, id]
     );
 
-    return NextResponse.json({ message: "Role berhasil diperbarui" });
+    return NextResponse.json({ id,name });
   } catch (error) {
     console.error("Error update role:", error);
     return NextResponse.json({ error: "Gagal memperbarui role" }, { status: 500 });
   }
 }
 
-// DELETE hapus role
+  // DELETE hapus role
 export async function DELETE(req) {
   try {
     const { id } = await req.json();
@@ -74,6 +78,10 @@ export async function DELETE(req) {
     return NextResponse.json({ message: "Role berhasil dihapus" });
   } catch (error) {
     console.error("Error hapus role:", error);
-    return NextResponse.json({ error: "Gagal menghapus role" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Gagal menghapus role" },
+      { status: 500 }
+    );
   }
 }
+

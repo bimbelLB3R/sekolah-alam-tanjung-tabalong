@@ -8,28 +8,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { formatName } from "@/lib/formatName"
 
-export default function DataSiswa({ userRoleName }) {
-  const [data, setData] = useState([])
-  const [loading, setLoading] = useState(true)
+export default function DataSiswa({ userRoleName,data,loading }) {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState("")
   const perPage = 4
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch("/api/dapodik")
-        const result = await res.json()
-        setData(result)
-      } catch (error) {
-        console.error("Error:", error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [])
-
   const filteredData = data.filter((row) =>
     row.nama_lengkap.toLowerCase().includes(search.toLowerCase())
   )

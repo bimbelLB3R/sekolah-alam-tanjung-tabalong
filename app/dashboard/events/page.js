@@ -14,6 +14,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import Link from "next/link"
+import { formatDate } from "@/lib/formatDate"
 
 export default function AddEventsPage() {
   const [events, setEvents] = useState([])
@@ -110,11 +111,7 @@ export default function AddEventsPage() {
               <div>
                 <p className="font-bold">{ev.title}</p>
                 <p className="text-sm">{ev.description}</p>
-                <p className="text-xs text-gray-500">{new Date(ev.event_date).toLocaleDateString("id-ID", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}</p>
+                <p className="text-xs text-gray-500">{formatDate(ev.event_date)}</p>
                 {ev.url_peserta && (
                 <Link href={ev.url_peserta} className="text-blue-600 underline">
                     Lihat Peserta

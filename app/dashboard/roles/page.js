@@ -33,39 +33,86 @@ export default function RolesPage() {
   const handleAdd = async () => {
     if (!newRole) return;
     setActionLoading(true);
-    await fetch("/api/roles", {
+    try{
+    const res=await fetch("/api/roles", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: newRole }),
     });
-    setNewRole("");
-    await fetchRoles();
-    setActionLoading(false);
+    const result = await res.json();
+    if (res.ok) {
+      // Tambahkan role baru ke state lokal
+      setRoles(prev => [result, ...prev]);
+      setActionLoading(false);
+      setNewRole("");
+    } else {
+      console.error(result.error);
+    }
+  }catch (error) {
+    console.error("Error tambah role:", error);
+  } finally {
+    setActionLoading(false); // ✅ pastikan loading dimatikan walau error
+  
+  }
+    // setNewRole("");
+    // await fetchRoles();
+    // setActionLoading(false);
   };
 
   const handleUpdate = async (id) => {
     setActionLoading(true);
-    await fetch("/api/roles", {
+    try{
+    const res=await fetch("/api/roles", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id, name: editRole.name }),
     });
-    setEditRole(null);
-    await fetchRoles();
+    const result = await res.json();
+
+     if (res.ok) {
+      // Update item di state lokal
+      setRoles(prev =>
+        prev.map(role => role.id === id ? result : role)
+      );
+      setEditRole(null);
+    } else {
+      console.error(result.error);
+    }
+  }catch (error) {
+    console.error("Error update role:", error);
+  } finally {
     setActionLoading(false);
+  }
   };
 
-  const handleDelete = async (id) => {
-    if (!confirm("Yakin hapus role ini?")) return;
-    setActionLoading(true);
-    await fetch("/api/roles", {
+  
+const handleDelete = async (id) => {
+  if (!confirm("Yakin hapus role ini?")) return;
+
+  setActionLoading(true);
+  try {
+    const res = await fetch("/api/roles", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),
     });
-    await fetchRoles();
+
+    const result = await res.json();
+
+    if (res.ok) {
+      // Hapus role dari state lokal
+      setRoles(prev => prev.filter(role => role.id !== id));
+      console.log(result.message);
+    } else {
+      console.error(result.error);
+    }
+  } catch (error) {
+    console.error("Error delete role:", error);
+  } finally {
     setActionLoading(false);
-  };
+  }
+};
+
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
@@ -96,7 +143,7 @@ export default function RolesPage() {
             <Loader2 className="w-10 h-10 animate-spin text-gray-500" />
             <span className="ml-3 text-gray-600">Loading roles...</span>
           </div>
-        ) : roles.length > 0 ? (
+        ) : roles ? (
           roles.map((role) => (
             <Card key={role.id}>
               <CardHeader className="flex flex-row justify-between items-center">
@@ -142,18 +189,14 @@ export default function RolesPage() {
                     onClick={() => handleDelete(role.id)}
                     disabled={actionLoading}
                   >
-                    {actionLoading ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
                       <Trash2 className="w-4 h-4" />
-                    )}
                   </Button>
                 </CardContent>
               </CardHeader>
 
               {/* Users dari role ini */}
               <CardContent>
-                {role.users.length > 0 ? (
+                {role.users? (
                   <ul className="list-disc pl-5 space-y-1">
                     {role.users.map((u) => (
                       <li key={u.id}>

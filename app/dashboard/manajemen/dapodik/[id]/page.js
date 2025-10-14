@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 // import { useToast } from "@/components/ui/use-toast"
 import Image from "next/image"
+import { formatDate } from "@/lib/formatDate"
 
 export default function DetailSiswaPage() {
 const fileInputRef = useRef(null);
@@ -111,7 +112,7 @@ const fileInputRef = useRef(null);
     nik: siswa.nik,
     jenis_kelamin: siswa.jenis_kelamin,
     tempat_lahir: siswa.tempat_lahir,
-    tgl_lahir: siswa.tgl_lahir,
+    tgl_lahir: formatDate(siswa.tgl_lahir) ,
     alamat: siswa.alamat,
   }
 
