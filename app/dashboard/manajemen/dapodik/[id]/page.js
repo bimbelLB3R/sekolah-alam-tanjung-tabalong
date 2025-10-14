@@ -133,6 +133,7 @@ const fileInputRef = useRef(null);
     buktiBayar: siswa.buktiBayar,
     fotoAnak: siswa.fotoAnak,
     fotoKia: siswa.fotoKia,
+    kkPdf:siswa.kkPdf
   }
 
   const dataTabs = { biodata, ortu, kontak, dokumen }

@@ -25,20 +25,20 @@ export default function DashboardPage() {
       key: "kesiswaan",
       label: "Kesiswaan",
       cards: [
-        { title: "Jumlah Siswa", value: 80, href: "/dashboard/siswa", icon: Users },
+        { title: "Data Kelas", value: 80, href: "/dashboard/data-kelas", icon: Users },
         { title: "Reservasi Siswa", value: reservasiCount, href: "/dashboard/reservasi", icon: BookOpen },
-        { title: "Daftar Ulang", value: 10, href: "/dashboard/daftarulang", icon: Calendar },
+        // { title: "Daftar Ulang", value: 10, href: "/dashboard/daftarulang", icon: Calendar },
       ],
     },
-    {
-      key: "guru",
-      label: "Guru",
-      cards: [
-        { title: "Jumlah Guru", value: 15, href: "/dashboard/guru", icon: Users },
-        { title: "Jadwal Mengajar", value: 5, href: "/dashboard/jadwal", icon: Calendar },
-        { title: "Grafik Kehadiran", value: 1, href: "/dashboard/grafik-hadir", icon: BookOpen },
-      ],
-    },
+    // {
+    //   key: "guru",
+    //   label: "Guru",
+    //   cards: [
+    //     { title: "Jumlah Guru", value: 15, href: "/dashboard/guru", icon: Users },
+    //     { title: "Jadwal Mengajar", value: 5, href: "/dashboard/jadwal", icon: Calendar },
+    //     { title: "Grafik Kehadiran", value: 1, href: "/dashboard/grafik-hadir", icon: BookOpen },
+    //   ],
+    // },
   ];
 
   return (
