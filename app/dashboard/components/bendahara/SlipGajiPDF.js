@@ -273,7 +273,7 @@ const SlipGajiPDF = ({ data, tanggalCetak }) => {
             </View>
             <View>
               <View style={styles.detailRow}>
-                <Text>Potongan Makan</Text>
+                <Text>Potongan Makan Siang</Text>
                 <Text>{formatRupiah(data.potongan_makan)}</Text>
               </View>
               <View style={styles.separator} />
