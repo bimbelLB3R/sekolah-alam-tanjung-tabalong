@@ -75,63 +75,63 @@
 // }
 
 // untuk dikeduanya (jalan di lokal)
-import puppeteer from "puppeteer-core";
-import chromium from "@sparticuz/chromium";
+// import puppeteer from "puppeteer-core";
+// import chromium from "@sparticuz/chromium";
 
-export const maxDuration = 60;
-export const dynamic = "force-dynamic";
+// export const maxDuration = 60;
+// export const dynamic = "force-dynamic";
 
-export async function POST(req) {
-  try {
-    const { html, filename } = await req.json();
+// export async function POST(req) {
+//   try {
+//     const { html, filename } = await req.json();
 
-    const isLocal = !process.env.VERCEL;
-    let browser;
+//     const isLocal = !process.env.VERCEL;
+//     let browser;
 
-    if (isLocal) {
-      const localPuppeteer = await import("puppeteer");
-      browser = await localPuppeteer.default.launch({
-        headless: "new",
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      });
-    } else {
-      browser = await puppeteer.launch({
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
-        executablePath: (await chromium.executablePath()) || chromium.path,
-        headless: chromium.headless,
-      });
-    }
+//     if (isLocal) {
+//       const localPuppeteer = await import("puppeteer");
+//       browser = await localPuppeteer.default.launch({
+//         headless: "new",
+//         args: ["--no-sandbox", "--disable-setuid-sandbox"],
+//       });
+//     } else {
+//       browser = await puppeteer.launch({
+//         args: chromium.args,
+//         defaultViewport: chromium.defaultViewport,
+//         executablePath: (await chromium.executablePath()),
+//         headless: chromium.headless,
+//       });
+//     }
 
-    const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "networkidle0" });
+//     const page = await browser.newPage();
+//     await page.setContent(html, { waitUntil: "networkidle0" });
 
-    const pdf = await page.pdf({
-      format: "A4",
-      printBackground: true,
-      margin: { top: "20mm", bottom: "20mm", left: "15mm", right: "15mm" },
-    });
+//     const pdf = await page.pdf({
+//       format: "A4",
+//       printBackground: true,
+//       margin: { top: "20mm", bottom: "20mm", left: "15mm", right: "15mm" },
+//     });
 
-    await browser.close();
+//     await browser.close();
 
-    return new Response(pdf, {
-      headers: {
-        "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="${filename}.pdf"`,
-      },
-    });
-  } catch (error)  {
-    console.error("PDF generation error:", error);
-    return new Response(
-      JSON.stringify({
-        message: "PDF generation failed",
-        error: error.message,
-        stack: error.stack,
-      }),
-      { status: 500 }
-    );
-  }
-}
+//     return new Response(pdf, {
+//       headers: {
+//         "Content-Type": "application/pdf",
+//         "Content-Disposition": `attachment; filename="${filename}.pdf"`,
+//       },
+//     });
+//   } catch (error)  {
+//     console.error("PDF generation error:", error);
+//     return new Response(
+//       JSON.stringify({
+//         message: "PDF generation failed",
+//         error: error.message,
+//         stack: error.stack,
+//       }),
+//       { status: 500 }
+//     );
+//   }
+// }
 
 // import puppeteer from "puppeteer-core";
 // import chromium from "@sparticuz/chromium";
@@ -197,5 +197,57 @@ export async function POST(req) {
 //   }
 // }
 
+import puppeteer from "puppeteer-core";
+import chromium from "@sparticuz/chromium";
+
+export const maxDuration = 60;
+export const dynamic = "force-dynamic";
+
+export async function POST(req) {
+  try {
+    const { html, filename } = await req.json();
+    const isLocal = !process.env.VERCEL;
+
+    let browser;
+
+    if (isLocal) {
+      const localPuppeteer = await import("puppeteer");
+      browser = await localPuppeteer.default.launch({
+        headless: true,
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      });
+    } else {
+      browser = await puppeteer.launch({
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
+      });
+    }
+
+    const page = await browser.newPage();
+    await page.setContent(html, { waitUntil: "networkidle0" });
+
+    const pdf = await page.pdf({
+      format: "A4",
+      printBackground: true,
+      margin: { top: "20mm", bottom: "20mm", left: "15mm", right: "15mm" },
+    });
+
+    await browser.close();
+
+    return new Response(pdf, {
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment; filename="${filename}.pdf"`,
+      },
+    });
+  } catch (error) {
+    console.error("PDF generation error:", error);
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+    });
+  }
+}
 
 
