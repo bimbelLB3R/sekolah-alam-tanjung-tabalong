@@ -2,8 +2,7 @@
   "functions": {
     "app/api/**/*.js": {
       "maxDuration": 60,
-      "memory": 1024,
-      "runtime": "nodejs20.13.1"
+      "memory": 1024
     }
   }
 }
