@@ -196,7 +196,6 @@
 //     });
 //   }
 // }
-
 import puppeteer from "puppeteer-core";
 import chromium from "@sparticuz/chromium";
 
@@ -217,10 +216,15 @@ export async function POST(req) {
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
       });
     } else {
+      chromium.setHeadlessMode = true;
+chromium.setGraphicsMode = false;
+      const executablePath = await chromium.executablePath();
+      console.log("Chromium executable path:", executablePath);
+
       browser = await puppeteer.launch({
         args: chromium.args,
         defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath(),
+        executablePath,
         headless: chromium.headless,
       });
     }
