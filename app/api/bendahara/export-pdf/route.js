@@ -74,7 +74,7 @@
 //   }
 // }
 
-// untuk dikeduanya
+// untuk dikeduanya (jalan di lokal)
 import puppeteer from "puppeteer-core";
 import chromium from "@sparticuz/chromium";
 
@@ -120,11 +120,16 @@ export async function POST(req) {
         "Content-Disposition": `attachment; filename="${filename}.pdf"`,
       },
     });
-  } catch (error) {
+  } catch (error)  {
     console.error("PDF generation error:", error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-    });
+    return new Response(
+      JSON.stringify({
+        message: "PDF generation failed",
+        error: error.message,
+        stack: error.stack,
+      }),
+      { status: 500 }
+    );
   }
 }
 
