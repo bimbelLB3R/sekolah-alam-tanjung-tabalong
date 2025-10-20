@@ -196,6 +196,8 @@
 //     });
 //   }
 // }
+
+
 import puppeteer from "puppeteer-core";
 import chromium from "@sparticuz/chromium";
 
@@ -206,19 +208,21 @@ export async function POST(req) {
   try {
     const { html, filename } = await req.json();
     const isLocal = !process.env.VERCEL;
-
     let browser;
 
     if (isLocal) {
+      // 🖥️ Saat lokal
       const localPuppeteer = await import("puppeteer");
       browser = await localPuppeteer.default.launch({
         headless: true,
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
       });
     } else {
+      // ☁️ Saat di Vercel
       chromium.setHeadlessMode = true;
-chromium.setGraphicsMode = false;
-      const executablePath = await chromium.executablePath();
+      chromium.setGraphicsMode = false;
+
+      const executablePath = chromium.executablePath;
       console.log("Chromium executable path:", executablePath);
 
       browser = await puppeteer.launch({
@@ -253,5 +257,6 @@ chromium.setGraphicsMode = false;
     });
   }
 }
+
 
 
