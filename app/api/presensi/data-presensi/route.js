@@ -9,6 +9,7 @@ export async function GET() {
     DATE_FORMAT(p.tanggal, '%Y-%m-%d') AS tanggal,
     p.jam,
     p.jenis,
+    p.keterangan,
     u.name AS nama,
     p.photo_url
 FROM presensi p

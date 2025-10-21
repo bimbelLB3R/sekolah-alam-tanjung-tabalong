@@ -19,6 +19,7 @@ export default function Sidebar({ isOpen, onClose }) {
   const pathname = usePathname();
   const { user, loading } = useAuth();
   const userRoleName=user?.role_name;
+  // console.log(userRoleName)
   // Accordion state: hanya satu menu utama yang terbuka
   const [openMenu, setOpenMenu] = useState(null); 
   const [userCount, setUserCount] = useState(0);
@@ -76,6 +77,7 @@ export default function Sidebar({ isOpen, onClose }) {
       key: "users",
       label: "Users",
       icon: <Users />,
+      allowedRoles: ["superadmin"], // ← TAMBAHKAN INI
       badge: userCount,
       items: [
         { label: "List Users", href: "/dashboard/users" },
@@ -88,6 +90,7 @@ export default function Sidebar({ isOpen, onClose }) {
       key: "bendahara",
       label: "Bendahara",
       icon: <Wallet />,
+      allowedRoles: ["superadmin","bendahara"], // ← TAMBAHKAN INI
       items: [
         {
           label: "Pemasukan",
@@ -100,15 +103,15 @@ export default function Sidebar({ isOpen, onClose }) {
         {
           label: "Penggajian",
           items: [
-            { label: "Karyawan", href: "/dashboard/bendahara/penggajian/karyawan" },
-            { label: "Guru", href: "/dashboard/bendahara/penggajian/guru" },
-            { label: "Lainnya", href: "/dashboard/bendahara/penggajian/lainnya" },
+            // { label: "Karyawan", href: "/dashboard/bendahara/slip" },
+            { label: "Guru", href: "/dashboard/bendahara/slip" },
+            { label: "Lainnya", href: "/dashboard/bendahara" },
           ],
         },
         {
-          label: "Bonus",
+          label: "Data Guru",
           items: [
-            { label: "Kehadiran", href: "/dashboard/bendahara/bonus/kehadiran" },
+            { label: "Kehadiran", href: "/dashboard/manajemen/data-presensi" },
             { label: "Administrasi", href: "/dashboard/bendahara/bonus/administrasi" },
             { label: "Lainnya", href: "/dashboard/bendahara/bonus/lainnya" },
           ],
@@ -120,6 +123,7 @@ export default function Sidebar({ isOpen, onClose }) {
       key: "manajemen",
       label: "Manajemen",
       icon: <Cable />,
+      allowedRoles: ["superadmin","manajemen"], // ← TAMBAHKAN INI
       badge: infoManaj,
       items: [
         { label: "Data Siswa", href: "/dashboard/manajemen/dapodik" },
@@ -132,6 +136,7 @@ export default function Sidebar({ isOpen, onClose }) {
       key: "events",
       label: "Events",
       icon: <Calendar />,
+      allowedRoles: ["superadmin","manajemen"], // ← TAMBAHKAN INI
       badge: eventsCount,
       items: [
         { label: "Kelola Even", href: "/dashboard/events" },
@@ -144,13 +149,14 @@ export default function Sidebar({ isOpen, onClose }) {
       label: "Administrasi Guru",
       icon: <Cable />,
       badge: infoManaj,
+      allowedRoles: ["superadmin","guru","manajemen"], // ← TAMBAHKAN INI
       items: [
         { label: "Tahfidz", href: "/dashboard/guru/tahfidz" },
         { label: "Tilawati", href: "/dashboard/guru/tilawati" },
         { label: "Weekly", href: "/dashboard/guru/weekly" },
       ],
     },
-    { type: "link", label: "Settings", href: "/settings", icon: <Settings />}
+    { type: "link", label: "Settings", href: "/dashboard/settings", icon: <Settings />,allowedRoles: ["superadmin"]}
   ];
 
   // Fungsi rekursif untuk render submenu multi-level
@@ -189,12 +195,7 @@ export default function Sidebar({ isOpen, onClose }) {
     });
   };
 
-// function hasAccess(roleName, href) {
-//   if (!href) return false; // guard penting
-//   const allowed = rolePermissions[roleName] || [];
-//   if (allowed.includes("*")) return true;
-//   return allowed.some(path => href.startsWith(path));
-// }
+
 
 // Fungsi cek izin -> SAMA dengan middleware
 function hasAccess(roleName, href) {
@@ -202,7 +203,7 @@ function hasAccess(roleName, href) {
   if (!roleName) return false
   if (!href) return false; // guard penting
   const allowed = rolePermissions[roleName] || []
-
+  // console.log(allowed)
   // superadmin
   if (allowed.includes("*")) return true
 
@@ -213,6 +214,24 @@ function hasAccess(roleName, href) {
   return allowed.some(path =>
     path !== "/dashboard" && href.startsWith(path)
   )
+}
+
+// Tambahkan fungsi helper ini
+function filterMenuItems(items, roleName) {
+  return items
+    .map(item => {
+      // Jika punya nested items, filter rekursif
+      if (item.items) {
+        const filteredChildren = filterMenuItems(item.items, roleName);
+        // Hanya return kalau ada children yang lolos
+        return filteredChildren.length > 0 
+          ? { ...item, items: filteredChildren } 
+          : null;
+      }
+      // Jika single item, cek akses
+      return hasAccess(roleName, item.href) ? item : null;
+    })
+    .filter(Boolean); // hapus null
 }
 
 
@@ -248,8 +267,13 @@ function hasAccess(roleName, href) {
               }
               if (menu.type === "collapsible") {
                   // filter items di dalam collapsible
-                  const filteredItems = menu.items.filter(item => hasAccess(userRoleName, item.href));
-
+                  // const filteredItems = menu.items.filter(item => hasAccess(userRoleName, item.href));
+                  // ✅ CEK ROLE DULU sebelum filter items
+                  if (menu.allowedRoles && !menu.allowedRoles.includes(userRoleName)) {
+                    return null; // ← role tidak diizinkan, hide menu
+                  }
+                  const filteredItems = filterMenuItems(menu.items, userRoleName);
+                  // console.log(filteredItems)
                   if (filteredItems.length === 0) return null; // kalau kosong, hide collapsible
                 return (
                   <Collapsible
