@@ -104,7 +104,7 @@ export default function Sidebar({ isOpen, onClose }) {
           label: "Penggajian",
           items: [
             // { label: "Karyawan", href: "/dashboard/bendahara/slip" },
-            { label: "Guru", href: "/dashboard/bendahara/slip" },
+            { label: "Slip Gaji", href: "/dashboard/bendahara/slip" },
             { label: "Lainnya", href: "/dashboard/bendahara" },
           ],
         },
@@ -112,7 +112,7 @@ export default function Sidebar({ isOpen, onClose }) {
           label: "Data Guru",
           items: [
             { label: "Kehadiran", href: "/dashboard/manajemen/data-presensi" },
-            { label: "Administrasi", href: "/dashboard/bendahara/bonus/administrasi" },
+            { label: "Validasi Ijin", href: "/dashboard/bendahara/ijin" },
             { label: "Lainnya", href: "/dashboard/bendahara/bonus/lainnya" },
           ],
         },
@@ -154,6 +154,7 @@ export default function Sidebar({ isOpen, onClose }) {
         { label: "Tahfidz", href: "/dashboard/guru/tahfidz" },
         { label: "Tilawati", href: "/dashboard/guru/tilawati" },
         { label: "Weekly", href: "/dashboard/guru/weekly" },
+        { label: "Data Kehadiran", href: "/dashboard/manajemen/data-presensi" },
       ],
     },
     { type: "link", label: "Settings", href: "/dashboard/settings", icon: <Settings />,allowedRoles: ["superadmin"]}

@@ -196,13 +196,12 @@
 //   );
 // }
 
-
 "use client";
 
 import { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Building2, User, Wallet, Download, Calendar, CheckCircle, AlertCircle } from "lucide-react";
+import { Building2, User, Wallet, Download, Calendar, CheckCircle, AlertCircle, HelpingHand } from "lucide-react";
 import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { pdf } from "@react-pdf/renderer";
@@ -211,20 +210,40 @@ import SlipGajiPDF from "@/app/dashboard/components/bendahara/SlipGajiPDF";
 export default function DetailGajiPage() {
   const { id } = useParams();
   const [data, setData] = useState(null);
+  const [idKaryawan, setIdKaryawan] = useState(null);
   const [presensiSummary, setPresensiSummary] = useState(null);
   const [tanggalCetak, setTanggalCetak] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [dataIjin, setDataIjin] = useState(null);
 
-  // console.log(data);
+  const fetchIjinSummary = async () => {
+    try {
+      const response = await fetch(`/api/bendahara/slip/${idKaryawan}`);
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Gagal mengambil data');
+      }
+
+      setDataIjin(result.data);
+    } catch (err) {
+      console.error('Error:', err);
+    }
+  };
+
+  useEffect(() => {
+    if (!idKaryawan) return;
+    fetchIjinSummary();
+  }, [idKaryawan]);
 
   useEffect(() => {
     async function fetchDetail() {
       const res = await fetch(`/api/bendahara/listkaryawan/${id}`);
       const result = await res.json();
+      const userIdKaryawan = result.user_id;
       setData(result);
-      
+      setIdKaryawan(userIdKaryawan);
 
-      // Fetch presensi summary untuk bulan ini
       if (result?.id) {
         await fetchPresensiSummary(result.user_id);
       }
@@ -238,10 +257,8 @@ export default function DetailGajiPage() {
 
   const fetchPresensiSummary = async (userId) => {
     try {
-      // Ambil data presensi bulan ini
       const res = await fetch(`/api/presensi/summary?user_id=${userId}`);
       const summary = await res.json();
-      console.log(summary)
       
       if (summary.success) {
         setPresensiSummary({
@@ -259,12 +276,13 @@ export default function DetailGajiPage() {
     try {
       setIsGenerating(true);
       
-      // Generate PDF dengan data presensi
+      // Generate PDF dengan semua data lengkap
       const blob = await pdf(
         <SlipGajiPDF 
           data={data} 
           tanggalCetak={tanggalCetak}
           presensiSummary={presensiSummary}
+          dataIjin={dataIjin}
         />
       ).toBlob();
 
@@ -296,19 +314,26 @@ export default function DetailGajiPage() {
   }
 
   // Hitung tunjangan kehadiran berdasarkan jumlah tepat waktu
-  const tunjanganKehadiranBase = Number(data.tunjangan_kehadiran);
+  const tunjanganKehadiranBase = Number(data.tunjangan_kehadiran) || 0;
   const tunjanganKehadiranTotal = tunjanganKehadiranBase * presensiSummary.tepatWaktu;
+  
+  // Hitung tunjangan makan per hari hadir
+  const tunjanganMakanPerHari = Number(data.tunjangan_makan) || 0;
+  const totalTunjanganMakan = tunjanganMakanPerHari * presensiSummary.totalHadir;
 
   const totalGaji =
     Number(data.gaji_pokok) +
     Number(data.tunjangan_bpjs) +
     Number(data.tunjangan_jabatan) +
-    Number(data.tunjangan_makan) +
-    tunjanganKehadiranTotal + // Gunakan yang sudah dikalikan
+    totalTunjanganMakan +
+    tunjanganKehadiranTotal +
     Number(data.tunjangan_sembako) +
     Number(data.tunjangan_kepala_keluarga);
 
-  const totalPotongan = Number(data.potongan_makan);
+  const totalIjinDipotong = dataIjin?.summary?.total_ijin_keluar_dipotong || 0;
+  const potonganPribadi = Number(totalIjinDipotong * tunjanganKehadiranBase) || 0;
+  
+  const totalPotongan = Number(data.potongan_makan || 0) + potonganPribadi;
   const takeHomePay = totalGaji - totalPotongan;
 
   return (
@@ -375,7 +400,37 @@ export default function DetailGajiPage() {
               Data Kehadiran Bulan Ini
             </CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-3 gap-4 text-sm">
+          <CardContent className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
+            <div className="bg-white p-3 rounded-lg border border-blue-200">
+              <div className="flex items-center gap-2 mb-1">
+                <HelpingHand className="w-4 h-4 text-green-600" />
+                <span className="text-xs text-gray-600">Ijin Tidak Masuk</span>
+              </div>
+              {dataIjin && dataIjin.summary ? (
+                <p className="text-2xl font-bold text-green-600">
+                  {dataIjin.summary.total_ijin_tidak_masuk}
+                </p>
+              ) : (
+                <p className="text-2xl font-bold text-green-600">0</p>
+              )}
+              <p className="text-xs text-gray-500">hari</p>
+            </div>
+
+            <div className="bg-white p-3 rounded-lg border border-blue-200">
+              <div className="flex items-center gap-2 mb-1">
+                <HelpingHand className="w-4 h-4 text-green-600" />
+                <span className="text-xs text-gray-600">Ijin Keluar Pribadi</span>
+              </div>
+              {dataIjin && dataIjin.summary ? (
+                <p className="text-2xl font-bold text-green-600">
+                  {dataIjin.summary.total_ijin_keluar_dipotong}
+                </p>
+              ) : (
+                <p className="text-2xl font-bold text-green-600">0</p>
+              )}
+              <p className="text-xs text-gray-500">hari</p>
+            </div>
+
             <div className="bg-white p-3 rounded-lg border border-blue-200">
               <div className="flex items-center gap-2 mb-1">
                 <CheckCircle className="w-4 h-4 text-green-600" />
@@ -412,7 +467,7 @@ export default function DetailGajiPage() {
         </Card>
 
         {/* Rincian Gaji */}
-        <div className="grid grid-cols-2 gap-6 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
           {/* Gaji */}
           <Card className="shadow-none border">
             <CardHeader>
@@ -434,12 +489,17 @@ export default function DetailGajiPage() {
                 <span>Rp {Number(data.tunjangan_jabatan).toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
-                <span>Tunjangan Makan</span>
-                <span>Rp {Number(data.tunjangan_makan).toLocaleString()}</span>
+                <div className="flex flex-col">
+                  <span>Tunjangan Makan</span>
+                  <span className="text-xs text-gray-500">
+                    Rp {tunjanganMakanPerHari.toLocaleString()} × {presensiSummary.totalHadir} hari
+                  </span>
+                </div>
+                <span>Rp {totalTunjanganMakan.toLocaleString()}</span>
               </div>
               <div className="flex justify-between bg-green-50 p-2 rounded">
                 <div className="flex flex-col">
-                  <span>Tunjangan Kehadiran</span>
+                  <span>Tunjangan Hadir On Time</span>
                   <span className="text-xs text-green-600">
                     Rp {tunjanganKehadiranBase.toLocaleString()} × {presensiSummary.tepatWaktu} hari
                   </span>
@@ -472,14 +532,23 @@ export default function DetailGajiPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-sm">
+              {dataIjin && dataIjin.summary && dataIjin.summary.total_ijin_keluar_dipotong > 0 ? (
+                <div className="flex justify-between">
+                  <div className="flex flex-col">
+                    <span>Potongan Ijin Keluar</span>
+                    <span className="text-xs text-gray-500">
+                      Rp {tunjanganKehadiranBase.toLocaleString()} × {dataIjin.summary.total_ijin_keluar_dipotong} hari
+                    </span>
+                  </div>
+                  <span>Rp {Number(tunjanganKehadiranBase * dataIjin.summary.total_ijin_keluar_dipotong).toLocaleString()}</span>
+                </div>
+              ) : null}
+
               <div className="flex justify-between">
-                <span>Potongan Makan</span>
-                <span>Rp {Number(data.potongan_makan).toLocaleString()}</span>
+                <span>Potongan Lainnya</span>
+                <span>Rp {Number(data.potongan_makan || 0).toLocaleString()}</span>
               </div>
-              <div className="flex justify-between">
-                <span>Potongan Ijin Pribadi</span>
-                <span>Rp {Number(data.potongan_makan).toLocaleString()}</span>
-              </div>
+
               <Separator />
               <div className="flex justify-between font-semibold">
                 <span>Total Potongan</span>

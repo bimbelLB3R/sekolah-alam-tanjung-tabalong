@@ -5,11 +5,13 @@ import { randomUUID } from "crypto";
 export async function GET() {
   try {
     const [rows] = await pool.query(`
-      SELECT g.*, u.name 
+      SELECT g.*, u.name,
+        DATE_FORMAT(g.effective_date, '%Y-%m-%d') as effective_date
       FROM gaji_karyawan g
       JOIN users u ON g.user_id = u.id
       ORDER BY g.created_at DESC
     `);
+    
     return NextResponse.json(rows);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

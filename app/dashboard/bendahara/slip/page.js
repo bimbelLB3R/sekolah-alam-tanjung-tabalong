@@ -8,7 +8,7 @@ import Link from "next/link";
 export default function GajiPage() {
   const [data, setData] = useState([]);
   const [openModal, setOpenModal] = useState(false);
-
+  // console.log(data)
   async function fetchData() {
     const res = await fetch("/api/bendahara/listkaryawan");
     setData(await res.json());

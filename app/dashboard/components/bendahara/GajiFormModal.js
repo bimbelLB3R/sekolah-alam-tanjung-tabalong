@@ -2,10 +2,12 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
+import { formatDate } from "@/lib/formatDate";
 
 export default function GajiFormModal({ open, setOpen, onSuccess }) {
   const [users, setUsers] = useState([]);
-  const today = new Date().toISOString().split("T")[0];
+  const today1 = new Date().toISOString().split("T")[0];
+  const today=formatDate(today1)
   const [form, setForm] = useState({
     id: null,
     user_id: "",
@@ -23,14 +25,14 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
   });
 
   useEffect(() => {
-    const today = new Date().toISOString().split("T")[0];
+    const today1 = new Date().toISOString().split("T")[0];
+  const today=formatDate(today1)
     if (typeof open === "object") {
       setForm({
         ...open,
-        effective_date: open.effective_date 
-          ? today:""
+        effective_date: open.effective_date || today
       });
-    }else
+    } else {
       setForm({
         id: null,
         user_id: "",
@@ -44,8 +46,9 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
         tunjangan_sembako: 0,
         tunjangan_kepala_keluarga: 0,
         potongan_makan: 0,
-        effective_date:today
+        effective_date: today
       });
+    }
   }, [open]);
 
   useEffect(() => {
