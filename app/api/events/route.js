@@ -19,7 +19,7 @@ export async function POST(req) {
     const id = uuidv4();
 
     await pool.query(
-      "INSERT INTO events (id, title, description, event_date, icon,url) VALUES (?, ?, ?, ?, ?,?,?)",
+      "INSERT INTO events (id, title, description, event_date, icon,url) VALUES (?, ?, ?, ?, ?,?)",
       [id, title, description, event_date, icon || "Calendar",url||null,url_peserta||null]
     );
 
