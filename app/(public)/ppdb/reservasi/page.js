@@ -55,7 +55,7 @@ export default function ReservasiPage() {
       <Card className="shadow-lg">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center">
-            Reservasi Pendaftaran Siswa Baru
+            Form Sit In / Coba Kelas
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -63,7 +63,7 @@ export default function ReservasiPage() {
             {/* Nama Siswa */}
             <div className="space-y-2">
               <Label htmlFor="nama" className="flex items-center gap-2 ">
-                <User className="w-4 h-4 text-lg" /> Nama Calon Siswa
+                <User className="w-4 h-4 text-lg" /> Nama Siswa
               </Label>
               <Input
                 id="nama"
@@ -125,7 +125,7 @@ export default function ReservasiPage() {
             {/* Tanggal Reservasi */}
             <div className="space-y-2">
               <Label htmlFor="tanggal" className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" /> Tanggal Reservasi
+                <Calendar className="w-4 h-4" /> Tanggal Mulai Sit In
               </Label>
               <Input
                 id="tanggal"
@@ -145,7 +145,7 @@ export default function ReservasiPage() {
                   Mengirim...
                 </span>
               ) : (
-                "Kirim Reservasi"
+                "Kirim Data"
               )}
             </Button>
           </form>

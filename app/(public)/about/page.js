@@ -22,7 +22,7 @@ export default function AboutPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+    <div className="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-4 gap-6 ">
       {/* Navigasi Kiri */}
       <ScrollArea className="md:col-span-1 h-[300px] md:h-auto border rounded-xl p-3">
         <h3 className="text-lg font-semibold mb-4">Navigasi</h3>
@@ -44,15 +44,15 @@ export default function AboutPage() {
       {/* Konten Kanan */}
       <div className="md:col-span-3 space-y-12">
         <section id="sejarah">
-          <h2 className="text-2xl font-bold mb-4">Sejarah Berdirinya Sekolah Alam SATT</h2>
+          <h2 className="text-2xl font-bold mb-4">Tentang Sekolah Alam SATT</h2>
           <p className="text-gray-700 leading-relaxed text-lg">
-            Sekolah Alam Nusantara didirikan pada tahun ... dengan tujuan untuk memberikan
-            pendidikan yang menyatu dengan alam dan menumbuhkan kreativitas, rasa ingin tahu,
-            serta karakter positif pada anak-anak sejak dini.
+            Sekolah Alam Tanjung Tabalong (SATT) didirikan pada tahun 2019 dengan tujuan untuk memberikan pendidikan yang menyatu dengan alam dan menumbuhkan kreativitas, rasa ingin tahu, serta karakter positif pada anak-anak sejak dini.
           </p>
           <p className="text-gray-700 leading-relaxed text-lg">
-            Konsep ini mengutamakan pengalaman belajar langsung di alam, memanfaatkan lingkungan
-            sebagai laboratorium kehidupan, dan melibatkan orang tua dalam proses pembelajaran.
+            Konsep ini mengutamakan pengalaman belajar langsung di alam, memanfaatkan lingkungan sebagai laboratorium kehidupan, dan melibatkan orang tua dalam proses pembelajaran.
+          </p>
+          <p className="text-gray-700 leading-relaxed text-lg">
+            SATT menerapkan empat pilar utama, yaitu Pilar Akhlak, Pilar Logika, Pilar Kepemimpinan dan Pilar Kewirausahaan. Pilar logika merupakan cara kita belajar mengelola alam semesta. Pilar kepemimpinan merupakan cara kita memimpin, sedangkan pilar kewirausahaan merupakan cara kita memberi rahmat bagi alam semesta. (Lendo Novo). 
           </p>
         </section>
 

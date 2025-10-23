@@ -9,21 +9,35 @@ import Link from "next/link"
 
 export default function AgendaPage() {
   const [events, setEvents] = useState([])
+  const [loading, setLoading] = useState(true) // 🌀 state loading
+  const [error, setError] = useState(null)
 
   useEffect(() => {
-    fetch("/api/events")
-      .then(res => res.json())
-      .then(data => setEvents(data))
+    const fetchEvents = async () => {
+      try {
+        setLoading(true)
+        const res = await fetch("/api/events")
+        if (!res.ok) throw new Error("Gagal memuat data")
+        const data = await res.json()
+        setEvents(data)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchEvents()
   }, [])
 
   const icons = { Calendar, Clock }
 
-  // fungsi bantu untuk menentukan status event
+  // Fungsi bantu untuk menentukan status event
   const getEventStatus = (eventDate) => {
     const today = new Date()
     const eventDay = new Date(eventDate)
 
-    // normalisasi (hapus jam)
+    // Normalisasi (hapus jam)
     today.setHours(0, 0, 0, 0)
     eventDay.setHours(0, 0, 0, 0)
 
@@ -41,56 +55,85 @@ export default function AgendaPage() {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-4xl font-bold mb-8 text-center">Agenda Sekolah 2025/2026</h1>
+      <h1 className="text-4xl font-bold mb-8 text-center">
+        Agenda Sekolah 2025/2026
+      </h1>
 
-      <div className="relative border-l border-gray-300 dark:border-gray-700 pl-6 space-y-8 text-lg">
-        {events.map((event) => {
-          const Icon = icons[event.icon] || Calendar
-          const statusText = getEventStatus(event.event_date)
-          const eventDate = new Date(event.event_date)
+      {/* 🌀 Loading state */}
+      {loading && (
+        <div className="flex justify-center items-center py-20 text-gray-600 text-lg animate-pulse">
+          Memuat agenda...
+        </div>
+      )}
 
-          return (
-            <div key={event.id} className="relative">
-              <span className="absolute -left-3 flex items-center justify-center w-6 h-6 rounded-full bg-green-600 text-white">
-                <Icon className="w-3 h-3" />
-              </span>
+      {/* 🚫 Error state */}
+      {error && !loading && (
+        <div className="text-center text-red-500 py-10">
+          Terjadi kesalahan: {error}
+        </div>
+      )}
 
-              <Card className="shadow-md">
-                <CardHeader>
-                  <CardTitle className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                    <span>{event.title}</span>
-                    <Badge variant="secondary" className="w-fit">
-                      {eventDate.toLocaleDateString("id-ID", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </Badge>
-                  </CardTitle>
-                </CardHeader>
+      {/* 🚫 Empty state */}
+      {!loading && !error && events.length === 0 && (
+        <div className="text-center text-gray-500 py-20">
+          Tidak ada event yang tersedia saat ini.
+        </div>
+      )}
 
-                <CardContent>
-                  <p className="text-gray-700 mb-2">{event.description}</p>
-                  <p className="text-sm text-gray-500 italic">{statusText}</p>
+      {/* ✅ List event */}
+      {!loading && events.length > 0 && (
+        <div className="relative border-l border-gray-300 dark:border-gray-700 pl-6 space-y-8 text-lg">
+          {events.map((event) => {
+            const Icon = icons[event.icon] || Calendar
+            const statusText = getEventStatus(event.event_date)
+            const eventDate = new Date(event.event_date)
 
-                {event.url && (
-                  <div
-                    className={`${
-                      statusText === "Sudah selesai" ? "hidden" : "mt-4 flex items-center justify-end"
-                    }`}
-                  >
-                    <Link href={event.url}>
-                      <Button className="w-full">Daftar</Button>
-                    </Link>
-                  </div>
-                )}
+            return (
+              <div key={event.id} className="relative">
+                <span className="absolute -left-3 flex items-center justify-center w-6 h-6 rounded-full bg-green-600 text-white">
+                  <Icon className="w-3 h-3" />
+                </span>
 
-                </CardContent>
-              </Card>
-            </div>
-          )
-        })}
-      </div>
+                <Card className="shadow-md hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                      <span>{event.title}</span>
+                      <Badge variant="secondary" className="w-fit">
+                        {eventDate.toLocaleDateString("id-ID", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })}
+                      </Badge>
+                    </CardTitle>
+                  </CardHeader>
+
+                  <CardContent>
+                    <p className="text-gray-700 mb-2">{event.description}</p>
+                    <p className="text-sm text-gray-500 italic">{statusText}</p>
+
+                    {event.url && (
+                      <div
+                        className={`${
+                          statusText === "Sudah selesai"
+                            ? "hidden"
+                            : "mt-4 flex items-center justify-end"
+                        }`}
+                      >
+                        <Link href={event.url}>
+                          <Button className="w-full sm:w-auto">
+                            Daftar
+                          </Button>
+                        </Link>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }

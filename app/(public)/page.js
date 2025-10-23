@@ -68,12 +68,12 @@ const fiturList = [
     { title: "Aktivitas Anak", desc: "Berbagai aktivitas 3B khas SATT", icon: TentTree,href:"/activities"  },
   ]
   return (
-    <div className="space-y-20">
+    <div className="space-y-20 bg-gradient-to-br from-green-50 to-emerald-100">
       {/* Hero Section */}
       <HeroSection/>
 
       {/* Galeri + Deskripsi */}
-<section className="p-3">
+<section className="p-3 ">
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center max-w-5xl mx-auto">
     {/* Deskripsi */}
     <div className="space-y-4">
@@ -119,7 +119,7 @@ const fiturList = [
 
 
       {/* Fitur Utama */}
-      <section className="p-3">
+      <section className="p-3 ">
         <h2 className="text-4xl font-semibold text-center mb-8">Fitur Utama</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
         {fiturList.map((fitur, i) => {
@@ -149,7 +149,7 @@ const fiturList = [
       </section>
 
       {/* Testimoni */}
-      <section className="p-3">
+      <section className="p-3 ">
         <h2 className="text-4xl font-semibold text-center mb-8">Apa Kata Mereka?</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto text-lg">
           {[1, 2, 3].map((i) => (

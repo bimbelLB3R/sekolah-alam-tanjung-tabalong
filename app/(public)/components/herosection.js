@@ -78,7 +78,7 @@ export default function HeroSection() {
           </p>
           <Button asChild size="lg" variant="secondary" className="gap-2">
             <Link href="/ppdb/reservasi">
-              Pesan Tempat <ArrowRight className="w-4 h-4" />
+              Coba Kelas Yuk...! <ArrowRight className="w-4 h-4" />
             </Link>
           </Button>
         </motion.div>

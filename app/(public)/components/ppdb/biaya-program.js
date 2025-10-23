@@ -33,6 +33,7 @@ const biayaData = [
     items: [
       "Biaya Pendaftaran Rp200.000",
       "Sisa Pembayaran dapat dicicil hingga Juli 2026",
+      "Pembayaran dapat dilakukan ke Rek BSI 7236336349 a.n Sekolah Alam Tanjung Tabalong",
       "ABK wajib melampirkan surat keterangan psikolog atau yang berkepentingan",
       "Khusus ABK yang direkomendasikan menggunakan Guru Pendamping, membayar tambahan Rp1.500.000 /bulan di luar SPP atau menyediakan Guru Pendamping sendiri dengan ketentuan berlaku",
       "Kuota ABK terbatas di setiap kelasnya",
@@ -53,7 +54,7 @@ export default function BiayaProgram() {
               className="flex flex-col md:flex-row border shadow-sm"
             >
               {/* Kiri - Jenjang */}
-              <div className="md:w-1/3 w-full border-b md:border-b-0 md:border-r p-4 flex items-center justify-center bg-green-50">
+              <div className="md:w-1/3 w-full border-b md:border-b-0 md:border-r p-4 flex items-center justify-center bg-green-50 ">
                 <h3 className="text-lg font-semibold text-center">
                   {biaya.jenjang}
                 </h3>
