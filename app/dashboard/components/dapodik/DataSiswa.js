@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
-import { Loader2, ChevronLeft, ChevronRight, Search } from "lucide-react"
+import { Loader2, ChevronLeft, ChevronRight, Search, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { formatName } from "@/lib/formatName"
@@ -63,6 +63,11 @@ export default function DataSiswa({ userRoleName,data,loading }) {
                         <td className="border px-3 py-2 font-medium text-blue-600 hover:underline">
                           <Link href={`dapodik/${row.id}`}>
                             {formatName(row.nama_lengkap)}
+                          </Link>
+                        </td>
+                        <td className="border px-3 py-2 font-medium text-blue-600 hover:underline">
+                          <Link href={`/ppdb/pdf/${row.id}`} target="_blank">
+                            <Download/>
                           </Link>
                         </td>
                       </tr>
