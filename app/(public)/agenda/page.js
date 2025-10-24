@@ -33,25 +33,24 @@ export default function AgendaPage() {
   const icons = { Calendar, Clock }
 
   // Fungsi bantu untuk menentukan status event
-  const getEventStatus = (eventDate) => {
+  const getEventStatus = (startDate,endDate) => {
     const today = new Date()
-    const eventDay = new Date(eventDate)
+  const start = new Date(startDate)
+  const end = new Date(endDate)
 
     // Normalisasi (hapus jam)
     today.setHours(0, 0, 0, 0)
-    eventDay.setHours(0, 0, 0, 0)
-
-    const diffTime = eventDay - today
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-
-    if (diffDays > 0) {
-      return `Akan dimulai dalam ${diffDays} hari`
-    } else if (diffDays === 0) {
-      return "Sedang berlangsung hari ini"
-    } else {
-      return "Sudah selesai"
-    }
+  start.setHours(0, 0, 0, 0)
+  end.setHours(0, 0, 0, 0)
+if (today < start) {
+    const diffDays = Math.ceil((start - today) / (1000 * 60 * 60 * 24))
+    return `Akan dimulai dalam ${diffDays} hari`
+  } else if (today >= start && today <= end) {
+    return "Sedang berlangsung"
+  } else {
+    return "Sudah selesai"
   }
+}
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -85,8 +84,9 @@ export default function AgendaPage() {
         <div className="relative border-l border-gray-300 dark:border-gray-700 pl-6 space-y-8 text-lg">
           {events.map((event) => {
             const Icon = icons[event.icon] || Calendar
-            const statusText = getEventStatus(event.event_date)
-            const eventDate = new Date(event.event_date)
+            const startDate = new Date(event.start_date)
+            const endDate = new Date(event.end_date)
+            const statusText = getEventStatus(startDate,endDate)
 
             return (
               <div key={event.id} className="relative">
@@ -99,7 +99,7 @@ export default function AgendaPage() {
                     <CardTitle className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                       <span>{event.title}</span>
                       <Badge variant="secondary" className="w-fit">
-                        {eventDate.toLocaleDateString("id-ID", {
+                        {startDate.toLocaleDateString("id-ID", {
                           day: "numeric",
                           month: "long",
                           year: "numeric",
