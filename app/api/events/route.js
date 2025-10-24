@@ -11,20 +11,29 @@ export async function GET() {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
-
 // POST create new event
 export async function POST(req) {
   try {
-    const { title, description, event_date, icon,url,url_peserta } = await req.json();
+    const { title, description, event_date, icon, url, url_peserta } = await req.json();
+    
+    // Validasi input
+    if (!title || !description || !event_date) {
+      return NextResponse.json(
+        { error: "Title, description, and event_date are required" },
+        { status: 400 }
+      );
+    }
+
     const id = uuidv4();
 
     await pool.query(
-      "INSERT INTO events (id, title, description, event_date, icon,url) VALUES (?, ?, ?, ?, ?,?)",
-      [id, title, description, event_date, icon || "Calendar",url||null,url_peserta||null]
+      "INSERT INTO events (id, title, description, event_date, icon, url, url_peserta) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      [id, title, description, event_date, icon || "Calendar", url || null, url_peserta || null]
     );
 
-    return NextResponse.json({ message: "Event created successfully" });
+    return NextResponse.json({ message: "Event created successfully", id }, { status: 201 });
   } catch (err) {
+    console.error("Error creating event:", err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
