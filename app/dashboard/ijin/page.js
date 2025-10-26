@@ -163,18 +163,18 @@ export default function FormIjinKaryawan() {
                 <RadioGroup 
                   value={formData.jenis_ijin}
                   onValueChange={(value) => handleChange('jenis_ijin', value)}
-                  className="flex gap-4"
+                  className="md:flex gap-4"
                 >
                   <div className="flex items-center space-x-2 border rounded-lg p-4 flex-1 cursor-pointer hover:bg-slate-50 transition-colors">
                     <RadioGroupItem value="keluar" id="keluar" />
-                    <Label htmlFor="keluar" className="cursor-pointer flex-1">
+                    <Label htmlFor="keluar" className="cursor-pointer grid grid-cols-1 md:flex-1">
                       <div className="font-medium">Ijin Keluar</div>
                       <div className="text-xs text-slate-500">Keluar saat jam kerja</div>
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2 border rounded-lg p-4 flex-1 cursor-pointer hover:bg-slate-50 transition-colors">
                     <RadioGroupItem value="tidak_masuk" id="tidak_masuk" />
-                    <Label htmlFor="tidak_masuk" className="cursor-pointer flex-1">
+                    <Label htmlFor="tidak_masuk" className="cursor-pointer grid grid-cols-1 md:flex-1">
                       <div className="font-medium">Ijin Tidak Masuk</div>
                       <div className="text-xs text-slate-500">Tidak masuk kerja</div>
                     </Label>

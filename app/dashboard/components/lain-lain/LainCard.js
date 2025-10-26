@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import { BookOpen, BookText, VectorSquare } from "lucide-react";
+import { ArrowUpDown, BookOpen, BookText, HandCoins, VectorSquare } from "lucide-react";
 import { motion } from "framer-motion";
 
 const menuItems = [
@@ -20,6 +20,16 @@ const menuItems = [
     name: "Manajemen Kelas SATT",
     icon: VectorSquare,
     href: "/dashboard/manajemen/lainnya/kelas",
+  },
+  {
+    name: "Manajemen Pembayaran",
+    icon: HandCoins,
+    href: "/dashboard/manajemen/lainnya/pembayaran",
+  },
+  {
+    name: "Jurnal Harian/ Kas Masuk-Keluar",
+    icon: ArrowUpDown,
+    href: "/dashboard/manajemen/lainnya/pembayaran",
   },
 ];
 

@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Clock, Calendar, User, FileText, AlertCircle, Mail, Loader2, RefreshCw } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-
+import { formatDate } from '@/lib/formatDate';
 export default function BendaharaPage() {
   const [dataIjin, setDataIjin] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -202,9 +202,9 @@ export default function BendaharaPage() {
                   <div className="flex items-start gap-2">
                     <User className="w-4 h-4 text-slate-500 mt-1" />
                     <div>
-                      <p className="text-xs text-slate-500 font-medium">Pemberi Ijin</p>
+                      <p className="text-xs text-slate-500 font-medium">Tanggal dibuat</p>
                       <p className="text-sm font-semibold text-slate-700">
-                        {ijin.nama_pemberi_ijin}
+                        {formatDate(ijin.created_at)}
                       </p>
                     </div>
                   </div>
