@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowUpDown, BookOpen, BookText, HandCoins, VectorSquare } from "lucide-react";
+import { ArrowUpDown, BookOpen, BookText, HandCoins, TentTree, VectorSquare } from "lucide-react";
 import { motion } from "framer-motion";
 
 const menuItems = [
@@ -30,6 +30,11 @@ const menuItems = [
     name: "Jurnal Harian/ Kas Masuk-Keluar",
     icon: ArrowUpDown,
     href: "/dashboard/manajemen/lainnya/pembayaran",
+  },
+  {
+    name: "Monitoring Kegiatan Kelas",
+    icon: TentTree,
+    href: "/dashboard/manajemen/monitoring-kegiatan",
   },
 ];
 
