@@ -1,15 +1,16 @@
 // app/components/NavbarWrapper.jsx untuk ambil data user dari server dilempar ke NavbarPublic
 
 import { cookies } from "next/headers"
-// import { getUserFromCookie } from "@/lib/getUserFromCookie"
+import { getUserFromCookie } from "@/lib/getUserFromCookie"
 import NavbarPublic from "./navbar"
 // import { NextResponse } from "next/server"
 import { jwtVerify } from "jose"
 // import { rolePermissions } from "@/lib/rolePermissions"
 import { getUserFromToken } from "@/lib/getUserFromToken"
 
+
 export default async function NavbarWrapper() {
-  const user = await getUserFromToken();
+  // const user = await getUserFromToken();
   // const token = cookies().get("token")?.value
   // let user = null;
   // if (token) {
@@ -23,6 +24,6 @@ export default async function NavbarWrapper() {
   //     console.error("JWT verify error:", err.message)
   //   }
   // }
-  // const user = await getUserFromCookie(cookies())
+  const user = await getUserFromCookie(cookies())
   return <NavbarPublic user={user} />
 }

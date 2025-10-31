@@ -21,6 +21,7 @@ export default function LoginPage() {
 
     const data = await res.json();
     if (res.ok) {
+      window.location.reload() // <== ini penting
       setMessage(`✅ ${data.message}, Selamat datang ${data.user.name}`);
       setLoading(false)
       // arahkan ke dashboard setelah 1 detik

@@ -101,6 +101,14 @@ export default function Sidebar({ isOpen, onClose }) {
           ],
         },
         {
+          label: "Monitoring Keuangan",
+          items: [
+            { label: "Dana Kelas", href: "/dashboard/bendahara/monitoring" },
+            // { label: "Donasi", href: "/dashboard/bendahara/pemasukan/donasi" },
+            // { label: "Lainnya", href: "/dashboard/bendahara/pemasukan/lainnya" },
+          ],
+        },
+        {
           label: "Penggajian",
           items: [
             // { label: "Karyawan", href: "/dashboard/bendahara/slip" },

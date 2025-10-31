@@ -23,19 +23,13 @@ const dancing = Dancing_Script({
   weight: ["400", "600"],
 });
 
-export default function NavbarPublic({user}) {
-  // console.log(user)
+export default function NavbarPublic() {
   // const [roleName,setRoleName]=useState();
-  // const user=useAuth()  
+  const {user,mounted}=useAuth()  
+  console.log(user)
+  console.log(mounted)
   const isLoggedIn = !!user;
-  // console.log(isLoggedIn)
-  // console.log(user)
-  // useEffect((user)=>{
-  //   // const role=user?.user;
-  // // const role_name=role?.role_name;
-  // const roleName=user.role;
-  // setRoleName(role_name);
-  // },[user])
+
 
 
   const pathname = usePathname();
@@ -97,7 +91,7 @@ export default function NavbarPublic({user}) {
             </Link>
           ))}
           {/* Tambahkan link ke /ortu hanya untuk user role ortu */}
-  {user?.role === "ortu" && (
+  {mounted&&user?.role_name === "ortu" && (
     <Link
       href="/ortu"
       className={`hover:text-green-600 transition-colors border-b-4 border-transparent
@@ -115,7 +109,7 @@ export default function NavbarPublic({user}) {
             <Button asChild onClick={() => setOpen(false)}>
               {!isLoggedIn ? (
                 <Link href="/login">Login</Link>
-              ) : user.role === "ortu" ? (
+              ) : mounted&&user.role_name === "ortu" ? (
                 <button type="button" onClick={handleLogout}>
                   Log Out
                 </button>
@@ -157,7 +151,7 @@ export default function NavbarPublic({user}) {
                 </Link>
               ))}
               {/* Tambahkan link ke /ortu hanya untuk user role ortu */}
-  {user?.role === "ortu" && (
+  {user?.role_name === "ortu" && (
     <Link
       href="/ortu"
       className={`hover:text-green-600 transition-colors border-b-4 border-transparent
@@ -172,7 +166,7 @@ export default function NavbarPublic({user}) {
             <Button asChild onClick={() => setOpen(false)}>
               {!isLoggedIn ? (
                 <Link href="/login">Login</Link>
-              ) : user.role === "ortu" ? (
+              ) : user.role_name === "ortu" ? (
                 <button type="button" onClick={handleLogout}>
                   Keluar Sebagai {user?user.name:""}
                 </button>
