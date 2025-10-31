@@ -14,6 +14,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { menuItems } from "@/app/data/menuLainnya";
 
 export default function Sidebar({ isOpen, onClose }) {
   const pathname = usePathname();
@@ -24,7 +25,9 @@ export default function Sidebar({ isOpen, onClose }) {
   const [openMenu, setOpenMenu] = useState(null); 
   const [userCount, setUserCount] = useState(0);
   const eventsCount = 2;
-  const infoManaj = 7;
+  const infoManaj = menuItems.length;
+  // const lainnya=menuItems.length;
+  // console.log(lainnya)
 
   // Load state dari localStorage saat mount
   useEffect(() => {
@@ -80,7 +83,7 @@ export default function Sidebar({ isOpen, onClose }) {
       allowedRoles: ["superadmin"], // ← TAMBAHKAN INI
       badge: userCount,
       items: [
-        { label: "List Users", href: "/dashboard/users" },
+        { label: "List Users", href: "/dashboard/users",badge: userCount },
         { label: "Add User", href: "/dashboard/register" },
         { label: "Roles", href: "/dashboard/roles" },
       ],
@@ -136,7 +139,7 @@ export default function Sidebar({ isOpen, onClose }) {
       items: [
         { label: "Data Siswa", href: "/dashboard/manajemen/dapodik" },
         { label: "Data Presensi", href: "/dashboard/manajemen/data-presensi" },
-        { label: "Lain-lain", href: "/dashboard/manajemen/lainnya" },
+        { label: "Lain-lain", href: "/dashboard/manajemen/lainnya",badge:infoManaj },
       ],
     },
     {
@@ -193,13 +196,18 @@ export default function Sidebar({ isOpen, onClose }) {
       }
       return (
         <NavLink
-          key={item.label}
-          href={item.href}
-          variant={pathname === item.href ? "default" : "ghost"}
-          className={`pl-${level * 4}`}
-        >
-          {item.label}
-        </NavLink>
+        key={item.label}
+        href={item.href}
+        variant={pathname === item.href ? "default" : "ghost"}
+        className={`flex justify-between items-center pl-${level * 4}`}
+      >
+        <span>{item.label}</span>
+        {item.badge > 0 && (
+          <span className="bg-green-600 text-white text-xs px-2 py-0.5 rounded-full">
+            {item.badge}
+          </span>
+        )}
+      </NavLink>
       );
     });
   };
@@ -300,11 +308,11 @@ function filterMenuItems(items, roleName) {
                           <span>{menu.label}</span>
                         </div>
                         <span className="ml-auto flex items-center gap-1">
-                          {menu.badge > 0 && (
+                          {/* {menu.badge > 0 && (
                             <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
                               {menu.badge}
                             </span>
-                          )}
+                          )} */}
                           <ChevronDown
                             className={`ml-1 transition-transform duration-200 ${
                               openMenu === menu.key ? "rotate-180" : ""

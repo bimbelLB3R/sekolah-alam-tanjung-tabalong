@@ -22,6 +22,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import LaporanKeuanganTab from "../../components/data-kelas/LaporanKeuanganKelas";
+import InventarisKelasTab from "../../components/data-kelas/InventarisKelas";
 
 export default function DataKelas() {
   const params = useParams();
@@ -362,15 +363,10 @@ export default function DataKelas() {
         </TabsContent>
 
         {/* Tab: Inventaris */}
-        <TabsContent value="inventaris">
-          <Card>
-            <CardContent className="pt-6">
-              <p className="text-gray-500">
-                Fitur inventaris untuk {kelasList?.kelas_lengkap} akan segera hadir.
-              </p>
-            </CardContent>
-          </Card>
-        </TabsContent>
+        {/* // Ganti TabsContent inventaris dengan: */}
+<TabsContent value="inventaris">
+  <InventarisKelasTab kelasList={kelasList} />
+</TabsContent>
 
         {/* Tab: Data Wali */}
         <TabsContent value="data-wali">
