@@ -39,7 +39,7 @@ export default function ManajemenTahfidz(){
 useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/dapodik")
+        const res = await fetch("/api/tahfidz/list-siswa")
         const result = await res.json()
         setDataSiswa(result)
       } catch (error) {

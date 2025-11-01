@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import {
   Card,
@@ -13,6 +13,7 @@ import {
   ChevronRight,
   Plus,
   Pencil,
+  X,
 } from "lucide-react";
 import {
   Dialog,
@@ -24,25 +25,24 @@ import {
   DialogDescription
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { formatName } from "@/lib/formatName";
 
 export default function TabelManajemenTahfidz({data,loading,dataSiswa,handleOpenAdd,dataUser,handleOpenEdit,handleSubmit,open,submitting, setOpen,form,setForm}) {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  
+  // Autocomplete states
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [selectedSiswa, setSelectedSiswa] = useState(null);
+  const dropdownRef = useRef(null);
 
-  // // modal state
-  // const [open, setOpen] = useState(false);
-  // const [form, setForm] = useState({
-  //   id: null,
-  //   nama_siswa: "",
-  //   pembimbing: "",
-  //   nama_rombel: "",
-  // });
-  // const [submitting, setSubmitting] = useState(false);
-
-  const itemsPerPage = 4;
-
+  const itemsPerPage = 10;
 
   // filter pencarian
   const filteredData = data?.filter(
@@ -63,62 +63,71 @@ export default function TabelManajemenTahfidz({data,loading,dataSiswa,handleOpen
     if (page >= 1 && page <= totalPages) setCurrentPage(page);
   };
 
-  // // buka modal untuk tambah
-  // const handleOpenAdd = () => {
-  //   setForm({ id: null, nama_siswa: "", pembimbing: "", nama_rombel: "" });
-  //   setOpen(true);
-  // };
+  // Autocomplete search logic
+  useEffect(() => {
+    if (searchQuery.length >= 2) {
+      setSearchLoading(true);
+      // Simulasi delay untuk searching
+      const timer = setTimeout(() => {
+        const results = dataSiswa.filter((siswa) =>
+          formatName(siswa.nama_lengkap)
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
+        );
+        setSearchResults(results);
+        setShowDropdown(true);
+        setSearchLoading(false);
+      }, 300);
 
-  // // buka modal untuk edit
-  // const handleOpenEdit = (row) => {
-  //   setForm({
-  //     id: row.id,
-  //     nama_siswa: row.nama_siswa,
-  //     pembimbing: row.pembimbing,
-  //     nama_rombel: row.nama_rombel,
-  //   });
-  //   setOpen(true);
-  // };
+      return () => clearTimeout(timer);
+    } else {
+      setSearchResults([]);
+      setShowDropdown(false);
+    }
+  }, [searchQuery, dataSiswa]);
 
-  // // submit form
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     setSubmitting(true);
-  //     let res, result;
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
 
-  //     if (form.id) {
-  //       // update
-  //       res = await fetch(`/api/tahfidz/peserta/${form.id}`, {
-  //         method: "PUT",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify(form),
-  //       });
-  //     } else {
-  //       // insert
-  //       res = await fetch("/api/tahfidz", {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify(form),
-  //       });
-  //     }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-  //     result = await res.json();
-  //     if (res.ok) {
-  //       // alert(form.id ? "Data berhasil diperbarui" : "Peserta berhasil ditambahkan");
-  //       fetchData();
-  //       setOpen(false);
-  //     } else {
-  //       // alert(result.error || "Terjadi kesalahan");
-  //       console.log(result.error)
-  //     }
-  //   } catch (err) {
-  //     console.error("Submit error:", err);
-  //   } finally {
-  //     setSubmitting(false);
-  //   }
-  // };
+  // Handle select siswa from dropdown
+  const handleSelectSiswa = (siswa) => {
+    const formattedName = formatName(siswa.nama_lengkap);
+    setSelectedSiswa(siswa);
+    setSearchQuery(formattedName);
+    setForm({ ...form, nama_siswa: formattedName });
+    setShowDropdown(false);
+  };
 
+  // Handle clear siswa
+  const handleClearSiswa = () => {
+    setSearchQuery("");
+    setSelectedSiswa(null);
+    setForm({ ...form, nama_siswa: "" });
+    setSearchResults([]);
+    setShowDropdown(false);
+  };
+
+  // Reset autocomplete when dialog closes
+  useEffect(() => {
+    if (!open) {
+      setSearchQuery("");
+      setSelectedSiswa(null);
+      setSearchResults([]);
+      setShowDropdown(false);
+    } else if (open && form.nama_siswa) {
+      // Set search query if editing existing data
+      setSearchQuery(form.nama_siswa);
+    }
+  }, [open, form.nama_siswa]);
 
   return (
     <Card className="w-full overflow-hidden shadow-md rounded-2xl">
@@ -242,52 +251,93 @@ export default function TabelManajemenTahfidz({data,loading,dataSiswa,handleOpen
               <DialogDescription>Form Edit/tambah Data</DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-3 mt-2">
-              <Select
-                value={form.nama_siswa}
-                onValueChange={(val) => setForm({ ...form, nama_siswa: val })}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Pilih Anak" />
-                </SelectTrigger>
-                <SelectContent>
-                  {dataSiswa.map((ds) => (
-                    <SelectItem key={ds.id} value={formatName(ds.nama_lengkap)}>
-                      {formatName(ds.nama_lengkap)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Select
-              value={form.pembimbing}
-              onValueChange={(val) => setForm({ ...form, pembimbing: val })}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Pilih Pembimbing" />
-              </SelectTrigger>
-              <SelectContent>
-                {dataUser.map((user) => (
-                  <SelectItem key={user.id} value={user.name}>
-                    {user.name} 
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-              {/* <input
-                type="text"
-                placeholder="Pembimbing"
-                value={form.pembimbing}
-                onChange={(e) => setForm({ ...form, pembimbing: e.target.value })}
-                className="w-full border p-2 rounded-lg text-sm"
-                required
-              /> */}
-              <input
-                type="text"
-                placeholder="Rombel"
-                value={form.nama_rombel}
-                onChange={(e) => setForm({ ...form, nama_rombel: e.target.value })}
-                className="w-full border p-2 rounded-lg text-sm"
-                required
-              />
+              {/* Autocomplete Siswa */}
+              <div className="space-y-2" ref={dropdownRef}>
+                <Label htmlFor="siswa">Nama Siswa *</Label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="siswa"
+                    placeholder="Ketik minimal 2 huruf untuk mencari siswa..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-9 pr-9"
+                    disabled={submitting}
+                    required
+                  />
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      onClick={handleClearSiswa}
+                      className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                  {searchLoading && (
+                    <div className="absolute right-3 top-3">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    </div>
+                  )}
+                  
+                  {/* Dropdown Results */}
+                  {showDropdown && searchResults.length > 0 && (
+                    <div className="absolute z-50 w-full mt-1 bg-popover border rounded-md shadow-lg max-h-60 overflow-auto">
+                      {searchResults.map((siswa) => (
+                        <button
+                          key={siswa.id}
+                          type="button"
+                          onClick={() => handleSelectSiswa(siswa)}
+                          className="w-full text-left px-4 py-3 hover:bg-accent hover:text-accent-foreground border-b last:border-b-0 transition-colors"
+                        >
+                          <div className="font-medium">{formatName(siswa.nama_lengkap)}</div>
+                          {siswa.nik && (
+                            <div className="text-sm text-muted-foreground">NIK: {siswa.nik}</div>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {showDropdown && searchResults.length === 0 && searchQuery.length >= 2 && !searchLoading && (
+                    <div className="absolute z-50 w-full mt-1 bg-popover border rounded-md shadow-lg p-4 text-center text-muted-foreground">
+                      Tidak ada siswa ditemukan
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Select Pembimbing */}
+              <div className="space-y-2">
+                <Label htmlFor="pembimbing">Pembimbing *</Label>
+                <Select
+                  value={form.pembimbing}
+                  onValueChange={(val) => setForm({ ...form, pembimbing: val })}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Pilih Pembimbing" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {dataUser.map((user) => (
+                      <SelectItem key={user.id} value={user.name}>
+                        {user.name} 
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Input Rombel */}
+              <div className="space-y-2">
+                <Label htmlFor="rombel">Rombel *</Label>
+                <Input
+                  id="rombel"
+                  placeholder="Rombel"
+                  value={form.nama_rombel}
+                  onChange={(e) => setForm({ ...form, nama_rombel: e.target.value })}
+                  required
+                />
+              </div>
 
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={() => setOpen(false)}>

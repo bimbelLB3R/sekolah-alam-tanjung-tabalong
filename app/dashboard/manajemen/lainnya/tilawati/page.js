@@ -39,7 +39,7 @@ export default function ManajemenTilawati(){
 useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/dapodik")
+        const res = await fetch("/api/tilawati/list-siswa")
         const result = await res.json()
         setDataSiswa(result)
       } catch (error) {
