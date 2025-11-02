@@ -1,4 +1,4 @@
-import { ArrowUpDown, BookOpen, BookText, HandCoins, TentTree, VectorSquare } from "lucide-react";
+import { ArrowUpDown, BookOpen, BookText, Cog, HandCoins, TentTree, VectorSquare } from "lucide-react";
 export const menuItems = [
   {
     name: "Manajemen Tahfidz",
@@ -29,5 +29,10 @@ export const menuItems = [
     name: "Monitoring Kegiatan Kelas",
     icon: TentTree,
     href: "/dashboard/manajemen/monitoring-kegiatan",
+  },
+  {
+    name: "Perencanaan Kegiatan SATT",
+    icon: Cog,
+    href: "/dashboard/allevents",
   },
 ];
