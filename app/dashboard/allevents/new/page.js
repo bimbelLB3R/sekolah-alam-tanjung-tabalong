@@ -20,13 +20,14 @@ export default function CreateEventPage() {
     try {
       setLoading(true);
       const result = await EventAPI.create(data);
+      console.log(result);
       
       if (result.success) {
         toast({
         title: "Berhasil!",
         description: "Event Berhasil dibuat",
         });
-        router.push(`/dashboard/allevents/${result.data.id}`);
+        router.push(`/dashboard/allevents`);
       } else {
         toast({
         title: "Error",

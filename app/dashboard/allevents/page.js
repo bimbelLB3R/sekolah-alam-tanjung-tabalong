@@ -205,7 +205,7 @@ export default function EventsPage() {
                 <p className="text-lg font-medium">Belum ada event</p>
                 <p className="text-sm mt-1">Mulai dengan membuat event pertama</p>
                 <Button asChild className="mt-4">
-                  <Link href="/allevents/new">
+                  <Link href="/dashboard/allevents/new">
                     <Plus className="mr-2 h-4 w-4" />
                     Buat Event
                   </Link>
