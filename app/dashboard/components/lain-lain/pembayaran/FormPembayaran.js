@@ -332,10 +332,10 @@ export default function FormPembayaran() {
               <SelectContent>
                 <SelectItem value="SPP">SPP</SelectItem>
                 <SelectItem value="Uang Pangkal">Uang Pangkal</SelectItem>
-                <SelectItem value="Uang Gedung">Uang Gedung</SelectItem>
+                <SelectItem value="Uang Tahunan">Uang Tahunan</SelectItem>
+                <SelectItem value="Uang Sarpras">Uang Sarpras</SelectItem>
                 <SelectItem value="Uang Seragam">Uang Seragam</SelectItem>
-                <SelectItem value="Uang Buku">Uang Buku</SelectItem>
-                <SelectItem value="Uang Kegiatan">Uang Kegiatan</SelectItem>
+                <SelectItem value="Uang Komite">Uang Komite</SelectItem>
                 <SelectItem value="Lainnya">Lainnya</SelectItem>
               </SelectContent>
             </Select>

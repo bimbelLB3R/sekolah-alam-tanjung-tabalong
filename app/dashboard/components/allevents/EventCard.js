@@ -155,6 +155,11 @@ export default function EventCard({ event, onDelete }) {
             To do list
           </Link>
         </Button>
+        <Button asChild variant="default" size="sm" className="flex-1">
+          <Link href={`/dashboard/allevents/${event.id}/budget`}>
+            Budgeting
+          </Link>
+        </Button>
       </CardFooter>
     </Card>
   );

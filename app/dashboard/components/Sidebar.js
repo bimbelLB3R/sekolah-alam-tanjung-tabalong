@@ -360,7 +360,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Users, Home, FileText, Settings, Wallet, Cable, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronDown, Users, Home, FileText, Settings, Wallet, Cable, Calendar, ChevronLeft, ChevronRight, ScrollText } from "lucide-react";
 import Image from "next/image";
 import { useAuth } from "@/lib/getUserClientSide";
 import { rolePermissions } from "@/lib/rolePermissions";
@@ -440,6 +440,7 @@ export default function Sidebar({ isOpen, onClose }) {
   // === Array menu dinamis ===
   const menus = [
     { type: "link", label: "Home", href: "/dashboard", icon: <Home /> },
+    { type: "link", label: "Kepanitiaan", href: "/dashboard/my-activities", icon: <ScrollText /> },
     {
       type: "collapsible",
       key: "users",
@@ -464,15 +465,20 @@ export default function Sidebar({ isOpen, onClose }) {
           label: "Pemasukan",
           items: [
             { label: "SPP", href: "/dashboard/bendahara/pemasukan/spp" },
-            { label: "Donasi", href: "/dashboard/bendahara/pemasukan/donasi" },
-            { label: "Lainnya", href: "/dashboard/bendahara/pemasukan/lainnya" },
+            { label: "Uang Pangkal", href: "/dashboard/bendahara/pemasukan/pangkal" },
+            { label: "Uang Tahunan", href: "/dashboard/bendahara/pemasukan/tahunan" },
+            { label: "Uang Sarpras", href: "/dashboard/bendahara/pemasukan/sarpras" },
+            { label: "Uang Seragam", href: "/dashboard/bendahara/pemasukan/seragam" },
+            { label: "Uang Komite", href: "/dashboard/bendahara/pemasukan/komite" },
+            { label: "Uang Lainnya", href: "/dashboard/bendahara/pemasukan/lainnya" },
+
           ],
         },
         {
           label: "Monitoring Keuangan",
           items: [
             { label: "Dana Kelas", href: "/dashboard/bendahara/monitoring" },
-            // { label: "Donasi", href: "/dashboard/bendahara/pemasukan/donasi" },
+            { label: "Dana Kegiatan", href: "/dashboard/bendahara/monitoring/events" },
             // { label: "Lainnya", href: "/dashboard/bendahara/pemasukan/lainnya" },
           ],
         },
