@@ -36,6 +36,7 @@ export default function FormPembayaran() {
     siswa_id: '',
     nama_lengkap: '',
     siswa_kelas_id: '',
+    // kelas_id: '',
     kelas_saatini: '',
     tahun_ajaran: '',
     jenis_pembayaran: '',
@@ -111,9 +112,11 @@ export default function FormPembayaran() {
       
       if (data.success) {
         const kelasData = data.data;
+        console.log(kelasData)
         setFormData(prev => ({
           ...prev,
           siswa_kelas_id: kelasData.siswa_kelas_id,
+          // siswa_kelas_id: kelasData.kelas_id,
           kelas_saatini: `${kelasData.kelas_lengkap}`,
           tahun_ajaran: kelasData.tahun_ajaran,
         }));
@@ -142,6 +145,7 @@ export default function FormPembayaran() {
       siswa_id: '',
       nama_lengkap: '',
       siswa_kelas_id: '',
+      // kelas_id: '',
       kelas_saatini: '',
       tahun_ajaran: '',
     }));
@@ -181,6 +185,7 @@ export default function FormPembayaran() {
         body: JSON.stringify({
           siswa_id: formData.siswa_id,
           siswa_kelas_id: formData.siswa_kelas_id,
+          // siswa_kelas_id: formData.kelas_id,
           tahun_ajaran: formData.tahun_ajaran,
           jenis_pembayaran: formData.jenis_pembayaran,
           jml_bayar: parseFloat(formData.jml_bayar),
@@ -205,6 +210,7 @@ export default function FormPembayaran() {
           siswa_id: '',
           nama_lengkap: '',
           siswa_kelas_id: '',
+          // kelas_id: '',
           kelas_saatini: '',
           tahun_ajaran: '',
           jenis_pembayaran: '',
@@ -430,6 +436,7 @@ export default function FormPembayaran() {
                   siswa_id: '',
                   nama_lengkap: '',
                   siswa_kelas_id: '',
+                  // kelas_id: '',
                   kelas_saatini: '',
                   tahun_ajaran: '',
                   jenis_pembayaran: '',

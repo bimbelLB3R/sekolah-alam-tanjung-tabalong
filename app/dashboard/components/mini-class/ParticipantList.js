@@ -420,7 +420,7 @@ export default function ParticipantList() {
 
               <div>
                 <label className="text-sm font-medium text-gray-500">
-                  Asal Sekolah/Universitas
+                  Asal Sekolah
                 </label>
                 <p className="text-base">{selectedParticipant.asal_sekolah}</p>
               </div>
