@@ -13,8 +13,10 @@ import { EventAPI } from '@/lib/api-client';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { id as idLocale } from 'date-fns/locale';
+import { useAuth } from '@/lib/getUserClientSide';
 
 export default function RundownPage() {
+  const {user}=useAuth();
   const params = useParams();
   const router = useRouter();
   const eventId = params.id;
@@ -50,7 +52,7 @@ export default function RundownPage() {
   }
 
   const handleAddRundown = async (data) => {
-    const result = await EventAPI.addRundownItem(eventId, data);
+    const result = await EventAPI.addRundownItem(eventId, data,user);
     if (result.success) {
       toast({
         title: "Berhasil!",
@@ -67,7 +69,7 @@ export default function RundownPage() {
   };
 
   const handleUpdateRundown = async (rundownId, data) => {
-    const result = await EventAPI.updateRundownItem(eventId, rundownId, data);
+    const result = await EventAPI.updateRundownItem(eventId, rundownId, data,user);
     if (result.success) {
       toast({
         title: "Berhasil!",
@@ -84,7 +86,7 @@ export default function RundownPage() {
   };
 
   const handleDeleteRundown = async (rundownId) => {
-    const result = await EventAPI.deleteRundownItem(eventId, rundownId);
+    const result = await EventAPI.deleteRundownItem(eventId, rundownId,user);
     if (result.success) {
       toast({
         title: "Berhasil!",

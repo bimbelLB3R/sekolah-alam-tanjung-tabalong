@@ -11,8 +11,10 @@ import { useToast } from '@/hooks/use-toast';
 import { CommitteeList } from '@/app/dashboard/components/allevents/committee/CommitteeList';
 import { EventAPI } from '@/lib/api-client';
 import Link from 'next/link';
+import { useAuth } from '@/lib/getUserClientSide';
 
 export default function CommitteePage() {
+  const {user}=useAuth();
   const params = useParams();
   const router = useRouter();
   const eventId = params.id;
@@ -48,7 +50,7 @@ export default function CommitteePage() {
   }
 
   const handleAddCommittee = async (data) => {
-    const result = await EventAPI.addCommitteeMember(eventId, data);
+    const result = await EventAPI.addCommitteeMember(eventId, data,user);
     if (result.success) {
       toast({
         title: "Berhasil!",
@@ -65,7 +67,7 @@ export default function CommitteePage() {
   };
 
   const handleUpdateCommittee = async (committeeId, data) => {
-    const result = await EventAPI.updateCommitteeMember(eventId, committeeId, data);
+    const result = await EventAPI.updateCommitteeMember(eventId, committeeId, data,user);
     if (result.success) {
       toast({
         title: "Berhasil!",
@@ -82,7 +84,7 @@ export default function CommitteePage() {
   };
 
   const handleDeleteCommittee = async (committeeId) => {
-    const result = await EventAPI.deleteCommitteeMember(eventId, committeeId);
+    const result = await EventAPI.deleteCommitteeMember(eventId, committeeId,user);
     if (result.success) {
       toast({
         title: "Berhasil!",

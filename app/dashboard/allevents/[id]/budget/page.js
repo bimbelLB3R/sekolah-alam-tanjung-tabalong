@@ -11,8 +11,10 @@ import { BudgetManager } from '@/app/dashboard/components/allevents/budget/Budge
 import { EventAPI } from '@/lib/api-client';
 import { formatRupiah } from '@/lib/validations';
 import Link from 'next/link';
+import { useAuth } from '@/lib/getUserClientSide';
 
 export default function BudgetPage() {
+  const {user}=useAuth();
   const params = useParams();
   const router = useRouter();
   const eventId = params.id;
@@ -52,7 +54,7 @@ export default function BudgetPage() {
   }
 
   const handleAddBudget = async (data) => {
-    const result = await EventAPI.addBudgetItem(eventId, data);
+    const result = await EventAPI.addBudgetItem(eventId, data,user);
     if (result.success) {
       toast({
         title: "Berhasil!",
@@ -69,7 +71,7 @@ export default function BudgetPage() {
   };
 
   const handleUpdateBudget = async (budgetId, data) => {
-    const result = await EventAPI.updateBudgetItem(eventId, budgetId, data);
+    const result = await EventAPI.updateBudgetItem(eventId, budgetId, data,user);
     if (result.success) {
       toast({
         title: "Berhasil!",
@@ -86,7 +88,7 @@ export default function BudgetPage() {
   };
 
   const handleDeleteBudget = async (budgetId) => {
-    const result = await EventAPI.deleteBudgetItem(eventId, budgetId);
+    const result = await EventAPI.deleteBudgetItem(eventId, budgetId,user);
     if (result.success) {
       toast({
         title: "Berhasil!",

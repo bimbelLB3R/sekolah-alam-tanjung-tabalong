@@ -25,6 +25,9 @@ import {
 } from '@/components/ui/select';
 import { Loader2 } from 'lucide-react';
 
+
+
+
 export default function EventForm({ 
   defaultValues, 
   onSubmit, 
@@ -41,6 +44,7 @@ export default function EventForm({
       status: 'planning'
     }
   });
+
 
   const handleSubmit = async (data) => {
     await onSubmit(data);

@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { formatName } from "@/lib/formatName";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, AlertCircle, Users, CheckSquare, Square } from "lucide-react";
+import { Loader2, AlertCircle, Users, CheckSquare, Square, Eye } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -34,6 +34,8 @@ export default function DataKelas() {
   const [siswaList, setSiswaList] = useState([]);
   const [selectedSiswa, setSelectedSiswa] = useState([]);
   const [kelasTujuan, setKelasTujuan] = useState("");
+
+  console.log(siswaList)
   
   // Loading & Error states
   const [loadingKelas, setLoadingKelas] = useState(true);
@@ -337,10 +339,10 @@ export default function DataKelas() {
                             </span>
                           </div>
                         </label>
-                        {siswa.nisn && (
-                          <span className="text-sm text-gray-500 font-mono">
-                            NISN: {siswa.nisn}
-                          </span>
+                        {siswa.siswa_id && (
+                          <Link href={`/dashboard/manajemen/dapodik/${siswa.siswa_id}`} className="text-sm text-gray-500 font-mono flex items-center justify-center space-x-2">
+                            <Eye/>
+                          </Link>
                         )}
                       </div>
                     );

@@ -10,8 +10,10 @@ import EventForm from '../../components/allevents/EventForm';
 import { EventAPI } from '@/lib/api-client';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
+import { useAuth } from '@/lib/getUserClientSide';
 
 export default function CreateEventPage() {
+  const {user}=useAuth();
   const { toast } = useToast();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -19,7 +21,7 @@ export default function CreateEventPage() {
   const handleSubmit = async (data) => {
     try {
       setLoading(true);
-      const result = await EventAPI.create(data);
+      const result = await EventAPI.create(data,user);
       console.log(result);
       
       if (result.success) {

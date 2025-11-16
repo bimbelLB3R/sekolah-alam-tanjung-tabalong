@@ -2,6 +2,7 @@
 import { NextResponse } from 'next/server';
 import pool from '@/lib/db';
 import { eventSchema } from '@/lib/validations';
+import { dateInputToIsoUTC } from '@/lib/formatDateInputToIso';
 
 // GET - Detail event by ID
 export async function GET(request, { params }) {
@@ -73,8 +74,7 @@ export async function PUT(request, { params }) {
 
     // Validasi dengan Zod
     const validatedData = eventSchema.parse(body);
-
-    const [result] = await pool.query(
+        const [result] = await pool.query(
       `UPDATE allevents 
        SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?
        WHERE id = ?`,

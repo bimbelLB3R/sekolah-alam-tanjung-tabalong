@@ -18,8 +18,10 @@ import { useToast } from '@/hooks/use-toast';
 import { TodoBoard } from '@/app/dashboard/components/allevents/todos/TodoBoard';
 import { EventAPI } from '@/lib/api-client';
 import Link from 'next/link';
+import { useAuth } from '@/lib/getUserClientSide';
 
 export default function TodosPage() {
+  const {user}=useAuth();
   const params = useParams();
   const router = useRouter();
   const eventId = params.id;
@@ -78,7 +80,7 @@ export default function TodosPage() {
   }
 
   const handleAddTodo = async (data) => {
-    const result = await EventAPI.addTodo(eventId, data);
+    const result = await EventAPI.addTodo(eventId, data,user);
     if (result.success) {
       toast({
         title: "Berhasil!",
@@ -95,7 +97,7 @@ export default function TodosPage() {
   };
 
   const handleUpdateTodo = async (todoId, data) => {
-    const result = await EventAPI.updateTodo(eventId, todoId, data);
+    const result = await EventAPI.updateTodo(eventId, todoId, data,user);
     if (result.success) {
       toast({
         title: "Berhasil!",
@@ -112,7 +114,7 @@ export default function TodosPage() {
   };
 
   const handleDeleteTodo = async (todoId) => {
-    const result = await EventAPI.deleteTodo(eventId, todoId);
+    const result = await EventAPI.deleteTodo(eventId, todoId,user);
     if (result.success) {
       toast({
         title: "Berhasil!",
@@ -129,7 +131,7 @@ export default function TodosPage() {
   };
 
   const handleTodoStatusChange = async (todoId, status) => {
-    const result = await EventAPI.updateTodoStatus(eventId, todoId, status);
+    const result = await EventAPI.updateTodoStatus(eventId, todoId, status,user);
     if (result.success) {
       toast({
         title: "Berhasil!",

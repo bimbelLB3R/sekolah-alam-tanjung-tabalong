@@ -8,9 +8,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import EventForm from '@/app/dashboard/components/allevents/EventForm';
-import { EventAPI } from '@/lib/api-client';
+// import { EventAPI } from '@/lib/api-client';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
+import { isoToDateInputWITA } from '@/lib/formatDateIsoToInput';
+import { useAuth } from '@/lib/getUserClientSide';
+import { EventAPI} from '@/lib/api-client';
 
 export default function EditEventPage() {
     const { toast } = useToast();
@@ -21,6 +24,10 @@ export default function EditEventPage() {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const {user}=useAuth();
+// console.log(user)
+
+  // console.log(event)
 
   useEffect(() => {
     loadEvent();
@@ -56,7 +63,7 @@ export default function EditEventPage() {
   const handleSubmit = async (data) => {
     try {
       setSubmitting(true);
-      const result = await EventAPI.update(eventId, data);
+      const result = await EventAPI.update(eventId, data,user);
       
       if (result.success) {
         toast({
@@ -110,8 +117,8 @@ export default function EditEventPage() {
   const defaultValues = {
     name: event.name,
     description: event.description || '',
-    start_date: event.start_date,
-    end_date: event.end_date,
+    start_date: isoToDateInputWITA(event.start_date),
+    end_date: isoToDateInputWITA(event.end_date),
     status: event.status
   };
 
