@@ -113,6 +113,7 @@ export async function POST(request) {
     );
 
     const weeklyPlanId = planResult.insertId;
+    console.log("weekly_plan_id=",weeklyPlanId)
 
     // Insert activities
     const activityValues = activities.map((act) => [
@@ -123,6 +124,8 @@ export async function POST(request) {
       act.kegiatan,
       act.target_capaian || null,
     ]);
+
+    console.log(activityValues);
 
     await pool.query(
       `INSERT INTO weekly_activities 

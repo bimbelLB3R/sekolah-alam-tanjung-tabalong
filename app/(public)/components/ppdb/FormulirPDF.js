@@ -163,6 +163,7 @@ export default function FormulirPDF({ data }) {
           <Image 
             style={styles.logo2} 
             src="/yamasaka.jpg" // Ganti dengan path logo Anda
+            alt="logo ayamasaka"
           />
           <View style={styles.headerText}>
             <Text style={styles.schoolName}>YAYASAN MUTIARA INSAN SARABAKAWA</Text>
@@ -179,6 +180,7 @@ export default function FormulirPDF({ data }) {
           <Image 
             style={styles.logo} 
             src="/logo-sattnav.png" // Ganti dengan path logo Anda
+            alt="logo satt"
           />
         </View>
 
