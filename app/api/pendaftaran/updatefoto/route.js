@@ -1,5 +1,6 @@
+
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
-import pool from "@/lib/db"; // koneksi MySQL kamu
+import pool from "@/lib/db";
 
 const s3 = new S3Client({
   region: process.env.AWS_REGION,
@@ -14,6 +15,16 @@ export async function POST(req) {
     const formData = await req.formData();
     const file = formData.get("file");
     const id = formData.get("id");
+    const fieldName = formData.get("fieldName") || "fotoAnak"; // Default fotoAnak
+
+    // Validasi fieldName untuk keamanan
+    const allowedFields = ["fotoAnak", "buktiBayar", "fotoKia", "kkPdf"];
+    if (!allowedFields.includes(fieldName)) {
+      return Response.json(
+        { success: false, message: "Field tidak valid" },
+        { status: 400 }
+      );
+    }
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
@@ -22,7 +33,7 @@ export async function POST(req) {
     const bucket = process.env.AWS_S3_BUCKET;
     const key = fileName;
 
-    // === Upload ke S3 ===
+    // Upload ke S3
     await s3.send(
       new PutObjectCommand({
         Bucket: bucket,
@@ -34,25 +45,39 @@ export async function POST(req) {
 
     const newUrl = `https://${bucket}.s3.ap-southeast-1.amazonaws.com/${key}`;
 
-    // === Ambil foto lama untuk dihapus (opsional) ===
-    const [rows] = await pool.query("SELECT fotoAnak FROM biodata_siswa WHERE id = ?", [id]);
-    const oldUrl = rows[0]?.fotoAnak;
+    // Ambil foto lama untuk dihapus
+    const [rows] = await pool.query(
+      `SELECT ${fieldName} FROM biodata_siswa WHERE id = ?`,
+      [id]
+    );
+    const oldUrl = rows[0]?.[fieldName];
+    
     if (oldUrl) {
-      const oldKey = oldUrl.split("/").pop();
-      await s3.send(
-        new DeleteObjectCommand({
-          Bucket: bucket,
-          Key: oldKey,
-        })
-      );
+      try {
+        const oldKey = oldUrl.split("/").pop();
+        await s3.send(
+          new DeleteObjectCommand({
+            Bucket: bucket,
+            Key: oldKey,
+          })
+        );
+      } catch (err) {
+        console.log("Gagal hapus foto lama:", err.message);
+      }
     }
 
-    // === Update URL baru di database ===
-    await pool.query("UPDATE biodata_siswa SET fotoAnak = ? WHERE id = ?", [newUrl, id]);
+    // Update URL baru di database
+    await pool.query(
+      `UPDATE biodata_siswa SET ${fieldName} = ? WHERE id = ?`,
+      [newUrl, id]
+    );
 
     return Response.json({ success: true, url: newUrl });
   } catch (err) {
     console.error("Upload error:", err);
-    return Response.json({ success: false, message: err.message }, { status: 500 });
+    return Response.json(
+      { success: false, message: err.message },
+      { status: 500 }
+    );
   }
 }

@@ -5,22 +5,22 @@ import { useParams } from "next/navigation"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Pencil, Check, X, User, AlarmClockCheck, BookOpenCheck, Target, Banknote } from "lucide-react"
+import { Pencil, Check, X, User, AlarmClockCheck, BookOpenCheck, Target, Banknote, Volleyball } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-// import { useToast } from "@/components/ui/use-toast"
 import Image from "next/image"
 import { formatDate } from "@/lib/formatDate"
 
 export default function DetailSiswaPage() {
-const fileInputRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const dokumenFileInputRef = useRef(null);
   const { id } = useParams()
-//   const { toast } = useToast()
   const [siswa, setSiswa] = useState(null)
   const [loading, setLoading] = useState(true)
   const [editingField, setEditingField] = useState(null)
   const [editedValue, setEditedValue] = useState("")
-  const [foto, setFoto] = useState(siswa?.fotoAnak);
+  const [foto, setFoto] = useState(null);
+  const [uploadingField, setUploadingField] = useState(null); // Track field yang sedang diupload
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,10 +28,9 @@ const fileInputRef = useRef(null);
         const res = await fetch("/api/dapodik")
         const result = await res.json()
 
-        // cari siswa dengan id yang cocok
         const selected = result.find((item) => String(item.id) === String(id))
         setSiswa(selected || null)
-        setFoto(selected.fotoAnak)
+        setFoto(selected?.fotoAnak)
       } catch (error) {
         console.error("Error:", error)
       } finally {
@@ -62,27 +61,85 @@ const fileInputRef = useRef(null);
 
       if (!res.ok) throw new Error("Gagal menyimpan perubahan")
 
-      // update state lokal agar data langsung berubah
       setSiswa((prev) => ({ ...prev, [key]: editedValue }))
-
-    //   toast({
-    //     title: "Berhasil!",
-    //     description: "Data berhasil disimpan.",
-    //     duration: 2000,
-    //   })
-    alert("Data berhasil disimpan")
-
+      alert("Data berhasil disimpan")
       setEditingField(null)
     } catch (error) {
       console.error(error)
       alert("Terjadi kesalahan saat menyimpan data")
-    //   toast({
-    //     title: "Gagal!",
-    //     description: "Terjadi kesalahan saat menyimpan data.",
-    //     variant: "destructive",
-    //   })
     }
   }
+
+  // Handler untuk foto profil
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("id", siswa.id);
+      formData.append("fieldName", "fotoAnak");
+
+      const res = await fetch("/api/pendaftaran/updatefoto", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        setFoto(result.url);
+        setSiswa((prev) => ({ ...prev, fotoAnak: result.url }));
+        alert("Foto profil berhasil diganti!");
+      } else {
+        alert("Gagal upload foto");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Terjadi kesalahan saat upload");
+    }
+  };
+
+  // Handler untuk dokumen (4 field)
+  const handleDokumenFileChange = async (e, fieldName) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setUploadingField(fieldName);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("id", siswa.id);
+      formData.append("fieldName", fieldName);
+
+      const res = await fetch("/api/pendaftaran/updatefoto", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        setSiswa((prev) => ({ ...prev, [fieldName]: result.url }));
+        alert(`${fieldName} berhasil diganti!`);
+      } else {
+        alert("Gagal upload dokumen");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Terjadi kesalahan saat upload");
+    } finally {
+      setUploadingField(null);
+    }
+  };
+
+  // Trigger file input untuk dokumen tertentu
+  const handleEditDokumen = (fieldName) => {
+    const input = document.getElementById(`file-${fieldName}`);
+    if (input) input.click();
+  };
 
   if (loading) return <p className="text-center py-10">Memuat data...</p>
   if (!siswa)
@@ -100,11 +157,15 @@ const fileInputRef = useRef(null);
   ]
 
   const quickLinks = [
-    { name: "Portofolio", href: `/manajemen/dapodik/${id}/portofolio`,icon:User },
-    { name: "Kehadiran", href: `/manajemen/dapodik/${id}/kehadiran`,icon:AlarmClockCheck },
-    { name: "Raport", href: `/manajemen/dapodik/${id}/raport`,icon:BookOpenCheck },
-    { name: "Bakat", href: `/manajemen/dapodik/${id}/bakat`,icon:Target },
-    { name: "Pembayaran", href: `/manajemen/dapodik/${id}/pembayaran`, icon:Banknote },
+    { name: "Portofolio", href: `/manajemen/dapodik/${id}/portofolio`, icon: User },
+    { name: "Kehadiran", href: `/manajemen/dapodik/${id}/kehadiran`, icon: AlarmClockCheck },
+    { name: "Akademik", href: `/manajemen/dapodik/${id}/akademik`, icon: BookOpenCheck },
+    { name: "Bakat", href: `/manajemen/dapodik/${id}/bakat`, icon: Target },
+    { name: "Pembayaran", href: `/manajemen/dapodik/${id}/pembayaran`, icon: Banknote },
+    { name: "Tahfidz", href: `/manajemen/dapodik/${id}/tahfidz`, icon: BookOpenCheck },
+    { name: "Tilawati", href: `/manajemen/dapodik/${id}/tilawati`, icon: BookOpenCheck },
+    { name: "Komitmen", href: `/manajemen/dapodik/${id}/komitmen`, icon: BookOpenCheck },
+    { name: "Ekskul", href: `/manajemen/dapodik/${id}/ekskul`, icon: Volleyball },
   ]
 
   const biodata = {
@@ -112,7 +173,7 @@ const fileInputRef = useRef(null);
     nik: siswa.nik,
     jenis_kelamin: siswa.jenis_kelamin,
     tempat_lahir: siswa.tempat_lahir,
-    tgl_lahir: formatDate(siswa.tgl_lahir) ,
+    tgl_lahir: formatDate(siswa.tgl_lahir),
     alamat: siswa.alamat,
   }
 
@@ -133,224 +194,204 @@ const fileInputRef = useRef(null);
     buktiBayar: siswa.buktiBayar,
     fotoAnak: siswa.fotoAnak,
     fotoKia: siswa.fotoKia,
-    kkPdf:siswa.kkPdf
+    kkPdf: siswa.kkPdf
   }
 
   const dataTabs = { biodata, ortu, kontak, dokumen }
 
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    try {
-      // === Upload ke API Next.js yang handle S3 ===
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("id", siswa.id);
-
-      const res = await fetch("/api/pendaftaran/updatefoto", {
-        method: "POST",
-        body: formData,
-      });
-
-      const result = await res.json();
-
-      if (result.success) {
-        setFoto(result.url); // update tampilan langsung
-        alert("Foto berhasil diganti!");
-      } else {
-        alert("Gagal upload foto");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Terjadi kesalahan saat upload");
-    }
-  };
-
   return (
     <div className="max-w-5xl mx-auto p-4 space-y-6">
       {/* Quick Links */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-            {quickLinks.map((link) => {
-                const Icon = link.icon
-                return (
-                <Link key={link.name} href={link.href}>
-                    <Card className="cursor-pointer hover:shadow-md transition p-3 text-center">
-                    <CardContent className="p-2 flex flex-col items-center justify-center text-green-600">
-                        <Icon className="w-6 h-6 mb-1" />
-                        <span className="text-sm font-semibold">{link.name}</span>
-                    </CardContent>
-                    </Card>
-                </Link>
-                )
-            })}
-            </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+        {quickLinks.map((link) => {
+          const Icon = link.icon
+          return (
+            <Link key={link.name} href={link.href}>
+              <Card className="cursor-pointer hover:shadow-md transition p-3 text-center">
+                <CardContent className="p-2 flex flex-col items-center justify-center text-green-600">
+                  <Icon className="w-6 h-6 mb-1" />
+                  <span className="text-sm font-semibold">{link.name}</span>
+                </CardContent>
+              </Card>
+            </Link>
+          )
+        })}
+      </div>
 
       {/* Tabs Detail */}
       <Card>
-      <CardHeader>
-        <div className="flex items-center gap-4">
-          {/* Foto siswa atau avatar default */}
-          <div className="relative w-16 h-16">
-            {siswa.fotoAnak ? (
-              <Image
-                src={foto}
-                alt={siswa.nama_lengkap}
-                className="rounded-full object-cover border "
-                fill
-              />
-            ) : (
-              <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center border">
-                <User className="w-8 h-8 text-gray-400" />
-              </div>
-            )}
+        <CardHeader>
+          <div className="flex items-center gap-4">
+            {/* Foto siswa atau avatar default */}
+            <div className="relative w-16 h-16">
+              {foto ? (
+                <Image
+                  src={foto}
+                  alt={siswa.nama_lengkap}
+                  className="rounded-full object-cover border"
+                  fill
+                />
+              ) : (
+                <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center border">
+                  <User className="w-8 h-8 text-gray-400" />
+                </div>
+              )}
 
-            {/* Tombol ubah foto */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute bottom-0 right-0 bg-white shadow-md rounded-full p-1 hover:bg-gray-50"
-              onClick={() => fileInputRef.current.click()}
-            >
-              <Pencil className="w-4 h-4 text-gray-600" />
-            </Button>
-            <input
+              {/* Tombol ubah foto profil */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute bottom-0 right-0 bg-white shadow-md rounded-full p-1 hover:bg-gray-50"
+                onClick={() => fileInputRef.current.click()}
+              >
+                <Pencil className="w-4 h-4 text-gray-600" />
+              </Button>
+              <input
                 ref={fileInputRef}
                 type="file"
                 accept="image/*"
                 className="hidden"
                 onChange={handleFileChange}
-            />
+              />
+            </div>
+
+            {/* Nama siswa */}
+            <CardTitle className="text-xl font-semibold">
+              {siswa.nama_lengkap}
+            </CardTitle>
           </div>
+        </CardHeader>
 
-          {/* Nama siswa */}
-          <CardTitle className="text-xl font-semibold">
-            {siswa.nama_lengkap}
-          </CardTitle>
-        </div>
-      </CardHeader>
+        <CardContent>
+          <Tabs defaultValue="biodata" className="w-full">
+            <TabsList className="flex flex-wrap justify-start gap-2 mb-8">
+              {sections.map((section) => (
+                <TabsTrigger key={section.key} value={section.key}>
+                  {section.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
 
-      <CardContent>
-        <Tabs defaultValue="biodata" className="w-full">
-          <TabsList className="flex flex-wrap justify-start gap-2 mb-8">
             {sections.map((section) => (
-              <TabsTrigger key={section.key} value={section.key}>
-                {section.label}
-              </TabsTrigger>
+              <TabsContent key={section.key} value={section.key}>
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse border rounded-md">
+                    <tbody>
+                      {section.key === "dokumen" ? (
+                        // TAB DOKUMEN - Tombol ganti foto
+                        Object.entries(dataTabs[section.key]).map(([key, value]) => (
+                          <tr key={key} className="hover:bg-gray-50">
+                            <td className="border px-3 py-2 font-medium w-1/3 whitespace-nowrap">
+                              {key
+                                .replace(/([A-Z])/g, " $1")
+                                .replace(/^./, (str) => str.toUpperCase())}
+                            </td>
+                            <td className="border px-3 py-2">
+                              {value ? (
+                                <div className="flex items-center gap-3">
+                                  <a
+                                    href={value}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-600 hover:underline"
+                                  >
+                                    Lihat
+                                  </a>
+                                  <a
+                                    href={value}
+                                    download
+                                    className="text-green-600 hover:underline"
+                                  >
+                                    Unduh
+                                  </a>
+                                </div>
+                              ) : (
+                                <span className="text-gray-400">Tidak ada dokumen</span>
+                              )}
+                            </td>
+                            <td className="border px-3 py-2 text-center">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleEditDokumen(key)}
+                                disabled={uploadingField === key}
+                              >
+                                {uploadingField === key ? (
+                                  <span className="text-xs">...</span>
+                                ) : (
+                                  <Pencil className="w-4 h-4 text-gray-500" />
+                                )}
+                              </Button>
+                              {/* Hidden file input untuk setiap field */}
+                              <input
+                                id={`file-${key}`}
+                                type="file"
+                                accept="image/*,application/pdf"
+                                className="hidden"
+                                onChange={(e) => handleDokumenFileChange(e, key)}
+                              />
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        // TAB LAINNYA - Edit biasa
+                        Object.entries(dataTabs[section.key]).map(([key, value]) => (
+                          <tr key={key} className="hover:bg-gray-50">
+                            <td className="border px-3 py-2 font-medium w-1/3 whitespace-nowrap">
+                              {key
+                                .replace(/_/g, " ")
+                                .replace(/\b\w/g, (c) => c.toUpperCase())}
+                            </td>
+                            <td className="border px-3 py-2">
+                              {editingField === key ? (
+                                <Input
+                                  value={editedValue}
+                                  onChange={(e) => setEditedValue(e.target.value)}
+                                  className="max-w-xs"
+                                />
+                              ) : (
+                                value || "-"
+                              )}
+                            </td>
+                            <td className="border px-3 py-2 text-center">
+                              {editingField === key ? (
+                                <div className="flex justify-center gap-2">
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => handleSave(key)}
+                                  >
+                                    <Check className="w-4 h-4 text-green-600" />
+                                  </Button>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={handleCancel}
+                                  >
+                                    <X className="w-4 h-4 text-red-500" />
+                                  </Button>
+                                </div>
+                              ) : (
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={() => handleEdit(key, value)}
+                                >
+                                  <Pencil className="w-4 h-4 text-gray-500" />
+                                </Button>
+                              )}
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </TabsContent>
             ))}
-          </TabsList>
-
-          {sections.map((section) => (
-  <TabsContent key={section.key} value={section.key}>
-    <div className="overflow-x-auto">
-      <table className="w-full border-collapse border rounded-md">
-        <tbody>
-          {section.key === "dokumen" ? (
-            // === KHUSUS UNTUK TAB DOKUMEN ===
-            Object.entries(dataTabs[section.key]).map(([key, value]) => (
-              <tr key={key} className="hover:bg-gray-50">
-                <td className="border px-3 py-2 font-medium w-1/3 whitespace-nowrap">
-                  {key
-                    .replace(/_/g, " ")
-                    .replace(/\b\w/g, (c) => c.toUpperCase())}
-                </td>
-                <td className="border px-3 py-2">
-                  {value ? (
-                    <div className="flex items-center gap-3">
-                      {/* Tombol View */}
-                      <a
-                        href={value}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline"
-                      >
-                        Lihat
-                      </a>
-
-                      {/* Tombol Download */}
-                      <a
-                        href={value}
-                        download
-                        className="text-green-600 hover:underline"
-                      >
-                        Unduh
-                      </a>
-                    </div>
-                  ) : (
-                    <span className="text-gray-400">Tidak ada dokumen</span>
-                  )}
-                </td>
-                <td className="border px-3 py-2 text-center">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleEdit(key, value)}
-                  >
-                    <Pencil className="w-4 h-4 text-gray-500" />
-                  </Button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            // === UNTUK TAB SELAIN DOKUMEN ===
-            Object.entries(dataTabs[section.key]).map(([key, value]) => (
-              <tr key={key} className="hover:bg-gray-50">
-                <td className="border px-3 py-2 font-medium w-1/3 whitespace-nowrap">
-                  {key
-                    .replace(/_/g, " ")
-                    .replace(/\b\w/g, (c) => c.toUpperCase())}
-                </td>
-                <td className="border px-3 py-2">
-                  {editingField === key ? (
-                    <Input
-                      value={editedValue}
-                      onChange={(e) => setEditedValue(e.target.value)}
-                      className="max-w-xs"
-                    />
-                  ) : (
-                    value || "-"
-                  )}
-                </td>
-                <td className="border px-3 py-2 text-center">
-                  {editingField === key ? (
-                    <div className="flex justify-center gap-2">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleSave(key)}
-                      >
-                        <Check className="w-4 h-4 text-green-600" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={handleCancel}
-                      >
-                        <X className="w-4 h-4 text-red-500" />
-                      </Button>
-                    </div>
-                  ) : (
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleEdit(key, value)}
-                    >
-                      <Pencil className="w-4 h-4 text-gray-500" />
-                    </Button>
-                  )}
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-    </div>
-  </TabsContent>
-))}
-
-        </Tabs>
-      </CardContent>
-    </Card>
+          </Tabs>
+        </CardContent>
+      </Card>
     </div>
   )
 }
