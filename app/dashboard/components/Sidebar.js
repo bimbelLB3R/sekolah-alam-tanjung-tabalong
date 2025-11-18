@@ -141,7 +141,7 @@ export default function Sidebar({ isOpen, onClose }) {
           items: [
             { label: "Kehadiran", href: "/dashboard/manajemen/data-presensi" },
             { label: "Validasi Ijin", href: "/dashboard/bendahara/ijin" },
-            { label: "Lainnya", href: "/dashboard/bendahara/bonus/lainnya" },
+            { label: "Perfoma Kehadiran", href: "/dashboard/bendahara/perfoma" },
           ],
         },
       ],

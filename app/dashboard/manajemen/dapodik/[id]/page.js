@@ -5,7 +5,7 @@ import { useParams } from "next/navigation"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Pencil, Check, X, User, AlarmClockCheck, BookOpenCheck, Target, Banknote, Volleyball } from "lucide-react"
+import { Pencil, Check, X, User, AlarmClockCheck, BookOpenCheck, Target, Banknote, Volleyball, Handshake, Brain } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
@@ -159,12 +159,12 @@ export default function DetailSiswaPage() {
   const quickLinks = [
     { name: "Portofolio", href: `/manajemen/dapodik/${id}/portofolio`, icon: User },
     { name: "Kehadiran", href: `/manajemen/dapodik/${id}/kehadiran`, icon: AlarmClockCheck },
-    { name: "Akademik", href: `/manajemen/dapodik/${id}/akademik`, icon: BookOpenCheck },
+    { name: "Akademik", href: `/manajemen/dapodik/${id}/akademik`, icon: Brain },
     { name: "Bakat", href: `/manajemen/dapodik/${id}/bakat`, icon: Target },
     { name: "Pembayaran", href: `/manajemen/dapodik/${id}/pembayaran`, icon: Banknote },
     { name: "Tahfidz", href: `/manajemen/dapodik/${id}/tahfidz`, icon: BookOpenCheck },
     { name: "Tilawati", href: `/manajemen/dapodik/${id}/tilawati`, icon: BookOpenCheck },
-    { name: "Komitmen", href: `/manajemen/dapodik/${id}/komitmen`, icon: BookOpenCheck },
+    { name: "Komitmen", href: `/manajemen/dapodik/${id}/komitmen`, icon: Handshake },
     { name: "Ekskul", href: `/manajemen/dapodik/${id}/ekskul`, icon: Volleyball },
   ]
 
