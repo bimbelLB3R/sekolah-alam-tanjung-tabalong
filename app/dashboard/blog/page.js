@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/lib/getUserClientSide';
 import BlogPostsTable from '../components/blog/BlogPostsTable';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { Suspense } from 'react';
 
 export default function BlogDashboardPage() {
   const { user, loading: authLoading, mounted } = useAuth();
@@ -93,6 +94,7 @@ export default function BlogDashboardPage() {
   if (!user) return null;
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <div className="p-6">
       {/* Header */}
      <div className="flex items-center justify-between mb-6">
@@ -205,6 +207,7 @@ export default function BlogDashboardPage() {
         )}
       </div>
     </div>
+    </Suspense>
   );
 }
 
