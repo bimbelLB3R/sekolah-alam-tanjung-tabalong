@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Users, Home, FileText, Settings, Wallet, Cable, Calendar, ChevronLeft, ChevronRight, ScrollText } from "lucide-react";
+import { ChevronDown, Users, Home, FileText, Settings, Wallet, Cable, Calendar, ChevronLeft, ChevronRight, ScrollText, Rss } from "lucide-react";
 import Image from "next/image";
 import { useAuth } from "@/lib/getUserClientSide";
 import { rolePermissions } from "@/lib/rolePermissions";
@@ -87,6 +87,7 @@ export default function Sidebar({ isOpen, onClose }) {
   const menus = [
     { type: "link", label: "Home", href: "/dashboard", icon: <Home /> },
     { type: "link", label: "Kepanitiaan", href: "/dashboard/my-activities", icon: <ScrollText /> },
+    { type: "link", label: "Buat Artikel", href: "/dashboard/blog", icon: <Rss /> },
     {
       type: "collapsible",
       key: "users",
