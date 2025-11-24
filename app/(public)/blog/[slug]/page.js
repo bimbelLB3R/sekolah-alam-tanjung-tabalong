@@ -271,18 +271,34 @@ export default async function BlogDetailPage({ params }) {
 
           {/* Content */}
           <div 
-            className="prose prose-lg max-w-none mb-12
-                       prose-headings:font-bold prose-headings:text-gray-900
-                       prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl
-                       prose-p:text-gray-700 prose-p:leading-relaxed
-                       prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
-                       prose-strong:text-gray-900 prose-strong:font-semibold
-                       prose-img:rounded-lg prose-img:shadow-md
-                       prose-blockquote:border-l-4 prose-blockquote:border-blue-600 prose-blockquote:bg-blue-50 prose-blockquote:py-2 prose-blockquote:px-4
-                       prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm
-                       prose-pre:bg-gray-900 prose-pre:text-gray-100"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+  className="prose prose-lg max-w-none mb-12
+             prose-headings:font-bold prose-headings:text-gray-900 prose-headings:leading-tight
+             prose-h1:text-3xl prose-h1:mb-3 prose-h1:mt-6
+             prose-h2:text-2xl prose-h2:mb-0 prose-h2:mt-5
+             prose-h3:text-xl prose-h3:mb-2 prose-h3:mt-4
+             
+             /* Paragraphs - sangat rapat */
+             prose-p:text-gray-700 prose-p:leading-normal
+
+             /* Bullet list spacing */
+             prose-li:leading-0
+             prose-li:my-0.1 
+             prose-ul:leading-0
+             prose-ul:my-0.1 
+             
+             prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
+             prose-strong:text-gray-900 prose-strong:font-semibold
+             prose-img:rounded-lg prose-img:shadow-md prose-img:my-4
+             prose-blockquote:border-l-4 prose-blockquote:border-blue-600 
+             prose-blockquote:bg-blue-50 prose-blockquote:py-2 prose-blockquote:px-4
+             prose-blockquote:my-4 prose-blockquote:not-italic
+             prose-code:bg-gray-100 prose-code:px-2 prose-code:py-0.5 
+             prose-code:rounded prose-code:text-sm prose-code:text-pink-600
+             prose-code:before:content-none prose-code:after:content-none
+             prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:rounded-lg
+             prose-pre:my-4 prose-pre:p-4"
+  dangerouslySetInnerHTML={{ __html: post.content }}
+/>
 
           {/* Tags */}
           {post.tags && post.tags.length > 0 && (
@@ -316,17 +332,7 @@ export default async function BlogDetailPage({ params }) {
                 </svg>
                 Facebook
               </a>
-              <a
-                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://sekolah-alam-tanjung-tabalong.vercel.app/blog/${post.slug}`)}&text=${encodeURIComponent(post.title)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition-colors flex items-center gap-2"
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                </svg>
-                Twitter
-              </a>
+              
               <a
                 href={`https://wa.me/?text=${encodeURIComponent(post.title + ' - https://sekolah-alam-tanjung-tabalong.vercel.app/blog/' + post.slug)}`}
                 target="_blank"
