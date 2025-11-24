@@ -126,10 +126,10 @@ export default async function BlogPage({ searchParams }) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
+      <div className="bg-gradient-to-r from-green-600 to-green-800 text-white py-16">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Blog</h1>
-          <p className="text-xl text-blue-100 max-w-2xl">
+          <p className="text-xl text-green-100 max-w-2xl">
             Temukan artikel, tips, dan berita terbaru dari kami
           </p>
         </div>
@@ -159,7 +159,7 @@ export default async function BlogPage({ searchParams }) {
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                          <div className="w-full h-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
                             <svg className="w-20 h-20 text-white opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                             </svg>
@@ -168,11 +168,11 @@ export default async function BlogPage({ searchParams }) {
                       </div>
                       <div className="md:w-1/2 p-8">
                         {featuredPost.category_name && (
-                          <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-3">
+                          <span className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium mb-3">
                             {featuredPost.category_name}
                           </span>
                         )}
-                        <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors">
                           {featuredPost.title}
                         </h3>
                         <p className="text-gray-600 mb-4 line-clamp-3">
@@ -198,11 +198,11 @@ export default async function BlogPage({ searchParams }) {
                   name="search"
                   defaultValue={resolvedParams?.search || ''}
                   placeholder="Cari artikel..."
-                  className="w-full px-5 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-5 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 />
                 <button
                   type="submit"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-green-600"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -243,11 +243,11 @@ export default async function BlogPage({ searchParams }) {
                         </div>
                         <div className="p-5">
                           {post.category_name && (
-                            <span className="inline-block px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-medium mb-2">
+                            <span className="inline-block px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-medium mb-2">
                               {post.category_name}
                             </span>
                           )}
-                          <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                          <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-green-600 transition-colors">
                             {post.title}
                           </h3>
                           <p className="text-gray-600 text-sm mb-3 line-clamp-2">
@@ -286,7 +286,7 @@ export default async function BlogPage({ searchParams }) {
                             href={`/blog?page=${pageNum}${resolvedParams?.category ? `&category=${resolvedParams.category}` : ''}${resolvedParams?.search ? `&search=${resolvedParams.search}` : ''}`}
                             className={`px-4 py-2 rounded-lg transition-colors ${
                               pageNum === pagination.page
-                                ? 'bg-blue-600 text-white'
+                                ? 'bg-green-600 text-white'
                                 : 'border border-gray-300 hover:bg-gray-50'
                             }`}
                           >
@@ -320,7 +320,7 @@ export default async function BlogPage({ searchParams }) {
                   href="/blog"
                   className={`block px-3 py-2 rounded-lg transition-colors ${
                     !resolvedParams?.category
-                      ? 'bg-blue-100 text-blue-800 font-medium'
+                      ? 'bg-green-100 text-green-800 font-medium'
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
@@ -332,7 +332,7 @@ export default async function BlogPage({ searchParams }) {
                     href={`/blog?category=${cat.slug}`}
                     className={`flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${
                       resolvedParams?.category === cat.slug
-                        ? 'bg-blue-100 text-blue-800 font-medium'
+                        ? 'bg-green-100 text-green-800 font-medium'
                         : 'text-gray-700 hover:bg-gray-100'
                     }`}
                   >

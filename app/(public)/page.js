@@ -28,6 +28,7 @@ import {
   Calendar,
 } from "lucide-react"
 import HeroSection from "./components/herosection"
+import LatestBlogSection from "./components/blog/LatestBlogSection"
 
 export default function Home() {
    const photos = [
@@ -175,25 +176,7 @@ const fiturList = [
       </section>
 
        {/* Blog Section */}
-      <section className="space-y-6 p-3">
-        <h2 className="text-4xl font-semibold text-center mb-8">Artikel Terbaru</h2>
-        <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
-          {articles.map((article) => (
-            <Card key={article.id} className="rounded-2xl shadow-md">
-              <CardHeader>
-                <CardTitle className="text-lg">{article.title}</CardTitle>
-                <p className="text-sm text-muted-foreground">{article.date}</p>
-              </CardHeader>
-              <CardContent>
-                <p className="text-lg mb-4">{article.excerpt}</p>
-                <Button asChild variant="outline" size="sm">
-                  <Link href={article.link}>Baca Selengkapnya</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+      <LatestBlogSection/>
 
       {/* FAQ Section */}
       <section className=" mx-auto p-3 bg-green-100">

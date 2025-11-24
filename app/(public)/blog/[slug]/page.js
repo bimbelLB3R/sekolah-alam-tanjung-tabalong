@@ -15,7 +15,7 @@ export async function generateMetadata({ params }) {
   const siteUrl = 'https://sekolah-alam-tanjung-tabalong.vercel.app';
   const articleUrl = `${siteUrl}/blog/${post.slug}`;
   const description = post.excerpt || post.title;
-  const imageUrl = post.featured_image || `${siteUrl}/default-blog-image.jpg`; // fallback ke default image jika ada
+  const imageUrl = post.featured_image || `${siteUrl}/logo-sattnav.png`; // fallback ke default image jika ada
 
   return {
     title: `${post.title} | Blog Sekolah Alam Tanjung Tabalong`,
@@ -157,7 +157,7 @@ export default async function BlogDetailPage({ params }) {
       name: 'Sekolah Alam Tanjung Tabalong',
       logo: {
         '@type': 'ImageObject',
-        url: `${siteUrl}/logo.png`, // Sesuaikan dengan logo Anda
+        url: `${siteUrl}/logo-sattnav.png`, // Sesuaikan dengan logo Anda
       },
     },
     mainEntityOfPage: {
