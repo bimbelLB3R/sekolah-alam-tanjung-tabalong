@@ -12,7 +12,8 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
-  ChevronsRight
+  ChevronsRight,
+  DownloadIcon
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -62,6 +63,8 @@ import { Badge } from '@/components/ui/badge';
 import { formatName } from '@/lib/formatName';
 import { formatCurrency } from '@/lib/formatCurrency';
 import { formatDate } from '@/lib/formatDate';
+import { ReceiptDocument } from './KuitansiPdf';
+import { pdf } from '@react-pdf/renderer';
 
 export default function ListPembayaran() {
   const { toast } = useToast();
@@ -185,6 +188,22 @@ export default function ListPembayaran() {
         title: 'Error',
         description: 'Terjadi kesalahan saat menghapus data',
       });
+    }
+  };
+
+  // Download PDF
+  const handleDownloadPDF = async (item) => {
+    try {
+      const blob = await pdf(<ReceiptDocument data={item} />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `Kuitansi_${item.nama_lengkap}_${item.jenis_pembayaran}_${formatDate(item.tgl_bayar)}.pdf`;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('Gagal mengunduh PDF');
     }
   };
 
@@ -325,6 +344,13 @@ export default function ListPembayaran() {
                             onClick={() => handleViewDetail(item.id)}
                           >
                             <Eye className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={() => handleDownloadPDF(item)}
+                          >
+                            <DownloadIcon className="h-4 w-4" />
                           </Button>
                           <Button
                             size="icon"

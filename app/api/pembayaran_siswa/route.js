@@ -63,8 +63,8 @@ export async function GET(request) {
     // Gunakan salinan params agar tidak menambah LIMIT/OFFSET ke countQuery
     const dataParams = [...params, limit, offset];
 
-    console.log('QUERY:', dataQuery);
-    console.log('PARAMS:', dataParams);
+    // console.log('QUERY:', dataQuery);
+    // console.log('PARAMS:', dataParams);
 
     const [results] = await pool.execute(dataQuery, dataParams);
 
