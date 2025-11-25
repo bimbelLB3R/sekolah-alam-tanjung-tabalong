@@ -1,2 +1,6 @@
 mysql -h database-1.cvo6i8skc4f5.ap-southeast-1.rds.amazonaws.com -P 3306 -u admin -p
 
+kompres image
+https://squoosh.app/
+
+og image wa ukuran max 3 MB ya

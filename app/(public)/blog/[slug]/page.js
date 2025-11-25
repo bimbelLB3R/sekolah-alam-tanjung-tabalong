@@ -16,7 +16,7 @@ export async function generateMetadata({ params }) {
   const articleUrl = `${siteUrl}/blog/${post.slug}`;
   const description = post.excerpt || post.title;
   const imageUrl = post.featured_image || `${siteUrl}/logo-sattnav.png`; // fallback ke default image jika ada
-
+// console.log(imageUrl);
   return {
     title: `${post.title} | Blog Sekolah Alam Tanjung Tabalong`,
     description: description,

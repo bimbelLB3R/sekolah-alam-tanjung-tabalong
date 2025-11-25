@@ -161,7 +161,7 @@ export default function DetailSiswaPage() {
     { name: "Kehadiran", href: `/manajemen/dapodik/${id}/kehadiran`, icon: AlarmClockCheck },
     { name: "Akademik", href: `/manajemen/dapodik/${id}/akademik`, icon: Brain },
     { name: "Bakat", href: `/manajemen/dapodik/${id}/bakat`, icon: Target },
-    { name: "Pembayaran", href: `/manajemen/dapodik/${id}/pembayaran`, icon: Banknote },
+    { name: "Pembayaran", href: `/dashboard/manajemen/dapodik/${id}/pembayaran`, icon: Banknote },
     { name: "Tahfidz", href: `/manajemen/dapodik/${id}/tahfidz`, icon: BookOpenCheck },
     { name: "Tilawati", href: `/manajemen/dapodik/${id}/tilawati`, icon: BookOpenCheck },
     { name: "Komitmen", href: `/manajemen/dapodik/${id}/komitmen`, icon: Handshake },

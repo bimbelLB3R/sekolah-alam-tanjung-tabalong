@@ -8,7 +8,7 @@ import pool from '@/lib/db';
  */
 export async function GET(request, { params }) {
   try {
-    const { id } = params;
+    const { id } =await params;
 
     const query = `
       SELECT 
@@ -55,7 +55,7 @@ export async function GET(request, { params }) {
  */
 export async function PUT(request, { params }) {
   try {
-    const { id } = params;
+    const { id } =await params;
     const body = await request.json();
     const {
       jenis_pembayaran,
@@ -119,7 +119,7 @@ export async function PUT(request, { params }) {
  */
 export async function DELETE(request, { params }) {
   try {
-    const { id } = params;
+    const { id } =await params;
 
     const query = 'DELETE FROM pembayaran_siswa WHERE id = ?';
     const [result] = await pool.execute(query, [id]);

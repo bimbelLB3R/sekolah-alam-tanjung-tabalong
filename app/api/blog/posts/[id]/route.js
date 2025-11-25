@@ -4,6 +4,7 @@ import { getServerUser } from '@/lib/blog/auth-server';
 import { getServerUserFull } from '@/lib/blog/auth-server';
 // import { useAuth } from '@/lib/getUserClientSide';
 import slugify from 'slugify';
+import { deleteFromS3 } from '@/lib/blog/s3';
 
 // GET - Get single post
 export async function GET(request, { params }) {
@@ -107,6 +108,34 @@ export async function PUT(request, { params }) {
 }
 
 // DELETE - Delete post
+// export async function DELETE(request, { params }) {
+//   try {
+//     const user = await getServerUser();
+    
+//     if (!user) {
+//       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+//     }
+
+//     const { id } = await params;
+
+//     const [post] = await pool.query('SELECT author_id FROM posts WHERE id = ?', [id]);
+//     if (!post) {
+//       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+//     }
+    
+//     if (post[0].author_id !== user.id ) {
+//       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+//     }
+
+//     await pool.query('DELETE FROM posts WHERE id = ?', [id]);
+
+//     return NextResponse.json({ success: true });
+//   } catch (error) {
+//     console.error('Error deleting post:', error);
+//     return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 });
+//   }
+// }
+// DELETE - Delete post and associated images from S3
 export async function DELETE(request, { params }) {
   try {
     const user = await getServerUser();
@@ -117,20 +146,120 @@ export async function DELETE(request, { params }) {
 
     const { id } = await params;
 
-    const [post] = await pool.query('SELECT author_id FROM posts WHERE id = ?', [id]);
-    if (!post) {
+    // Get post data including featured_image and content
+    const [posts] = await pool.query(
+      'SELECT author_id, featured_image, content FROM posts WHERE id = ?', 
+      [id]
+    );
+    
+    if (!posts || posts.length === 0) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
+
+    const post = posts[0];
     
-    if (post[0].author_id !== user.id ) {
+    if (post.author_id !== user.id) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
+    // Collect all images to delete from S3
+    const imagesToDelete = [];
+
+    // Add featured image if exists
+    if (post.featured_image) {
+      const featuredImageKey = extractS3KeyFromUrl(post.featured_image);
+      if (featuredImageKey) {
+        imagesToDelete.push(featuredImageKey);
+      }
+    }
+
+    // Extract images from content (HTML)
+    if (post.content) {
+      const contentImages = extractImagesFromHtml(post.content);
+      imagesToDelete.push(...contentImages);
+    }
+
+    // Delete post from database first
     await pool.query('DELETE FROM posts WHERE id = ?', [id]);
 
-    return NextResponse.json({ success: true });
+    // Delete images from S3 (do this after DB delete to ensure post is removed even if S3 fails)
+    if (imagesToDelete.length > 0) {
+      await Promise.allSettled(
+        imagesToDelete.map(async (imageKey) => {
+          try {
+            await deleteFromS3(imageKey);
+            console.log(`✅ Deleted image from S3: ${imageKey}`);
+          } catch (error) {
+            console.error(`❌ Failed to delete image from S3: ${imageKey}`, error);
+            // Don't throw error, just log it
+          }
+        })
+      );
+    }
+
+    return NextResponse.json({ 
+      success: true,
+      deletedImages: imagesToDelete.length 
+    });
   } catch (error) {
     console.error('Error deleting post:', error);
     return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 });
   }
+}
+
+// Helper function to extract S3 key from URL
+function extractS3KeyFromUrl(url) {
+  if (!url) return null;
+  
+  try {
+    // Extract key from S3 URL patterns:
+    // https://bucket-name.s3.region.amazonaws.com/folder/file.jpg
+    // https://cdn-url.com/folder/file.jpg
+    
+    const patterns = [
+      /\.s3\.[\w-]+\.amazonaws\.com\/(.+)$/,  // S3 direct URL
+      /\.cloudfront\.net\/(.+)$/,              // CloudFront URL
+      /\/([^\/]+\/[^\/]+\.[a-zA-Z0-9]+)$/     // General pattern with folder
+    ];
+
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match && match[1]) {
+        return decodeURIComponent(match[1]);
+      }
+    }
+
+    // If no pattern matches, try to extract from path
+    const urlObj = new URL(url);
+    const pathname = urlObj.pathname;
+    // Remove leading slash
+    const key = pathname.startsWith('/') ? pathname.substring(1) : pathname;
+    
+    return key || null;
+  } catch (error) {
+    console.error('Error extracting S3 key from URL:', url, error);
+    return null;
+  }
+}
+
+// Helper function to extract image URLs from HTML content
+function extractImagesFromHtml(html) {
+  if (!html) return [];
+  
+  const imageKeys = [];
+  
+  // Match img tags with src attribute
+  const imgRegex = /<img[^>]+src=["']([^"']+)["']/gi;
+  let match;
+  
+  while ((match = imgRegex.exec(html)) !== null) {
+    const imageUrl = match[1];
+    const key = extractS3KeyFromUrl(imageUrl);
+    
+    if (key) {
+      imageKeys.push(key);
+    }
+  }
+  
+  return imageKeys;
 }

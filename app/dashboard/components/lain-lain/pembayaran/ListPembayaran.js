@@ -282,7 +282,7 @@ export default function ListPembayaran() {
                   <TableHead>Jenis Pembayaran</TableHead>
                   <TableHead>Jumlah</TableHead>
                   <TableHead>Tanggal</TableHead>
-                  <TableHead>Cara Bayar</TableHead>
+                  {/* <TableHead>Cara Bayar</TableHead> */}
                   <TableHead className="text-right">Aksi</TableHead>
                 </TableRow>
               </TableHeader>
@@ -312,11 +312,11 @@ export default function ListPembayaran() {
                       </TableCell>
                       <TableCell className="font-semibold">{formatCurrency(item.jml_bayar)}</TableCell>
                       <TableCell>{formatDate(item.tgl_bayar)}</TableCell>
-                      <TableCell>
+                      {/* <TableCell>
                         <Badge variant={item.cara_bayar === 'cash' ? 'default' : 'secondary'}>
                           {item.cara_bayar === 'cash' ? 'Cash' : 'Transfer'}
                         </Badge>
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
                           <Button
