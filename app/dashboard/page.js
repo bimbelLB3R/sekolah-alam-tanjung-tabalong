@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import DashboardCard from "./components/DashboardCard";
-import { BookOpen, Users, Calendar } from "lucide-react";
+import { BookOpen, Users, Calendar, BookPlus } from "lucide-react";
 
 export default function DashboardPage() {
   const [reservasiCount, setReservasiCount] = useState(0);
@@ -27,7 +27,7 @@ export default function DashboardPage() {
       cards: [
         { title: "Data Kelas", value: 80, href: "/dashboard/data-kelas", icon: Users },
         { title: "Reservasi Siswa", value: reservasiCount, href: "/dashboard/reservasi", icon: BookOpen },
-        // { title: "Daftar Ulang", value: 10, href: "/dashboard/daftarulang", icon: Calendar },
+        { title: "Buat Notulensi Rapat", value: 0, href: "/dashboard/meeting-notes", icon: BookPlus },
       ],
     },
     // {
