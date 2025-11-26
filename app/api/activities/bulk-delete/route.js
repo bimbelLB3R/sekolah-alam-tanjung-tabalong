@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import pool from '@/lib/db';
 import { getUserFromToken } from '@/lib/getUserFromToken';
-import { deleteMultipleFromS3 } from '@/lib/s3-utils';
+import { deleteMultipleFromS3 } from '@/lib/activities/s3-utils';
 
 
 
