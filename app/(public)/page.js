@@ -29,6 +29,7 @@ import {
 } from "lucide-react"
 import HeroSection from "./components/herosection"
 import LatestBlogSection from "./components/blog/LatestBlogSection"
+// import LatestActivitiesSection from "./components/activities/LatestActivities"
 
 export default function Home() {
    const photos = [
@@ -36,29 +37,7 @@ export default function Home() {
     "/galeri/foto2.jpeg",
     "/galeri/foto3.jpeg",
   ]
-  const articles = [
-  {
-    id: 1,
-    title: "Peran Orang Tua Dalam Tumbuh Kembang Anak",
-    excerpt: "Orang tua memiliki peran utama dalam proses tumbuh kembang anak...",
-    date: "12 Sept 2025",
-    link: "/blog/peran-ortu"
-  },
-  {
-    id: 2,
-    title: "Apa itu BBA (Belajar Bersama Alam)?",
-    excerpt: "Dengan memahami konsep Belajar Bersama Alam, guru menjadikan alam sebagai...",
-    date: "10 Sept 2025",
-    link: "/blog/apa-bba"
-  },
-  {
-    id: 3,
-    title: "Suka Duka Menjadi Fasilitator Sekolah Alam",
-    excerpt: "Di sekolah alam, fasilitator memegang peran yang sangat vital...",
-    date: "8 Sept 2025",
-    link: "/blog/suka-duka"
-  },
-]
+  
 
 const fiturList = [
     { title: "Agenda Terdekat", desc: "Kegiatan sekolah alam dalam waktu dekat.", icon: Calendar,href:"/agenda" },
@@ -117,6 +96,8 @@ const fiturList = [
     </div>
   </div>
 </section>
+
+{/* <LatestActivitiesSection/> */}
 
 
       {/* Fitur Utama */}

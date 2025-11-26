@@ -26,8 +26,8 @@ const dancing = Dancing_Script({
 export default function NavbarPublic() {
   // const [roleName,setRoleName]=useState();
   const {user,mounted}=useAuth()  
-  console.log(user)
-  console.log(mounted)
+  // console.log(user)
+  // console.log(mounted)
   const isLoggedIn = !!user;
 
 
