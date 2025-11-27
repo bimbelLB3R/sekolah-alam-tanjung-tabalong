@@ -33,9 +33,9 @@ import LatestBlogSection from "./components/blog/LatestBlogSection"
 
 export default function Home() {
    const photos = [
-    "/galeri/foto1.jpeg",
-    "/galeri/foto2.jpeg",
-    "/galeri/foto3.jpeg",
+    "/galeri/kemah.jpg",
+    "/galeri/berkuda.jpg",
+    "/galeri/berenang.jpg",
   ]
   
 
@@ -186,9 +186,30 @@ const fiturList = [
           </AccordionItem>
 
           <AccordionItem value="item-4">
-            <AccordionTrigger className="text-lg">Bagaimana jika saya lupa password login?</AccordionTrigger>
+            <AccordionTrigger className="text-lg">Bagaimana dengan pembayaran uang pangkal, apakah bisa dicicil?</AccordionTrigger>
             <AccordionContent className="text-lg">
-              Anda bisa melakukan reset password melalui menu lupa password di halaman login.
+              Iya, bisa dicicil sesuai ketentuan (silakan hubungi admin).
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-5">
+            <AccordionTrigger className="text-lg">Apakah SATT menerima siswa pindahan dari sekolah lain?</AccordionTrigger>
+            <AccordionContent className="text-lg">
+              Iya, SATT dapat menerima siswa pindahan baik dari sekolah negeri maupun swasta.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-6">
+            <AccordionTrigger className="text-lg">Apakah SATT menyediakan mobil antar jemput untuk anak-anak?</AccordionTrigger>
+            <AccordionContent className="text-lg">
+              Iya, SATT menyediakan fasilitas antar jemput dengan biaya sesuai ketentuan.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-7">
+            <AccordionTrigger className="text-lg">Apakah Sit-in itu?</AccordionTrigger>
+            <AccordionContent className="text-lg">
+              Sit-in merupakan program uji coba anak mengikuti kegiatan di sekolah alam selayaknya siswa biasa. Tujuannya untuk melihat apakah anak senang mengikuti kegiatan belajar di SATT dan siswa sit-in bisa memilih apakah lanjut menjadi siswa atau tidak.
             </AccordionContent>
           </AccordionItem>
         </Accordion>

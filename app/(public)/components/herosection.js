@@ -11,20 +11,20 @@ const slides = [
   {
     id: 1,
     title: "Selamat Datang di Sekolah Alam Tanjung Tabalong",
-    desc: "Digitalisasi sekolah untuk manajemen guru, siswa, keuangan, dan sarpras",
+    desc: "Sekolah ramah anak dengan lingkungan asri",
     img: "/galeri/foto1.jpeg",
   },
   {
     id: 2,
-    title: "Lingkungan Belajar yang Asri dan Nyaman",
-    desc: "Membangun karakter dan pengetahuan siswa melalui pengalaman nyata di alam.",
+    title: "Telah terakreditasi oleh BAN PDM",
+    desc: "Berdiri tahun 2019 dan telah terakreditasi B",
     img: "/galeri/foto2.jpeg",
   },
   {
     id: 3,
     title: "Gabung Bersama Kami!",
     desc: "Bersama mencetak generasi unggul yang peduli lingkungan dan masyarakat.",
-    img: "/galeri/foto3.jpeg",
+    img: "/galeri/literasi.jpg",
   },
 ]
 
