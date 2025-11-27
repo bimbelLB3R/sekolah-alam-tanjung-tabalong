@@ -26,6 +26,9 @@ import {
   Package,
   TentTree,
   Calendar,
+  Store,
+  Sparkle,
+  PlaneTakeoff,
 } from "lucide-react"
 import HeroSection from "./components/herosection"
 import LatestBlogSection from "./components/blog/LatestBlogSection"
@@ -37,15 +40,38 @@ export default function Home() {
     "/galeri/berkuda.jpg",
     "/galeri/berenang.jpg",
   ]
-  
+  const testimoni = [
+  {
+    id: 1,
+    text: "Tiga anak kami bersekolah di SATT semua, mereka merasa nyaman sekolah disana. Bahkan ketika main disana gak mau diajak pulang.",
+    nama: "Dwi Seftina",
+    role: "Ortu Siswa",
+    avatar: "https://i.pravatar.cc/100?img=20"
+  },
+  {
+    id: 2,
+    text: "Guru-guru di SATT sangat peduli dengan perkembangan anak. Disana orang tua juga dibekali dengan ilmu parenting dan diajak untuk peduli pada pendidikan anak",
+    nama: "Budi Santoso",
+    role: "Ortu Siswa",
+    avatar: "https://i.pravatar.cc/100?img=8"
+  },
+  {
+    id: 3,
+    text: "Anak saya tergolong aktif dan menyukai kegiatan, sehingga kebutuhan geraknya terpenuhi di sekolah. Anak juga mendapat pengalaman baru dengan adanya kegiatan magang. Selain magang juga masih banyak kegiatan lainnya yang menarik... Alhamdulillah...",
+    nama: "Ledy S",
+    role: "Ortu Siswa",
+    avatar: "https://i.pravatar.cc/100?img=10"
+  }
+];
 
 const fiturList = [
     { title: "Agenda Terdekat", desc: "Kegiatan sekolah alam dalam waktu dekat.", icon: Calendar,href:"/agenda" },
-    { title: "Data Siswa", desc: "Pantau perkembangan akademik siswa.", icon: Users,href:"/data-siswa"  },
-    { title: "Keuangan", desc: "Kelola pembayaran dan laporan bendahara.", icon: Wallet,href:"/login"  },
-    { title: "Guru & Staff", desc: "Profil guru, wali kelas, dan karyawan.", icon: GraduationCap,href:"/profile-guru"  },
-    { title: "Inventaris", desc: "Aset sarana prasarana sekolah.", icon: Package,href:"/login"  },
-    { title: "Aktivitas Anak", desc: "Berbagai aktivitas 3B khas SATT", icon: TentTree,href:"/activities"  },
+    { title: "Aktivitas Anak", desc: "Berbagai aktivitas 3B khas Sekolah Alam", icon: TentTree,href:"/activities"  },
+    { title: "Galeri Produk", desc: "Produk hasil karya sekolah", icon: Store,href:"/products"  },
+    { title: "Insight Sekolah Alam", desc: "Temukan insight dan pemahaman tentang sekolah alam.", icon: Sparkle,href:"/blog"  },
+    { title: "Profil Guru & Staff", desc: "Profil guru, wali kelas, dan karyawan.", icon: GraduationCap,href:"/profile-guru"  },
+    { title: "Misi & Visi Sekolah Alam SATT", desc: "Mengenal lebih jauh sekolah alam SATT.", icon: PlaneTakeoff,href:"/about"  },
+    
   ]
   return (
     <div className="space-y-20 bg-gradient-to-br from-green-50 to-emerald-100">
@@ -102,7 +128,7 @@ const fiturList = [
 
       {/* Fitur Utama */}
       <section className="p-3 ">
-        <h2 className="text-4xl font-semibold text-center mb-8">Fitur Utama</h2>
+        <h2 className="text-4xl font-semibold text-center mb-8">Mengenal SATT Lebih Dekat...</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
         {fiturList.map((fitur, i) => {
           const Icon = fitur.icon
@@ -131,23 +157,22 @@ const fiturList = [
       </section>
 
       {/* Testimoni */}
-      <section className="p-3 ">
+      {/* Testimoni */}
+      <section className="p-3">
         <h2 className="text-4xl font-semibold text-center mb-8">Apa Kata Mereka?</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto text-lg">
-          {[1, 2, 3].map((i) => (
-            <Card key={i}>
+          {testimoni.map((item) => (
+            <Card key={item.id}>
               <CardContent className="p-6 space-y-4">
-                <p>
-                  “Web ini membantu sekolah kami lebih terorganisir. Sangat mudah digunakan.”
-                </p>
+                <p>{item.text}</p>
                 <div className="flex items-center gap-3">
                   <Avatar>
-                    <AvatarImage src={`https://i.pravatar.cc/100?img=${i}`} />
-                    <AvatarFallback>GU</AvatarFallback>
+                    {/* <AvatarImage src={item.avatar} /> */}
+                    <AvatarFallback>{item.nama.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="font-medium">Guru {i}</p>
-                    <p className="text-sm text-muted-foreground">Sekolah Mitra</p>
+                    <p className="font-medium">{item.nama}</p>
+                    <p className="text-sm text-muted-foreground">{item.role}</p>
                   </div>
                 </div>
               </CardContent>
