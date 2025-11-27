@@ -102,3 +102,5 @@ export async function GET() {
     }
   }
 }
+
+// saya sudah ubah region di vercel ke singapura
