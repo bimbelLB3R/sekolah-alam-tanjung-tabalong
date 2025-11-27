@@ -43,14 +43,14 @@ export default function BlogDashboardPage() {
       if (statusParam) params.append('status', statusParam);
       if (searchParam) params.append('search', searchParam);
 
-      const res = await fetch(`/api/blog/posts?${params}`);
+      const res = await fetch(`/api/dashboard/blog/posts?${params}`);
       const data = await res.json();
 
       setPosts(data.posts || []);
       setPagination(data.pagination || { page: 1, limit: 10, total: 0, totalPages: 0 });
 
       // Calculate stats from all posts (fetch without pagination for stats)
-      const statsRes = await fetch('/api/blog/posts?limit=1000');
+      const statsRes = await fetch('/api/dashboard/blog/posts?limit=1000');
       const statsData = await statsRes.json();
       const allPosts = statsData.posts || [];
 

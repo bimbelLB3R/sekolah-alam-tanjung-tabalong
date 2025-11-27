@@ -26,7 +26,7 @@ export default function CreatePostPage() {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch('/api/blog/categories');
+      const res = await fetch('/api/dashboard/blog/categories');
       const data = await res.json();
       setCategories(Array.isArray(data) ? data : []);
     } catch (error) {

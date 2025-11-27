@@ -51,7 +51,7 @@ export default function AddEventsPage() {
     try {
       setLoading(true)
       setError("")
-      const res = await fetch("/api/events")
+      const res = await fetch("/api/dashboard/events")
       if (!res.ok) throw new Error("Gagal memuat data events")
       const data = await res.json()
       setEvents(data)
@@ -71,7 +71,7 @@ export default function AddEventsPage() {
     try {
       setLoading(true)
       setError("")
-      const res = await fetch("/api/events", {
+      const res = await fetch("/api/dashboard/events", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -97,7 +97,7 @@ export default function AddEventsPage() {
     try {
       setLoading(true)
       setError("")
-      const res = await fetch(`/api/events/${deleteId}`, { method: "DELETE" })
+      const res = await fetch(`/api/dashboard/events/${deleteId}`, { method: "DELETE" })
       
       if (!res.ok) throw new Error("Gagal menghapus event")
       
@@ -114,7 +114,7 @@ export default function AddEventsPage() {
     try {
       setLoading(true)
       setError("")
-      const res = await fetch(`/api/events/${editForm.id}`, {
+      const res = await fetch(`/api/dashboard/events/${editForm.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editForm),

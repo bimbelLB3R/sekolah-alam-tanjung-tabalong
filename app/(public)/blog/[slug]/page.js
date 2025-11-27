@@ -135,7 +135,7 @@ export default async function BlogDetailPage({ params }) {
     (post.content?.replace(/<[^>]*>/g, '').split(/\s+/).length || 0) / 200
   );
 
-  const siteUrl = 'https://sekolah-alam-tanjung-tabalong.vercel.app';
+  const siteUrl = 'https://sekolahalam-tanjungtabalong.id';
   const articleUrl = `${siteUrl}/blog/${post.slug}`;
   
   // Structured Data untuk SEO

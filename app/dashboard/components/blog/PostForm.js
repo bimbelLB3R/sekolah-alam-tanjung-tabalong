@@ -62,7 +62,7 @@ export default function PostForm({ post = null, categories = [] }) {
     setError('');
 
     try {
-      const url = isEditing ? `/api/blog/posts/${post.id}` : '/api/blog/posts';
+      const url = isEditing ? `/api/dashboard/blog/posts/${post.id}` : '/api/dashboard/blog/posts';
       const method = isEditing ? 'PUT' : 'POST';
 
       const res = await fetch(url, {

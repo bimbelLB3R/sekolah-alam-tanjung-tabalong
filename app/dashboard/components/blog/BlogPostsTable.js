@@ -14,7 +14,7 @@ export default function BlogPostsTable({ posts, onRefresh }) {
 
     setDeleting(id);
     try {
-      const res = await fetch(`/api/blog/posts/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/dashboard/blog/posts/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Gagal menghapus');
       if (onRefresh) onRefresh();
       else router.refresh();

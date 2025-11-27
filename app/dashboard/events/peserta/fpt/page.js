@@ -15,7 +15,7 @@ const [loading, setLoading] = useState(false) // 🔄 state loading
 
   useEffect(() => {
     async function fetchPeserta() {
-      const res = await fetch("/api/events/peserta")
+      const res = await fetch("/api/dashboard/events/peserta")
       const data = await res.json()
       setPeserta(data)
     }
@@ -27,7 +27,7 @@ const [loading, setLoading] = useState(false) // 🔄 state loading
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`/api/events/peserta/${id}`, {
+      const res = await fetch(`/api/dashboard/events/peserta/${id}`, {
         method: "DELETE",
       });
 

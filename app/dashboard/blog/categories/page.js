@@ -40,7 +40,7 @@ export default function CategoriesPage() {
   const fetchCategories = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/blog/categories');
+      const res = await fetch('/api/dashboard/blog/categories');
       const data = await res.json();
       setCategories(Array.isArray(data[0]) ? data[0] : []);
     } catch (error) {
@@ -86,8 +86,8 @@ export default function CategoriesPage() {
 
     try {
       const url = editingCategory
-        ? `/api/blog/categories/${editingCategory.id}`
-        : '/api/blog/categories';
+        ? `/api/dashboard/blog/categories/${editingCategory.id}`
+        : '/api/dashboard/blog/categories';
       const method = editingCategory ? 'PUT' : 'POST';
 
       const res = await fetch(url, {
@@ -122,7 +122,7 @@ export default function CategoriesPage() {
 
     setDeleting(id);
     try {
-      const res = await fetch(`/api/blog/categories/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/dashboard/blog/categories/${id}`, { method: 'DELETE' });
 
       if (!res.ok) {
         const data = await res.json();

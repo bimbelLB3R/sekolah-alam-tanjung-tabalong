@@ -32,8 +32,8 @@ console.log(post)
   const fetchData = async () => {
     try {
       const [postRes, catRes] = await Promise.all([
-        fetch(`/api/blog/posts/${id}`),
-        fetch('/api/blog/categories')
+        fetch(`/api/dashboard/blog/posts/${id}`),
+        fetch('/api/dashboard/blog/categories')
       ]);
 
       if (!postRes.ok) {

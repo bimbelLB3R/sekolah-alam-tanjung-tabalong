@@ -235,7 +235,7 @@ export default function RichTextEditor({ content, onChange, placeholder = 'Tulis
     formData.append('file', file);
 
     try {
-      const res = await fetch('/api/blog/upload', { method: 'POST', body: formData });
+      const res = await fetch('/api/dashboard/blog/upload', { method: 'POST', body: formData });
       if (!res.ok) throw new Error('Upload failed');
       const data = await res.json();
       return data.url;
