@@ -79,7 +79,7 @@ const fiturList = [
               <Image
                 src={src}
                 alt={`Galeri ${i + 1}`}
-                width={800}
+                width={400}
                 height={400}
                 className="w-full h-64 object-cover rounded-xl shadow-md"
               />

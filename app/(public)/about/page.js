@@ -86,6 +86,16 @@ export default function AboutPage() {
               <li>Membangun komunitas pembelajar pada guru, orang tua, pengelola, dan masyarakat sekitar</li>
           </ul>
         </section>
+
+        <section id="sejarah">
+          <h2 className="text-2xl font-bold mb-4">Legalitas Lembaga</h2>
+          <ul className="list-disc ml-6 text-gray-700 space-y-2 text-lg">
+              <li>Ijin Operasional</li>
+              <li>Terakreditasi B</li>
+              <li>Sekolah Ramah Anak</li>
+              <li>SK Kemenkumham</li>
+          </ul>
+        </section>
       </div>
     </div>
   )
