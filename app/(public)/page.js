@@ -166,7 +166,7 @@ const fiturList = [
           <AccordionItem value="item-1">
             <AccordionTrigger className="text-lg">Bagaimana cara mendaftar sekolah?</AccordionTrigger>
             <AccordionContent className="text-lg">
-              Pendaftaran bisa dilakukan online melalui halaman pendaftaran di website ini
+              Pendaftaran bisa dilakukan online melalui halaman pendaftaran (PPDB) di website ini
               atau langsung datang ke sekolah.
             </AccordionContent>
           </AccordionItem>
@@ -179,6 +179,13 @@ const fiturList = [
           </AccordionItem>
 
           <AccordionItem value="item-3">
+            <AccordionTrigger className="text-lg">Apakah lulusan sekolah alam SATT bisa melanjutkan ke SMP Negeri?</AccordionTrigger>
+            <AccordionContent className="text-lg">
+              Ya, bisa. SATT sudah memiliki ijin resmi dari pemerintah sehingga ijazah anak-anak bisa dipakai untuk melanjutkan sekolah baik di sekolah negeri maupun swasta.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-4">
             <AccordionTrigger className="text-lg">Bagaimana jika saya lupa password login?</AccordionTrigger>
             <AccordionContent className="text-lg">
               Anda bisa melakukan reset password melalui menu lupa password di halaman login.
