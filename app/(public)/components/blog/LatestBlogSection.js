@@ -85,6 +85,8 @@ export default function LatestBlogSection() {
     );
   }
 
+  
+
   return (
     <section className="space-y-6 p-3">
       <div className="flex items-center justify-between max-w-5xl mx-auto mb-8">
