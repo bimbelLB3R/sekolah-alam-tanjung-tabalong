@@ -1,8 +1,31 @@
 // app/activities/[slug]/ShareButtons.js
 'use client';
 
+import { useEffect, useState } from 'react';
+
 export default function ShareButtons({ title }) {
-  const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const [currentUrl, setCurrentUrl] = useState('');
+
+  useEffect(() => {
+    // Set URL setelah component mount di client
+    setCurrentUrl(window.location.href);
+  }, []);
+
+  // Jangan render tombol sampai URL tersedia
+  if (!currentUrl) {
+    return (
+      <div className="mt-8 p-6 bg-white rounded-lg shadow-sm">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Bagikan Aktivitas Ini
+        </h3>
+        <div className="flex flex-wrap gap-3">
+          <div className="animate-pulse bg-gray-200 h-10 w-24 rounded-lg"></div>
+          <div className="animate-pulse bg-gray-200 h-10 w-24 rounded-lg"></div>
+          <div className="animate-pulse bg-gray-200 h-10 w-24 rounded-lg"></div>
+        </div>
+      </div>
+    );
+  }
 
   const shareLinks = {
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`,
