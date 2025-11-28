@@ -6,6 +6,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    qualities: [60, 70, 75, 80, 85, 90], // ✅ kompress image
     remotePatterns: [
       {
         protocol: "https",

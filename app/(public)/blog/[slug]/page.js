@@ -12,7 +12,7 @@ export async function generateMetadata({ params }) {
     };
   }
 
-  const siteUrl = 'https://sekolah-alam-tanjung-tabalong.vercel.app';
+  const siteUrl = 'https://sekolahalam-tanjungtabalong.id';
   const articleUrl = `${siteUrl}/blog/${post.slug}`;
   const description = post.excerpt || post.title;
   const imageUrl = post.featured_image || `${siteUrl}/logo-sattnav.png`; // fallback ke default image jika ada
@@ -322,7 +322,7 @@ export default async function BlogDetailPage({ params }) {
             <h3 className="text-sm font-semibold text-gray-700 mb-3">Bagikan artikel ini:</h3>
             <div className="flex gap-3">
               <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://sekolah-alam-tanjung-tabalong.vercel.app/blog/${post.slug}`)}`}
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://sekolahalam-tanjungtabalong.id/blog/${post.slug}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
@@ -334,7 +334,7 @@ export default async function BlogDetailPage({ params }) {
               </a>
               
               <a
-                href={`https://wa.me/?text=${encodeURIComponent(post.title + ' - https://sekolah-alam-tanjung-tabalong.vercel.app/blog/' + post.slug)}`}
+                href={`https://wa.me/?text=${encodeURIComponent(post.title + ' - https://sekolahalam-tanjungtabalong.id/blog/' + post.slug)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
