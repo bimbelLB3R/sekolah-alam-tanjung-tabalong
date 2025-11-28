@@ -3,6 +3,7 @@ import "./globals.css";
 import Head from "next/head";
 // import { UserProvider } from "./context/UserContext";
 import { Toaster } from "@/components/ui/toaster";
+import { Analytics } from "@vercel/analytics/next"
 
 
 const geistSans = Geist({
@@ -71,6 +72,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >     
         {children}
+        <Analytics/>
         <Toaster/>
       </body>
     </html>
