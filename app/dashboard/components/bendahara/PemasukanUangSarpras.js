@@ -186,7 +186,7 @@ const PemasukanUangSarpras = () => {
       description: 'Data berhasil diekspor ke CSV'
     });
   };
-  console.log(data)
+  // console.log(data)
 
   return (
     <div className="container mx-auto p-4 space-y-6">

@@ -5,7 +5,7 @@ import PesertaTilawatiTable from "../../components/tilawati/TabelPesertaTilawati
 export default function Tahfidz(){
     const { user, loading } = useAuth();
     const userName=user?.name;
-    console.log(userName)
+    // console.log(userName)
     return (
     <div className="p-1">
       <PesertaTilawatiTable userName={userName} />

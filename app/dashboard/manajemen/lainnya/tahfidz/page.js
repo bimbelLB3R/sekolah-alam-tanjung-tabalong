@@ -57,7 +57,7 @@ useEffect(() => {
       try {
         const res2=await fetch("/api/tahfidz/pembimbing")
         const result2 = await res2.json()
-        console.log(result2)
+        // console.log(result2)
         setDataUser(result2)
       } catch (error) {
         console.error("Error:", error)

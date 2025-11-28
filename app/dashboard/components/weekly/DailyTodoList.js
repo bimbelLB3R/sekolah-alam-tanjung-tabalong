@@ -34,7 +34,7 @@ const day = String(today.getDate()).padStart(2, "0");
 const todayStr = `${year}-${month}-${day}`;
   const hariIni = HARI_INDONESIA[today.getDay()];
 
-  console.log(activities)
+  // console.log(activities)
 
   useEffect(() => {
     fetchTodayActivities();

@@ -35,7 +35,7 @@ export default function DataKelas() {
   const [selectedSiswa, setSelectedSiswa] = useState([]);
   const [kelasTujuan, setKelasTujuan] = useState("");
 
-  console.log(siswaList)
+  // console.log(siswaList)
   
   // Loading & Error states
   const [loadingKelas, setLoadingKelas] = useState(true);

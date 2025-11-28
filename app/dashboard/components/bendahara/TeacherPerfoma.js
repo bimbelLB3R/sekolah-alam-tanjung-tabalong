@@ -73,7 +73,7 @@ export default function TeacherPerformanceDashboard() {
     { name: 'tepat waktu', value: performanceData.summary.tepatWaktu },
     { name: 'terlambat', value: performanceData.summary.terlambat }
   ] : [];
-  console.log(pieData)
+  // console.log(pieData)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">

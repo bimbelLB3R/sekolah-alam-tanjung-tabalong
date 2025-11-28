@@ -43,7 +43,7 @@ export default function MonitoringKegiatan() {
   const [loadingSummary, setLoadingSummary] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [openDetailDialog, setOpenDetailDialog] = useState(false);
-    console.log(summary)
+    // console.log(summary)
   // Filters
   const [filterDate, setFilterDate] = useState(new Date().toISOString().split('T')[0]);
   const [filterKelas, setFilterKelas] = useState('');

@@ -112,7 +112,7 @@ export default function FormPembayaran() {
       
       if (data.success) {
         const kelasData = data.data;
-        console.log(kelasData)
+        // console.log(kelasData)
         setFormData(prev => ({
           ...prev,
           siswa_kelas_id: kelasData.siswa_kelas_id,

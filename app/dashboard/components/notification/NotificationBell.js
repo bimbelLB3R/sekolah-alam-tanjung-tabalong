@@ -30,7 +30,7 @@ export default function NotificationBell() {
 
       if (res.ok) {
         const data = await res.json();
-        console.log("📬 Notifications:", data); // Debug log
+        // console.log("📬 Notifications:", data); // Debug log
         setNotifications(data.notifications);
         setUnreadCount(data.unread_count);
       }

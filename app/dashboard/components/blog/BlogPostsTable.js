@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 export default function BlogPostsTable({ posts, onRefresh }) {
-    console.log(posts)
+    // console.log(posts)
   const router = useRouter();
   const [deleting, setDeleting] = useState(null);
 
