@@ -157,15 +157,15 @@ export default function DetailSiswaPage() {
   ]
 
   const quickLinks = [
-    { name: "Portofolio", href: `/manajemen/dapodik/${id}/portofolio`, icon: User },
-    { name: "Kehadiran", href: `/manajemen/dapodik/${id}/kehadiran`, icon: AlarmClockCheck },
-    { name: "Akademik", href: `/manajemen/dapodik/${id}/akademik`, icon: Brain },
-    { name: "Bakat", href: `/manajemen/dapodik/${id}/bakat`, icon: Target },
+    { name: "Portofolio", href: `/dashboard/manajemen/dapodik/${id}/portofolio`, icon: User },
+    { name: "Kehadiran", href: `/dashboard/manajemen/dapodik/${id}/kehadiran`, icon: AlarmClockCheck },
+    { name: "Akademik", href: `/dashboard/manajemen/dapodik/${id}/akademik`, icon: Brain },
+    { name: "Bakat", href: `/dashboard/manajemen/dapodik/${id}/bakat`, icon: Target },
     { name: "Pembayaran", href: `/dashboard/manajemen/dapodik/${id}/pembayaran`, icon: Banknote },
-    { name: "Tahfidz", href: `/manajemen/dapodik/${id}/tahfidz`, icon: BookOpenCheck },
-    { name: "Tilawati", href: `/manajemen/dapodik/${id}/tilawati`, icon: BookOpenCheck },
-    { name: "Komitmen", href: `/manajemen/dapodik/${id}/komitmen`, icon: Handshake },
-    { name: "Ekskul", href: `/manajemen/dapodik/${id}/ekskul`, icon: Volleyball },
+    { name: "Tahfidz", href: `/dashboard/manajemen/dapodik/${id}/tahfidz`, icon: BookOpenCheck },
+    { name: "Tilawati", href: `/dashboard/manajemen/dapodik/${id}/tilawati`, icon: BookOpenCheck },
+    { name: "Komitmen", href: `/dashboard/manajemen/dapodik/${id}/komitmen`, icon: Handshake },
+    { name: "Ekskul", href: `/dashboard/manajemen/dapodik/${id}/ekskul`, icon: Volleyball },
   ]
 
   const biodata = {
