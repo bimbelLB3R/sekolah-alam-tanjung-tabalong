@@ -287,7 +287,7 @@ export async function GET(request) {
       ${useUserFilter ? 'AND u.id = ?' : ''}
       GROUP BY u.id
       ORDER BY tepatWaktu DESC
-      LIMIT 10
+      LIMIT 20
     `
 
     const teacherParams = useUserFilter

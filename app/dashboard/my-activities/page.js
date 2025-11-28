@@ -34,7 +34,7 @@ export default function MyActivitiesPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const { toast } = useToast();
-console.log(user)
+// console.log(user)
   // Fetch user data
   useEffect(() => {
     setMounted(true);

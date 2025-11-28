@@ -60,7 +60,7 @@ export default function CreateEventPage() {
         asChild 
         className="mb-6"
       >
-        <Link href="/dashboard//allevents">
+        <Link href="/dashboard/allevents">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Kembali ke Daftar Event
         </Link>

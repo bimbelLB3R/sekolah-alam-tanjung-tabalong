@@ -30,7 +30,8 @@ export default function PresensiPage() {
   const maxDistance = 500;
 
   const now = new Date();
-  const tanggal = now.toISOString().split("T")[0];
+  // const tanggal = now.toISOString().split("T")[0]; //tanggal tidak usah dikonversi ke iso
+  const tanggal = now.toLocaleDateString("en-CA"); //2025-11-29 en CA english Canada formatnya 2025-11-29
   const jam = now.toTimeString().split(" ")[0];
 
   useEffect(() => {
@@ -213,6 +214,7 @@ export default function PresensiPage() {
       });
 
       const data = await res.json();
+      // console.log(formData);
       if (data.success) {
         // Tampilkan pesan sesuai keterangan
         const message = data.message || "Presensi berhasil!";

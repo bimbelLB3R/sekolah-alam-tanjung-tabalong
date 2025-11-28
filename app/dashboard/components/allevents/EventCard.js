@@ -57,7 +57,7 @@ export default function EventCard({ event, onDelete }) {
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1">
-            <Link href={`/allevents/${event.id}`}>
+            <Link href={`/dashboard/allevents/${event.id}`}>
               <h3 className="font-semibold text-lg hover:text-primary transition-colors line-clamp-2">
                 {event.name}
               </h3>

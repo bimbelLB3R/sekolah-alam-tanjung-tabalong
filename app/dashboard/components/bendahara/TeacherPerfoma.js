@@ -3,9 +3,14 @@ import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Cart
 import { Calendar, Clock, TrendingUp, User } from 'lucide-react';
 
 export default function TeacherPerformanceDashboard() {
+  const now = new Date();
   const [dateRange, setDateRange] = useState({
-    startDate: new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString().split('T')[0],
-    endDate: new Date().toISOString().split('T')[0]
+    startDate: new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    ).toLocaleDateString("en-CA"),
+    endDate: now.toLocaleDateString("en-CA")
   });
   const [selectedTeacher, setSelectedTeacher] = useState('all');
   const [performanceData, setPerformanceData] = useState(null);
@@ -69,11 +74,22 @@ export default function TeacherPerformanceDashboard() {
     terlambat: '#ef4444'
   };
 
+  // Filter data dengan value > 0 untuk pie chart (konversi ke number)
   const pieData = performanceData ? [
-    { name: 'tepat waktu', value: performanceData.summary.tepatWaktu },
-    { name: 'terlambat', value: performanceData.summary.terlambat }
-  ] : [];
-  // console.log(pieData)
+    { name: 'Tepat Waktu', value: Number(performanceData.summary.tepatWaktu) || 0 },
+    { name: 'Terlambat', value: Number(performanceData.summary.terlambat) || 0 }
+  ].filter(item => item.value > 0) : [];
+  
+  // Format tanggal untuk chart (konversi ISO ke lokal)
+  const dailyDataFormatted = performanceData?.dailyData?.map(item => ({
+    ...item,
+    tanggal: new Date(item.tanggal).toLocaleDateString('id-ID', { 
+      day: '2-digit', 
+      month: 'short' 
+    })
+  })) || [];
+  
+  // console.log('Pie Chart Data:', pieData);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
@@ -200,7 +216,7 @@ export default function TeacherPerformanceDashboard() {
                   Kehadiran Harian
                 </h2>
                 <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={performanceData.dailyData}>
+                  <BarChart data={dailyDataFormatted}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="tanggal" />
                     <YAxis />
@@ -217,25 +233,35 @@ export default function TeacherPerformanceDashboard() {
                 <h2 className="text-xl font-bold text-gray-800 mb-4">
                   Distribusi Kehadiran
                 </h2>
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie
-                      data={pieData}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({name, percent}) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                      outerRadius={100}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {pieData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={index === 0 ? COLORS.tepatWaktu : COLORS.terlambat} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
+                {pieData.length > 0 ? (
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={pieData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({name, percent}) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                        outerRadius={100}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {pieData.map((entry, index) => (
+                          <Cell 
+                            key={`cell-${index}`} 
+                            fill={entry.name === 'Tepat Waktu' ? COLORS.tepatWaktu : COLORS.terlambat} 
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                      <Legend />
+                    </PieChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="flex items-center justify-center h-[300px] text-gray-500">
+                    Tidak ada data kehadiran
+                  </div>
+                )}
               </div>
             </div>
 
@@ -272,7 +298,7 @@ export default function TeacherPerformanceDashboard() {
                 <div className="space-y-4">
                   {performanceData.teachers.map((teacher, index) => {
                     const total = teacher.tepatWaktu + teacher.terlambat;
-                    const percentage = (teacher.tepatWaktu / total * 100).toFixed(1);
+                    const percentage = total > 0 ? (teacher.tepatWaktu / total * 100).toFixed(1) : 0;
                     return (
                       <div key={teacher.id} className="border-b pb-4">
                         <div className="flex items-center justify-between mb-2">

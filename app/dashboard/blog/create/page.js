@@ -11,7 +11,7 @@ export default function CreatePostPage() {
   const router = useRouter();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log("Jenis Kategori: ",categories)
+  // console.log("Jenis Kategori: ",categories)
   useEffect(() => {
     if (!mounted) return;
     if (!authLoading && !user) {

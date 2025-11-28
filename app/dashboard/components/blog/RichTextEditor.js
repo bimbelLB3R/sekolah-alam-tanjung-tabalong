@@ -207,16 +207,31 @@ const MenuBar = ({ editor, onImageUpload }) => {
 
 export default function RichTextEditor({ content, onChange, placeholder = 'Tulis artikel Anda di sini...' }) {
   const editor = useEditor({
-    extensions: [
-      StarterKit,
+        extensions: [
+      StarterKit.configure({
+        underline: false,
+        link: false,
+      }),
+
       Underline,
       TextStyle,
       Color,
       Highlight.configure({ multicolor: true }),
-      Image.configure({ HTMLAttributes: { class: 'max-w-full h-auto rounded-lg' } }),
-      Link.configure({ openOnClick: false, HTMLAttributes: { class: 'text-blue-600 underline' } }),
+
+      Image.configure({
+        HTMLAttributes: { class: 'max-w-full h-auto rounded-lg' },
+      }),
+
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: { class: 'text-blue-600 underline' },
+      }),
+
       Placeholder.configure({ placeholder }),
-      TextAlign.configure({ types: ['heading', 'paragraph'] }),
+
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
     ],
     content,
     immediatelyRender: false, // Fix SSR hydration mismatch
