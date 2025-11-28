@@ -19,7 +19,19 @@ export default function AgendaPage() {
         const res = await fetch("/api/events")
         if (!res.ok) throw new Error("Gagal memuat data")
         const data = await res.json()
-        setEvents(data)
+        const sorted = data.sort((a, b) => {
+        const priorityA = getEventPriority(a.start_date, a.end_date)
+        const priorityB = getEventPriority(b.start_date, b.end_date)
+
+        // Jika status sama, urutkan berdasarkan tanggal terdekat
+        if (priorityA === priorityB) {
+          return new Date(a.start_date) - new Date(b.start_date)
+        }
+
+        return priorityA - priorityB
+      })
+
+      setEvents(sorted)
       } catch (err) {
         setError(err.message)
       } finally {
@@ -51,6 +63,21 @@ if (today < start) {
     return "Sudah selesai"
   }
 }
+
+const getEventPriority = (startDate, endDate) => {
+  const today = new Date()
+  const start = new Date(startDate)
+  const end = new Date(endDate)
+
+  today.setHours(0, 0, 0, 0)
+  start.setHours(0, 0, 0, 0)
+  end.setHours(0, 0, 0, 0)
+
+  if (today >= start && today <= end) return 1 // Sedang berlangsung
+  if (today < start) return 2                  // Akan dimulai
+  return 3                                     // Sudah selesai
+}
+
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -94,7 +121,13 @@ if (today < start) {
                   <Icon className="w-3 h-3" />
                 </span>
 
-                <Card className="shadow-md hover:shadow-lg transition-shadow">
+                <Card
+                    className={`shadow-md hover:shadow-lg transition-shadow ${
+                    statusText === "Sudah selesai"
+                    ? "bg-gray-100 text-gray-400"
+                    : "bg-white"
+                    }`}
+                >
                   <CardHeader>
                     <CardTitle className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                       <span>{event.title}</span>
@@ -109,8 +142,20 @@ if (today < start) {
                   </CardHeader>
 
                   <CardContent>
-                    <p className="text-gray-700 mb-2">{event.description}</p>
-                    <p className="text-sm text-gray-500 italic">{statusText}</p>
+                    <p
+                      className={`mb-2 ${
+                        statusText === "Sudah selesai" ? "text-gray-400" : "text-gray-700"
+                      }`}
+                    >
+                      {event.description}
+                    </p>
+                    <p
+                      className={`mb-2 ${
+                        statusText === "Sudah selesai" ? "text-gray-400 text-small italic" : "text-green-700 text-small italic"
+                      }`}
+                    >
+                      {statusText}
+                    </p>
 
                     {event.url && (
                       <div
