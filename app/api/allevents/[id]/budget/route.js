@@ -6,7 +6,7 @@ import { budgetSchema } from '@/lib/validations';
 // GET - List budget items untuk event
 export async function GET(request, { params }) {
   try {
-    const { id } = params;
+    const { id } =await params;
     const { searchParams } = new URL(request.url);
     const type = searchParams.get('type'); // pemasukan / pengeluaran
 
@@ -55,7 +55,7 @@ export async function GET(request, { params }) {
 // POST - Add budget item
 export async function POST(request, { params }) {
   try {
-    const { id: event_id } = params;
+    const { id: event_id } =await params;
     const body = await request.json();
 
     // Validasi dengan Zod
@@ -106,7 +106,7 @@ export async function POST(request, { params }) {
 // PUT - Update budget item
 export async function PUT(request, { params }) {
   try {
-    const { id: event_id } = params;
+    const { id: event_id } =await params;
     const body = await request.json();
     const { budget_id, ...updateData } = body;
 
@@ -173,7 +173,7 @@ export async function PUT(request, { params }) {
 // DELETE - Remove budget item
 export async function DELETE(request, { params }) {
   try {
-    const { id: event_id } = params;
+    const { id: event_id } =await params;
     const { searchParams } = new URL(request.url);
     const budget_id = searchParams.get('budget_id');
 

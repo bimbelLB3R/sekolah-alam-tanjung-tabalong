@@ -251,7 +251,7 @@ const SlipGajiPDF = ({ data, tanggalCetak, presensiSummary, dataIjin }) => {
     Number(data.tunjangan_kepala_keluarga);
 
   // Hitung potongan
-  const potonganIjinKeluar = ijinKeluarDipotong * tunjanganKehadiranBase;
+  const potonganIjinKeluar = ijinKeluarDipotong * tunjanganKehadiranBase*0.5;
   const totalPotongan = Number(data.potongan_makan || 0) + potonganIjinKeluar;
   const takeHomePay = totalGaji - totalPotongan;
 
@@ -421,7 +421,7 @@ const SlipGajiPDF = ({ data, tanggalCetak, presensiSummary, dataIjin }) => {
                   <View>
                     <Text>Potongan Ijin Keluar</Text>
                     <Text style={styles.subText}>
-                      {formatRupiah(tunjanganKehadiranBase)} × {ijinKeluarDipotong} hari
+                      50% x {formatRupiah(tunjanganKehadiranBase)} × {ijinKeluarDipotong} kali
                     </Text>
                   </View>
                   <Text>{formatRupiah(potonganIjinKeluar)}</Text>

@@ -23,13 +23,14 @@ import { Clock, CheckCircle, AlertCircle } from "lucide-react";
 export default function DataPresensi() {
   const [presensi, setPresensi] = useState([]);
   const [loading, setLoading] = useState(true);
+  const today=new Date().toLocaleDateString("en-CA");
 
   useEffect(() => {
     async function fetchPresensi() {
       try {
         const res = await fetch("/api/presensi/data-presensi");
         const data = await res.json();
-
+        // console.log(data)
         // 🔹 Grouping by tanggal + nama (FIXED: preserve keterangan)
         const grouped = {};
         data.forEach((row) => {
@@ -90,7 +91,7 @@ export default function DataPresensi() {
   return (
     <Card className="overflow-x-auto">
       <CardHeader>
-        <CardTitle>Data Presensi</CardTitle>
+        <CardTitle>Data Presensi {today}</CardTitle>
       </CardHeader>
       <CardContent>
         <Table className="min-w-[700px] text-sm">

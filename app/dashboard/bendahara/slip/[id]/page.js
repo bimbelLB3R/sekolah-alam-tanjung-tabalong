@@ -331,7 +331,7 @@ export default function DetailGajiPage() {
     Number(data.tunjangan_kepala_keluarga);
 
   const totalIjinDipotong = dataIjin?.summary?.total_ijin_keluar_dipotong || 0;
-  const potonganPribadi = Number(totalIjinDipotong * tunjanganKehadiranBase) || 0;
+  const potonganPribadi = Number(totalIjinDipotong * tunjanganKehadiranBase*0.5) || 0;
   
   const totalPotongan = Number(data.potongan_makan || 0) + potonganPribadi;
   const takeHomePay = totalGaji - totalPotongan;
@@ -537,10 +537,10 @@ export default function DetailGajiPage() {
                   <div className="flex flex-col">
                     <span>Potongan Ijin Keluar</span>
                     <span className="text-xs text-gray-500">
-                      Rp {tunjanganKehadiranBase.toLocaleString()} × {dataIjin.summary.total_ijin_keluar_dipotong} hari
+                      50% x Rp {tunjanganKehadiranBase.toLocaleString()} × {dataIjin.summary.total_ijin_keluar_dipotong} kali
                     </span>
                   </div>
-                  <span>Rp {Number(tunjanganKehadiranBase * dataIjin.summary.total_ijin_keluar_dipotong).toLocaleString()}</span>
+                  <span>Rp {Number(tunjanganKehadiranBase * dataIjin.summary.total_ijin_keluar_dipotong*0.5).toLocaleString()}</span>
                 </div>
               ) : null}
 

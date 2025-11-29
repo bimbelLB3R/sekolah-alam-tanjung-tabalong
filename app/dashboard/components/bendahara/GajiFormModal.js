@@ -179,7 +179,7 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
               />
             </div>
             <div>
-              <label className="block text-sm">Potongan Makan</label>
+              <label className="block text-sm">Potongan Lainnya</label>
               <input
                 type="number"
                 value={form.potongan_makan}

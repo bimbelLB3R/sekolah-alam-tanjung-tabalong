@@ -31,14 +31,11 @@ export async function GET(request, { params }) {
         ik.jam_keluar,
         ik.jam_kembali,
         ik.alasan_ijin,
-        ik.pemberi_ijin_id,
-        p.name as nama_pemberi_ijin,
         ik.dipotong_tunjangan,
         ik.created_at,
         ik.updated_at
       FROM ijin_karyawan ik
       INNER JOIN users u ON ik.user_id = u.id
-      INNER JOIN users p ON ik.pemberi_ijin_id = p.id
       WHERE ik.id = ?`,
       [id]
     );
@@ -135,14 +132,11 @@ export async function PATCH(request, { params }) {
         ik.jam_keluar,
         ik.jam_kembali,
         ik.alasan_ijin,
-        ik.pemberi_ijin_id,
-        p.name as nama_pemberi_ijin,
         ik.dipotong_tunjangan,
         ik.created_at,
         ik.updated_at
       FROM ijin_karyawan ik
       INNER JOIN users u ON ik.user_id = u.id
-      INNER JOIN users p ON ik.pemberi_ijin_id = p.id
       WHERE ik.id = ?`,
       [id]
     );
