@@ -230,6 +230,7 @@ export default function DetailSiswaPage() {
                   alt={siswa.nama_lengkap}
                   className="rounded-full object-cover border"
                   fill
+                  sizes="(max-width: 768px) 64px, 96px"
                 />
               ) : (
                 <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center border">

@@ -387,6 +387,7 @@ function filterMenuItems(items, roleName) {
             alt="Logo SATT"
             width={40}
             height={40}
+            priority
           />
           <div className={`flex flex-col text-sm ${isCollapsed ? 'md:hidden' : ''}`}>
             <span className="font-bold">SATT</span>

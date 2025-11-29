@@ -168,7 +168,9 @@ export async function middleware(req) {
 
   if (url.pathname.startsWith("/dashboard")) {
     if (!token) {
-      return NextResponse.redirect(new URL("/login", req.url));
+      const loginUrl = new URL("/login", req.url);
+      loginUrl.searchParams.set("callbackUrl", url.pathname); // ✅ TAMBAHAN
+      return NextResponse.redirect(loginUrl);
     }
 
     try {
@@ -213,7 +215,9 @@ export async function middleware(req) {
 
   if (url.pathname.startsWith("/ortu")) {
     if (!token) {
-      return NextResponse.redirect(new URL("/login", req.url));
+      const loginUrl = new URL("/login", req.url);
+      loginUrl.searchParams.set("callbackUrl", url.pathname); // ✅ TAMBAHAN
+      return NextResponse.redirect(loginUrl);
     }
 
     try {
