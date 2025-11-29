@@ -25,9 +25,11 @@ const dancing = Dancing_Script({
 })
 
 export const metadata = {
-  title: "SATT",
+  title: "Sekolah Alam Tanjung Tabalong (SATT)",
   icons: {
     icon: '/logo-sattico.png', // <-- path dari /public
+  shortcut: "/favicon.ico",
+  apple: "/logo-sattico.png",
   },
   description: "Sekolah Alam Tanjung Tabalong (SATT) merupakan salah satu sekolah alam bagian dari JSAN (Jaringan Sekolah Alam Nasional). SATT berdiri sejak 2019 di kabupaten Tabalong. Sekolah ini menerapkan empat pilar utama, yaitu Pilar Akhlak, Pilar Logika, Pilar Kepemimpinan, dan Pilar Kewirausahaan.",
   openGraph: {
