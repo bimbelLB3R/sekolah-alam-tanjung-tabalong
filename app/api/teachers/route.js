@@ -37,7 +37,7 @@ export async function GET(request) {
       FROM users u
       INNER JOIN roles r ON u.role_id = r.id
       LEFT JOIN user_profiles up ON u.id = up.user_id
-      WHERE LOWER(r.name) = 'guru'
+      WHERE LOWER(r.name) = 'guru' or LOWER(r.name) = 'manajemen'
       ORDER BY u.name ASC
     `;
 

@@ -87,18 +87,7 @@ export default function TeacherProfiles() {
                 {/* Card 2 - Identitas Detail */}
                 <div className="w-3/5 bg-white/20 backdrop-blur-lg rounded-3xl shadow-2xl p-6 flex flex-col justify-between border border-white/30">
                   
-                  {/* Gender Icon */}
-                  <div className="flex justify-end mb-2">
-                    {teacher.profile?.gender === 'Laki-laki' ? (
-                      <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M20 4v6h-2V7.425l-3.975 3.95-1.425-1.4L16.575 6H14V4zM4 12a8 8 0 108 8 8 8 0 00-8-8z"/>
-                      </svg>
-                    ) : (
-                      <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2a7 7 0 00-7 7c0 2.38 1.19 4.47 3 5.74V17H5v2h3v3h2v-3h3v-2h-3v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 00-7-7z"/>
-                      </svg>
-                    )}
-                  </div>
+                  
 
                   {/* Photo Avatar */}
                   <div className="flex justify-center mb-4">
