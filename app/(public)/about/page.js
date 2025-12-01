@@ -26,7 +26,7 @@ export const metadata = {
     siteName: "Sekolah Alam Tanjung Tabalong (SATT)",
     images: [
       {
-        url: "https://sekolahalam-tanjungtabalong.id/og-about.jpg",
+        url: "https://sekolahalam-tanjungtabalong.id/og-ppdb.jpg",
         width: 1200,
         height: 630,
         alt: "Profil Sekolah Alam Tanjung Tabalong - Belajar, Berpetualang, Bermakna",
@@ -39,7 +39,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Tentang Kami - Sekolah Alam Tanjung Tabalong",
     description: "Sekolah alam berbasis 4 pilar: Akhlak, Logika, Kepemimpinan, dan Kewirausahaan.",
-    images: ["https://sekolahalam-tanjungtabalong.id/og-about.jpg"],
+    images: ["https://sekolahalam-tanjungtabalong.id/og-ppdb.jpg"],
   },
   alternates: {
     canonical: "https://sekolahalam-tanjungtabalong.id/about",

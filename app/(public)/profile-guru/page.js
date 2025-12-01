@@ -23,7 +23,7 @@ export const metadata = {
     siteName: "Sekolah Alam Tanjung Tabalong (SATT)",
     images: [
       {
-        url: "https://sekolahalam-tanjungtabalong.id/og-guru.jpg",
+        url: "https://sekolahalam-tanjungtabalong.id/og-ppdb.jpg",
         width: 1200,
         height: 630,
         alt: "Profil Guru dan Fasilitator SATT",
@@ -36,7 +36,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Profil Guru & Fasilitator - SATT",
     description: "👨‍🏫 Kenali tim pengajar SATT yang berpengalaman dan berdedikasi.",
-    images: ["https://sekolahalam-tanjungtabalong.id/og-guru.jpg"],
+    images: ["https://sekolahalam-tanjungtabalong.id/og-ppdb.jpg"],
   },
   alternates: {
     canonical: "https://sekolahalam-tanjungtabalong.id/profile-guru",
