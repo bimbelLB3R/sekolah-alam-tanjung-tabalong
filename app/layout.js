@@ -36,7 +36,7 @@ export const metadata = {
     title: "SATT - Belajar, Berpetualang, Bermakna",
     description: "Merupakan sekolah alam yang menerapkan empat pilar utama, yaitu Pilar Akhlak, Pilar Logika, Pilar Kepemimpinan, dan Pilar Kewirausahaan.",
     url: "https://sekolahalam-tanjungtabalong.id",
-    siteName: "SATT",
+    siteName: "Sekolah Alam Tanjung Tabalong (SATT)",
     images: [
       {
         url: "https://sekolahalam-tanjungtabalong.id/og-imagenew-satt.jpg", // ganti dengan path gambarmu
