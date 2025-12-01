@@ -1,3 +1,4 @@
+"use client"
 // components/TeacherProfiles.js
 import { useEffect, useState } from 'react';
 
