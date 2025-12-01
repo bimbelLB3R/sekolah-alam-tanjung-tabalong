@@ -1,9 +1,9 @@
 
 export const metadata = {
   title: "Produk & Karya Siswa - Galeri Hasil Belajar SATT",
-   icons: {
-    icon: '/logo-sattico.png', // <-- path dari /public
-  shortcut: "/favicon.ico",
+    icons: {
+    icon: '/logo-sattico.png', 
+  shortcut: "/logo-sattico.png",
   apple: "/logo-sattico.png",
   },
   description: "Galeri produk dan karya siswa Sekolah Alam Tanjung Tabalong. Hasil karya kreatif, produk kewirausahaan, dan project siswa yang menginspirasi.",

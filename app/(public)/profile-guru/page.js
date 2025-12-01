@@ -3,6 +3,11 @@
 import TeacherProfiles from "../components/teacherprofiles/TeacherProfiles";
 export const metadata = {
   title: "Profil Guru & Fasilitator - Tim Pengajar SATT",
+  icons: {
+    icon: '/logo-sattico.png', // <-- path dari /public
+  shortcut: "/favicon.ico",
+  apple: "/logo-sattico.png",
+  },
   description: "Kenali tim pengajar dan fasilitator Sekolah Alam Tanjung Tabalong. Guru-guru berpengalaman dan berdedikasi untuk pendidikan karakter anak Indonesia.",
   keywords: [
     "guru SATT",
@@ -13,11 +18,6 @@ export const metadata = {
   ],
   openGraph: {
     title: "Profil Guru & Fasilitator - Sekolah Alam Tanjung Tabalong",
-     icons: {
-    icon: '/logo-sattico.png', // <-- path dari /public
-  shortcut: "/favicon.ico",
-  apple: "/logo-sattico.png",
-  },
     description: "👨‍🏫 Kenali tim pengajar SATT yang berpengalaman, berdedikasi, dan passionate dalam membimbing perkembangan anak.",
     url: "https://sekolahalam-tanjungtabalong.id/profile-guru",
     siteName: "Sekolah Alam Tanjung Tabalong (SATT)",

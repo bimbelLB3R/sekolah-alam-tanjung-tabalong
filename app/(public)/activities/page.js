@@ -2,9 +2,9 @@ import ActivitiesClient from "../components/activities/ActivityClient";
 
 export const metadata = {
   title: "Aktivitas Siswa - Dokumentasi Kegiatan Belajar SATT",
-   icons: {
-    icon: '/logo-sattico.png', // <-- path dari /public
-  shortcut: "/favicon.ico",
+    icons: {
+    icon: '/logo-sattico.png', 
+  shortcut: "/logo-sattico.png",
   apple: "/logo-sattico.png",
   },
   description: "Galeri aktivitas siswa Sekolah Alam Tanjung Tabalong. Lihat kegiatan belajar outdoor, eksplorasi alam, project-based learning, dan momen berharga siswa SATT.",

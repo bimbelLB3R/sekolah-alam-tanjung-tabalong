@@ -12,9 +12,9 @@ export const metadata = {
   ],
   openGraph: {
     title: "SPMB - Daftar Sekarang di SATT!",
-     icons: {
-    icon: '/logo-sattico.png', // <-- path dari /public
-  shortcut: "/favicon.ico",
+      icons: {
+    icon: '/logo-sattico.png', 
+  shortcut: "/logo-sattico.png",
   apple: "/logo-sattico.png",
   },
     description: "🎓 Pendaftaran dibuka! Sekolah Alam Tanjung Tabalong menerima siswa baru . Pendidikan berbasis alam dengan 4 pilar karakter.",

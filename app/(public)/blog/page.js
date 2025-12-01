@@ -4,9 +4,9 @@ import pool from '@/lib/db';
 
 export const metadata = {
   title: 'Blog - Artikel & Berita Terbaru | Sekolah Alam Tanjung Tabalong',
-   icons: {
-    icon: '/logo-sattico.png', // <-- path dari /public
-  shortcut: "/favicon.ico",
+    icons: {
+    icon: '/logo-sattico.png', 
+  shortcut: "/logo-sattico.png",
   apple: "/logo-sattico.png",
   },
   description: 'Baca artikel dan berita terbaru dari Sekolah Alam Tanjung Tabalong. Temukan informasi seputar pendidikan, kegiatan sekolah, dan tips parenting.',
