@@ -4,6 +4,11 @@ import pool from '@/lib/db';
 
 export const metadata = {
   title: 'Blog - Artikel & Berita Terbaru | Sekolah Alam Tanjung Tabalong',
+   icons: {
+    icon: '/logo-sattico.png', // <-- path dari /public
+  shortcut: "/favicon.ico",
+  apple: "/logo-sattico.png",
+  },
   description: 'Baca artikel dan berita terbaru dari Sekolah Alam Tanjung Tabalong. Temukan informasi seputar pendidikan, kegiatan sekolah, dan tips parenting.',
   keywords: 'blog sekolah alam, artikel pendidikan, berita sekolah, sekolah alam tabalong',
   openGraph: {
@@ -11,6 +16,14 @@ export const metadata = {
     description: 'Baca artikel dan berita terbaru dari Sekolah Alam Tanjung Tabalong',
     url: 'https://sekolah-alam-tanjung-tabalong.vercel.app/blog',
     siteName: 'Sekolah Alam Tanjung Tabalong',
+    images: [
+      {
+        url: "https://sekolahalam-tanjungtabalong.id/og-blog.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Agenda dan Kegiatan Sekolah Alam Tanjung Tabalong",
+      },
+    ],
     locale: 'id_ID',
     type: 'website',
   },
@@ -18,6 +31,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Blog - Artikel & Berita Terbaru',
     description: 'Baca artikel dan berita terbaru dari Sekolah Alam Tanjung Tabalong',
+    images: ["https://sekolahalam-tanjungtabalong.id/og-blog.jpg"],
   },
   robots: {
     index: true,

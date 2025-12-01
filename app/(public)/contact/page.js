@@ -2,6 +2,11 @@ import ContactClient from "../components/ppdb/ContactClient";
 
 export const metadata = {
   title: "Hubungi Kami - Kontak Sekolah Alam Tanjung Tabalong",
+   icons: {
+    icon: '/logo-sattico.png', // <-- path dari /public
+  shortcut: "/favicon.ico",
+  apple: "/logo-sattico.png",
+  },
   description: "Hubungi SATT untuk informasi lebih lanjut. Alamat: Tanjung, Tabalong, Kalimantan Selatan. Telepon, WhatsApp, email, dan media sosial kami tersedia.",
   keywords: [
     "kontak SATT",

@@ -2,6 +2,11 @@ import AgendaClient from "../components/ppdb/AgendaClient";
 
 export const metadata = {
   title: "Agenda & Kegiatan Sekolah - SATT",
+   icons: {
+    icon: '/logo-sattico.png', // <-- path dari /public
+  shortcut: "/favicon.ico",
+  apple: "/logo-sattico.png",
+  },
   description: "Jadwal kegiatan, acara, dan agenda terbaru Sekolah Alam Tanjung Tabalong. Pantau kegiatan belajar mengajar, event sekolah, dan program khusus.",
   keywords: [
     "agenda SATT TERDEKAT",

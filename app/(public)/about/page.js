@@ -2,6 +2,11 @@ import AboutClient from "../components/about/AboutClient";
 
 export const metadata = {
   title: "Tentang Kami - Profil Sekolah Alam Tanjung Tabalong",
+   icons: {
+    icon: '/logo-sattico.png', // <-- path dari /public
+  shortcut: "/favicon.ico",
+  apple: "/logo-sattico.png",
+  },
   description: "Sekolah Alam Tanjung Tabalong (SATT) berdiri sejak 2019 sebagai bagian dari JSAN. Menerapkan 4 pilar utama: Akhlak, Logika, Kepemimpinan, dan Kewirausahaan untuk pendidikan karakter anak.",
   keywords: [
     "tentang SATT",
