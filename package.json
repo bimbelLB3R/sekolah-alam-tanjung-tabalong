@@ -52,7 +52,7 @@
     "embla-carousel-react": "^8.6.0",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
-    "framer-motion": "^12.23.12",
+    "framer-motion": "^12.23.25",
     "html2canvas": "^1.4.1",
     "jose": "^6.1.0",
     "jsonwebtoken": "^9.0.2",

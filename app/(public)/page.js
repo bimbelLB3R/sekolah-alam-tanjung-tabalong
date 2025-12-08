@@ -32,6 +32,7 @@ import {
 } from "lucide-react"
 import HeroSection from "./components/herosection"
 import LatestBlogSection from "./components/blog/LatestBlogSection"
+import FloatingBrosur from "./components/brosur/FloatingBrosur"
 // import LatestActivitiesSection from "./components/activities/LatestActivities"
 
 export default function Home() {
@@ -183,6 +184,9 @@ const fiturList = [
 
        {/* Blog Section */}
       <LatestBlogSection/>
+
+      {/* Floating Brosure */}
+      <FloatingBrosur/>
 
       {/* FAQ Section */}
       <section className=" mx-auto p-3 bg-green-100">
