@@ -25,7 +25,10 @@ const dancing = Dancing_Script({
 })
 
 export const metadata = {
-  title: "Sekolah Alam Tanjung Tabalong (SATT)",
+  title: {
+    default: "Sekolah Alam Tanjung Tabalong (SATT)",
+    template: "%s | SATT",
+  },
   icons: {
     icon: '/logo-sattico.png', 
   shortcut: "/logo-sattico.png",

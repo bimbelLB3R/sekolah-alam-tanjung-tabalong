@@ -1,6 +1,6 @@
 // pages/guru.js atau pages/teachers.js
 
-import TeacherProfiles from "../components/teacherprofiles/TeacherProfiles";
+import TeachersListPage from "../components/teacherprofiles/TeacherList";
 export const metadata = {
   title: "Profil Guru & Fasilitator - Tim Pengajar SATT",
   icons: {
@@ -53,6 +53,20 @@ export const metadata = {
   },
 };
 
-export default function GuruPage() {
-  return <TeacherProfiles />;
+async function getTeachers() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/teachers`, {
+    cache: 'no-store' // atau bisa pakai revalidate untuk caching
+  });
+  
+  if (!res.ok) {
+    throw new Error('Failed to fetch teachers');
+  }
+  
+  return res.json();
+}
+
+export default async function GuruPage() {
+  const data = await getTeachers();
+  
+  return <TeachersListPage data={data} />;
 }
