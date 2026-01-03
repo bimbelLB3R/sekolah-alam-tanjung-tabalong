@@ -30,7 +30,7 @@ export async function GET(request) {
           FROM users u
           INNER JOIN roles r ON u.role_id = r.id
           LEFT JOIN presensi p ON u.id = p.user_id
-          WHERE r.name = 'guru'
+          WHERE r.name = 'guru' OR r.name='manajemen'
           GROUP BY u.id, u.name, u.email
           ORDER BY u.name ASC
         `;
@@ -43,7 +43,7 @@ export async function GET(request) {
             u.email
           FROM users u
           INNER JOIN roles r ON u.role_id = r.id
-          WHERE r.name = 'guru'
+          WHERE r.name = 'guru' or r.name='manajemen'
           ORDER BY u.name ASC
         `;
       }
@@ -99,7 +99,7 @@ export async function POST(request) {
           u.created_at
         FROM users u
         INNER JOIN roles r ON u.role_id = r.id
-        WHERE u.id = ? AND r.name = 'guru'
+        WHERE u.id = ? AND (r.name = 'guru' or r.name='manajemen')
       `;
       
       const [results] = await pool.query(query, [teacherId]);

@@ -283,7 +283,7 @@ export async function GET(request) {
       LEFT JOIN presensi p 
         ON u.id = p.user_id 
         AND p.tanggal BETWEEN ? AND ?
-      WHERE r.name = 'guru'
+      WHERE r.name = 'guru' or r.name='manajemen'
       ${useUserFilter ? 'AND u.id = ?' : ''}
       GROUP BY u.id
       ORDER BY tepatWaktu DESC
