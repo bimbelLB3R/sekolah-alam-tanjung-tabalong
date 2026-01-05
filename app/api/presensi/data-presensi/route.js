@@ -4,6 +4,7 @@ import pool from "@/lib/db";
 
 export async function GET() {
   try {
+    const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
     const [rows] = await pool.query(`
       SELECT  
         p.id,
@@ -15,9 +16,9 @@ export async function GET() {
         p.photo_url
       FROM presensi p FORCE INDEX (idx_presensi_created_user)
       INNER JOIN users u ON p.user_id = u.id
-      WHERE p.tanggal = CURDATE()
+      WHERE p.tanggal = ?
       ORDER BY p.created_at DESC;
-    `);
+    `,[today]);
 
     return NextResponse.json(rows);
   } catch (error) {

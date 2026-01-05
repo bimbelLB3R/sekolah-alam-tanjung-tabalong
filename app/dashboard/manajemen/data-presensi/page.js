@@ -24,7 +24,7 @@ export default function DataPresensi() {
   const [presensi, setPresensi] = useState([]);
   const [loading, setLoading] = useState(true);
   const today=new Date().toLocaleDateString("en-CA");
-
+console.log(presensi);
   useEffect(() => {
     async function fetchPresensi() {
       try {
