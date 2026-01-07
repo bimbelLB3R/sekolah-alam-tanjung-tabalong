@@ -5,7 +5,14 @@ import pool from "@/lib/db";
 export async function GET() {
   try {
     // const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-    const today=new Date().toLocaleDateString("en-CA");
+    // const today=new Date().toLocaleDateString("en-CA");
+    const today = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Asia/Makassar",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+}).format(new Date());
+
     console.log(today)
     const [rows] = await pool.query(`
       SELECT  
