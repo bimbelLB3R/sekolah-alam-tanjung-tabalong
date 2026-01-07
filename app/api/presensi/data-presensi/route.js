@@ -4,7 +4,9 @@ import pool from "@/lib/db";
 
 export async function GET() {
   try {
-    const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+    // const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+    const today=new Date().toLocaleDateString("en-CA");
+    console.log(today)
     const [rows] = await pool.query(`
       SELECT  
         p.id,
