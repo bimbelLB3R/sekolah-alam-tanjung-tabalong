@@ -136,16 +136,7 @@ export default function FormIjinKaryawan() {
           <p className="text-slate-600">
             Isi formulir di bawah untuk mengajukan ijin keluar atau tidak masuk
           </p>
-        </div>
-
-        {showSuccess && (
-          <Alert className="mb-6 border-green-200 bg-green-50">
-            <CheckCircle2 className="h-4 w-4 text-green-600" />
-            <AlertDescription className="text-green-800">
-              Ijin berhasil diajukan! Data telah tersimpan di sistem.
-            </AlertDescription>
-          </Alert>
-        )}
+        </div>        
 
         <Card className="shadow-lg">
           <CardHeader>
@@ -292,6 +283,14 @@ export default function FormIjinKaryawan() {
                   Reset
                 </Button>
               </div>
+              {showSuccess && (
+          <Alert className="mb-6 border-green-200 bg-green-50">
+            <CheckCircle2 className="h-4 w-4 text-green-600" />
+            <AlertDescription className="text-green-800">
+              Ijin berhasil diajukan! Data telah tersimpan di sistem.
+            </AlertDescription>
+          </Alert>
+        )}
             </div>
           </CardContent>
         </Card>
