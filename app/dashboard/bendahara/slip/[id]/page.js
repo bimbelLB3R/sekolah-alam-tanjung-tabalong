@@ -136,14 +136,13 @@ export default function DetailGajiPage() {
     Number(data.tunjangan_pendidikan)+
     Number(data.tunjangan_pensiun)+
     Number(data.tunjangan_jamlebih)+
-    Number(data.tunjangan_anak)+
-    Number(data.tunjangan_nikah)
+    Number(data.tunjangan_anak)
     ;
 
   const totalIjinDipotong = dataIjin?.summary?.total_ijin_keluar_dipotong || 0;
   const potonganPribadi = Number(totalIjinDipotong * tunjanganKehadiranBase*0.5) || 0;
   
-  const totalPotongan = Number(data.potongan_makan || 0) + potonganPribadi + Number(data.potongan_pensiun || 0);
+  const totalPotongan = Number(data.potongan_makan || 0) + potonganPribadi + Number(data.potongan_pensiun || 0)+totalTunjanganMakan;
   const takeHomePay = totalGaji - totalPotongan;
   // console.log(totalPotongan)
 
@@ -343,10 +342,10 @@ export default function DetailGajiPage() {
                 <span>Tunjangan Anak</span>
                 <span>Rp {Number(data.tunjangan_anak).toLocaleString()}</span>
               </div>
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <span>Tunjangan Nikah</span>
                 <span>Rp {Number(data.tunjangan_nikah).toLocaleString()}</span>
-              </div>
+              </div> */}
               
               <Separator />
               <div className="flex justify-between font-semibold">
@@ -378,6 +377,10 @@ export default function DetailGajiPage() {
               <div className="flex justify-between">
                 <span>Potongan Pensiun</span>
                 <span>Rp {Number(data.potongan_pensiun || 0).toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Potongan Makan</span>
+                <span>Rp {Number(totalTunjanganMakan || 0).toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
                 <span>Potongan Lainnya</span>

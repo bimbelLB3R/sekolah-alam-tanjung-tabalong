@@ -119,7 +119,13 @@ export async function PUT(req) {
       tunjangan_kehadiran,
       tunjangan_sembako,
       tunjangan_kepala_keluarga,
-      potongan_makan,
+      tunjangan_pendidikan,
+        tunjangan_pensiun,
+        tunjangan_jamlebih,
+        tunjangan_anak,
+        tunjangan_nikah,
+        potongan_makan,
+        potongan_pensiun,
       effective_date
     } = data;
 
@@ -140,7 +146,13 @@ export async function PUT(req) {
         tunjangan_kehadiran = ?,
         tunjangan_sembako = ?,
         tunjangan_kepala_keluarga = ?,
-        potongan_makan = ?,
+        tunjangan_pendidikan=?,
+        tunjangan_pensiun=?,
+        tunjangan_jamlebih=?,
+        tunjangan_anak=?,
+        tunjangan_nikah=?,
+        potongan_makan=?,
+        potongan_pensiun=?,
         effective_date = ?
       WHERE id = ?`,
       [
@@ -153,7 +165,13 @@ export async function PUT(req) {
         tunjangan_kehadiran,
         tunjangan_sembako,
         tunjangan_kepala_keluarga,
+        tunjangan_pendidikan,
+        tunjangan_pensiun,
+        tunjangan_jamlebih,
+        tunjangan_anak,
+        tunjangan_nikah,
         potongan_makan,
+        potongan_pensiun,
         effective_date,
         id,
       ]
@@ -162,8 +180,8 @@ export async function PUT(req) {
     // Tambahkan histori perubahan
     await pool.query(
       `INSERT INTO gaji_karyawan_histori 
-      (gaji_karyawan_id, gaji_pokok, tunjangan_bpjs, tunjangan_jabatan, tunjangan_makan, tunjangan_kehadiran, tunjangan_sembako, tunjangan_kepala_keluarga, potongan_makan, effective_date)
-      VALUES (?,?,?,?,?,?,?,?,?,?)`,
+      (gaji_karyawan_id, gaji_pokok, tunjangan_bpjs, tunjangan_jabatan, tunjangan_makan, tunjangan_kehadiran, tunjangan_sembako, tunjangan_kepala_keluarga,tunjangan_pendidikan,tunjangan_pensiun,tunjangan_jamlebih,tunjangan_anak,tunjangan_nikah, potongan_makan,potongan_pensiun, effective_date)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
       [
         id,
         gaji_pokok,
@@ -173,7 +191,13 @@ export async function PUT(req) {
         tunjangan_kehadiran,
         tunjangan_sembako,
         tunjangan_kepala_keluarga,
+       tunjangan_pendidikan,
+        tunjangan_pensiun,
+        tunjangan_jamlebih,
+        tunjangan_anak,
+        tunjangan_nikah,
         potongan_makan,
+        potongan_pensiun,
         effective_date
       ]
     );

@@ -252,12 +252,11 @@ const SlipGajiPDF = ({ data, tanggalCetak, presensiSummary, dataIjin }) => {
     Number(data.tunjangan_pendidikan)+
     Number(data.tunjangan_pensiun)+
     Number(data.tunjangan_jamlebih)+
-    Number(data.tunjangan_anak)+
-    Number(data.tunjangan_nikah);
+    Number(data.tunjangan_anak)
 
   // Hitung potongan
   const potonganIjinKeluar = ijinKeluarDipotong * tunjanganKehadiranBase*0.5;
-  const totalPotongan = Number(data.potongan_makan || 0) + potonganIjinKeluar + Number(data.potongan_pensiun);
+  const totalPotongan = Number(data.potongan_makan || 0) + potonganIjinKeluar + Number(data.potongan_pensiun)+totalTunjanganMakan;
   const takeHomePay = totalGaji - totalPotongan;
 
   const formatRupiah = (amount) => {
@@ -423,10 +422,10 @@ const SlipGajiPDF = ({ data, tanggalCetak, presensiSummary, dataIjin }) => {
                 <Text>Tunjangan Anak</Text>
                 <Text>{formatRupiah(data.tunjangan_anak)}</Text>
               </View>
-              <View style={styles.detailRow}>
+              {/* <View style={styles.detailRow}>
                 <Text>Tunjangan Nikah</Text>
                 <Text>{formatRupiah(data.tunjangan_nikah)}</Text>
-              </View>
+              </View> */}
               <View style={styles.separator} />
               <View style={styles.boldRow}>
                 <Text>Total Gaji</Text>
@@ -455,6 +454,10 @@ const SlipGajiPDF = ({ data, tanggalCetak, presensiSummary, dataIjin }) => {
               <View style={styles.detailRow}>
                 <Text>Potongan Pensiun</Text>
                 <Text>{formatRupiah(data.potongan_pensiun || 0)}</Text>
+              </View>
+              <View style={styles.detailRow}>
+                <Text>Potongan Makan</Text>
+                <Text>{formatRupiah(totalTunjanganMakan || 0)}</Text>
               </View>
               <View style={styles.detailRow}>
                 <Text>Potongan Lainnya</Text>

@@ -156,7 +156,7 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
               />
             </div>
             <div>
-              <label className="block text-sm">Tunjangan Makan</label>
+              <label className="block text-sm">Tunjangan Makan per hari</label>
               <input
                 type="number"
                 value={form.tunjangan_makan}
@@ -165,7 +165,7 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
               />
             </div>
             <div>
-              <label className="block text-sm">Tunjangan Kehadiran</label>
+              <label className="block text-sm">Tunjangan Kehadiran per hari</label>
               <input
                 type="number"
                 value={form.tunjangan_kehadiran}
@@ -210,7 +210,7 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
               />
             </div>
             <div>
-              <label className="block text-sm">Tunjangan Jam Lebih</label>
+              <label className="block text-sm">Total Tunjangan Jam Lebih</label>
               <input
                 type="number"
                 value={form.tunjangan_jamlebih}
@@ -228,12 +228,13 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
               />
             </div>
             <div>
-              <label className="block text-sm">Tunjangan Nikah</label>
+              <label className="block text-sm ">Tunjangan Nikah</label>
               <input
                 type="number"
                 value={form.tunjangan_nikah}
+                disabled
                 onChange={(e) => setForm({ ...form, tunjangan_nikah: e.target.value })}
-                className="border rounded w-full px-2 py-1"
+                className="border rounded w-full px-2 py-1 bg-gray-400"
               />
             </div>
             <div>
@@ -247,6 +248,7 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
             </div>
             <div>
               <label className="block text-sm">Potongan Lainnya</label>
+              {/* biar aja tetap pakai kolol potongan_makan */}
               <input
                 type="number"
                 value={form.potongan_makan}
