@@ -140,7 +140,7 @@ export default function Sidebar({ isOpen, onClose }) {
         {
           label: "Data Guru",
           items: [
-            { label: "Kehadiran", href: "/dashboard/manajemen/data-presensi" },
+            { label: "Rekap Kehadiran", href: "/dashboard/rekap-kehadiran" },
             { label: "Validasi Ijin", href: "/dashboard/bendahara/ijin" },
             { label: "Rekap Ijin", href: "/dashboard/bendahara/ijin/rekap" },
             { label: "Perfoma Kehadiran", href: "/dashboard/bendahara/perfoma" },

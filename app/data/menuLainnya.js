@@ -35,4 +35,9 @@ export const menuItems = [
     icon: Cog,
     href: "/dashboard/allevents",
   },
+  {
+    name: "Rekap Kehadiran Guru SATT",
+    icon: Cog,
+    href: "/dashboard/rekap-kehadiran",
+  },
 ];
