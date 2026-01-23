@@ -20,7 +20,13 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
     tunjangan_kehadiran: 0,
     tunjangan_sembako: 0,
     tunjangan_kepala_keluarga: 0,
+    tunjangan_pendidikan:0,
+    tunjangan_pensiun:0,
+    tunjangan_jamlebih:0,
+    tunjangan_anak:0,
+    tunjangan_nikah:0,
     potongan_makan: 0,
+    potongan_pensiun:0,
     effective_date: today, // ✅ Tanggal hari ini (YYYY-MM-DD)
   });
 
@@ -45,7 +51,13 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
         tunjangan_kehadiran: 0,
         tunjangan_sembako: 0,
         tunjangan_kepala_keluarga: 0,
+        tunjangan_pendidikan:0,
+        tunjangan_pensiun:0,
+        tunjangan_jamlebih:0,
+        tunjangan_anak:0,
+        tunjangan_nikah:0,
         potongan_makan: 0,
+        potongan_pensiun:0,
         effective_date: today
       });
     }
@@ -53,7 +65,7 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
 
   useEffect(() => {
     async function fetchUsers() {
-      const res = await fetch("/api/tahfidz/pembimbing");
+      const res = await fetch("/api/bendahara/allkaryawan");
       setUsers(await res.json());
     }
     fetchUsers();
@@ -79,6 +91,7 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
         <DialogHeader>
           <DialogTitle>{form.id ? "Edit Gaji" : "Tambah Gaji Karyawan"}</DialogTitle>
         </DialogHeader>
+          <div className="max-h-[75vh] overflow-y-auto pr-2">
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
             <label className="block text-sm">Karyawan</label>
@@ -179,6 +192,60 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
               />
             </div>
             <div>
+              <label className="block text-sm">Tunjangan Pendidikan</label>
+              <input
+                type="number"
+                value={form.tunjangan_pendidikan}
+                onChange={(e) => setForm({ ...form, tunjangan_pendidikan: e.target.value })}
+                className="border rounded w-full px-2 py-1"
+              />
+            </div>
+            <div>
+              <label className="block text-sm">Tunjangan Pensiun</label>
+              <input
+                type="number"
+                value={form.tunjangan_pensiun}
+                onChange={(e) => setForm({ ...form, tunjangan_pensiun: e.target.value })}
+                className="border rounded w-full px-2 py-1"
+              />
+            </div>
+            <div>
+              <label className="block text-sm">Tunjangan Jam Lebih</label>
+              <input
+                type="number"
+                value={form.tunjangan_jamlebih}
+                onChange={(e) => setForm({ ...form, tunjangan_jamlebih: e.target.value })}
+                className="border rounded w-full px-2 py-1"
+              />
+            </div>
+            <div>
+              <label className="block text-sm">Tunjangan Anak</label>
+              <input
+                type="number"
+                value={form.tunjangan_anak}
+                onChange={(e) => setForm({ ...form, tunjangan_anak: e.target.value })}
+                className="border rounded w-full px-2 py-1"
+              />
+            </div>
+            <div>
+              <label className="block text-sm">Tunjangan Nikah</label>
+              <input
+                type="number"
+                value={form.tunjangan_nikah}
+                onChange={(e) => setForm({ ...form, tunjangan_nikah: e.target.value })}
+                className="border rounded w-full px-2 py-1"
+              />
+            </div>
+            <div>
+              <label className="block text-sm">Potongan Pensiun</label>
+              <input
+                type="number"
+                value={form.potongan_pensiun}
+                onChange={(e) => setForm({ ...form, potongan_pensiun: e.target.value })}
+                className="border rounded w-full px-2 py-1"
+              />
+            </div>
+            <div>
               <label className="block text-sm">Potongan Lainnya</label>
               <input
                 type="number"
@@ -202,6 +269,7 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
             <Button type="submit">{form.id ? "Simpan Perubahan" : "Tambah"}</Button>
           </div>
         </form>
+          </div>
       </DialogContent>
     </Dialog>
   );

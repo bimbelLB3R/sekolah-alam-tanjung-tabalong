@@ -32,7 +32,13 @@ export async function POST(req) {
       tunjangan_kehadiran,
       tunjangan_sembako,
       tunjangan_kepala_keluarga,
-      potongan_makan,
+      tunjangan_pendidikan,
+        tunjangan_pensiun,
+        tunjangan_jamlebih,
+        tunjangan_anak,
+        tunjangan_nikah,
+        potongan_makan,
+        potongan_pensiun,
       effective_date
     } = data;
 
@@ -42,8 +48,8 @@ export async function POST(req) {
     // Insert ke tabel gaji_karyawan
     await pool.query(
       `INSERT INTO gaji_karyawan 
-      (id, user_id, jabatan, departemen, gaji_pokok, tunjangan_bpjs, tunjangan_jabatan, tunjangan_makan, tunjangan_kehadiran, tunjangan_sembako, tunjangan_kepala_keluarga, potongan_makan, effective_date)
-      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+      (id, user_id, jabatan, departemen, gaji_pokok, tunjangan_bpjs, tunjangan_jabatan, tunjangan_makan, tunjangan_kehadiran, tunjangan_sembako, tunjangan_kepala_keluarga,tunjangan_pendidikan,tunjangan_pensiun,tunjangan_jamlebih,tunjangan_anak,tunjangan_nikah, potongan_makan,potongan_pensiun, effective_date)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
       [
         gajiKaryawanId,
         user_id,
@@ -56,7 +62,13 @@ export async function POST(req) {
         tunjangan_kehadiran,
         tunjangan_sembako,
         tunjangan_kepala_keluarga,
+        tunjangan_pendidikan,
+        tunjangan_pensiun,
+        tunjangan_jamlebih,
+        tunjangan_anak,
+        tunjangan_nikah,
         potongan_makan,
+        potongan_pensiun,
         effective_date
       ]
     );
@@ -64,8 +76,8 @@ export async function POST(req) {
     // Insert ke tabel histori
     await pool.query(
       `INSERT INTO gaji_karyawan_histori 
-      (gaji_karyawan_id, gaji_pokok, tunjangan_bpjs, tunjangan_jabatan, tunjangan_makan, tunjangan_kehadiran, tunjangan_sembako, tunjangan_kepala_keluarga, potongan_makan, effective_date)
-      VALUES (?,?,?,?,?,?,?,?,?,?)`,
+      (gaji_karyawan_id, gaji_pokok, tunjangan_bpjs, tunjangan_jabatan, tunjangan_makan, tunjangan_kehadiran, tunjangan_sembako, tunjangan_kepala_keluarga,tunjangan_pendidikan,tunjangan_pensiun,tunjangan_jamlebih,tunjangan_anak,tunjangan_nikah, potongan_makan,potongan_pensiun, effective_date)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
       [
         gajiKaryawanId,
         gaji_pokok,
@@ -75,7 +87,13 @@ export async function POST(req) {
         tunjangan_kehadiran,
         tunjangan_sembako,
         tunjangan_kepala_keluarga,
+        tunjangan_pendidikan,
+        tunjangan_pensiun,
+        tunjangan_jamlebih,
+        tunjangan_anak,
+        tunjangan_nikah,
         potongan_makan,
+        potongan_pensiun,
         effective_date
       ]
     );

@@ -248,11 +248,16 @@ const SlipGajiPDF = ({ data, tanggalCetak, presensiSummary, dataIjin }) => {
     totalTunjanganMakan +
     tunjanganKehadiranTotal +
     Number(data.tunjangan_sembako) +
-    Number(data.tunjangan_kepala_keluarga);
+    Number(data.tunjangan_kepala_keluarga)+
+    Number(data.tunjangan_pendidikan)+
+    Number(data.tunjangan_pensiun)+
+    Number(data.tunjangan_jamlebih)+
+    Number(data.tunjangan_anak)+
+    Number(data.tunjangan_nikah);
 
   // Hitung potongan
   const potonganIjinKeluar = ijinKeluarDipotong * tunjanganKehadiranBase*0.5;
-  const totalPotongan = Number(data.potongan_makan || 0) + potonganIjinKeluar;
+  const totalPotongan = Number(data.potongan_makan || 0) + potonganIjinKeluar + Number(data.potongan_pensiun);
   const takeHomePay = totalGaji - totalPotongan;
 
   const formatRupiah = (amount) => {
@@ -317,7 +322,7 @@ const SlipGajiPDF = ({ data, tanggalCetak, presensiSummary, dataIjin }) => {
 
               {/* Ijin Keluar Pribadi */}
               <View style={styles.kehadiranBox}>
-                <Text style={styles.kehadiranLabel}>Ijin Keluar Pribadi</Text>
+                <Text style={styles.kehadiranLabel}>Ijin Keluar Dipotong</Text>
                 <Text style={[styles.kehadiranValue, styles.valueGreen]}>
                   {ijinKeluarDipotong}
                 </Text>
@@ -402,6 +407,26 @@ const SlipGajiPDF = ({ data, tanggalCetak, presensiSummary, dataIjin }) => {
                 <Text>Tunjangan Kepala Keluarga</Text>
                 <Text>{formatRupiah(data.tunjangan_kepala_keluarga)}</Text>
               </View>
+              <View style={styles.detailRow}>
+                <Text>Tunjangan Pendidikan</Text>
+                <Text>{formatRupiah(data.tunjangan_pendidikan)}</Text>
+              </View>
+              <View style={styles.detailRow}>
+                <Text>Tunjangan Pensiun</Text>
+                <Text>{formatRupiah(data.tunjangan_pensiun)}</Text>
+              </View>
+              <View style={styles.detailRow}>
+                <Text>Tunjangan Kelebihan Jam</Text>
+                <Text>{formatRupiah(data.tunjangan_jamlebih)}</Text>
+              </View>
+              <View style={styles.detailRow}>
+                <Text>Tunjangan Anak</Text>
+                <Text>{formatRupiah(data.tunjangan_anak)}</Text>
+              </View>
+              <View style={styles.detailRow}>
+                <Text>Tunjangan Nikah</Text>
+                <Text>{formatRupiah(data.tunjangan_nikah)}</Text>
+              </View>
               <View style={styles.separator} />
               <View style={styles.boldRow}>
                 <Text>Total Gaji</Text>
@@ -427,6 +452,10 @@ const SlipGajiPDF = ({ data, tanggalCetak, presensiSummary, dataIjin }) => {
                   <Text>{formatRupiah(potonganIjinKeluar)}</Text>
                 </View>
               )}
+              <View style={styles.detailRow}>
+                <Text>Potongan Pensiun</Text>
+                <Text>{formatRupiah(data.potongan_pensiun || 0)}</Text>
+              </View>
               <View style={styles.detailRow}>
                 <Text>Potongan Lainnya</Text>
                 <Text>{formatRupiah(data.potongan_makan || 0)}</Text>
