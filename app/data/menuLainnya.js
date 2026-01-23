@@ -1,4 +1,4 @@
-import { ArrowUpDown, BookOpen, BookText, Cog, HandCoins, TentTree, VectorSquare } from "lucide-react";
+import { ArrowUpDown, BookOpen, BookText, Cog, HandCoins, ScrollText, TentTree, VectorSquare } from "lucide-react";
 export const menuItems = [
   {
     name: "Manajemen Tahfidz",
@@ -37,7 +37,7 @@ export const menuItems = [
   },
   {
     name: "Rekap Kehadiran Guru SATT",
-    icon: Cog,
+    icon: ScrollText,
     href: "/dashboard/rekap-kehadiran",
   },
 ];

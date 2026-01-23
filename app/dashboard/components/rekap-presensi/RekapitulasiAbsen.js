@@ -327,8 +327,34 @@ const RekapPresensi = () => {
   }, [data, selectedUser, selectedMonth]);
   // console.log(monthlyReport)
 
-  const exportToPDF = () => {
+  const loadImageAsBase64 = (url) => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = function () {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+      resolve(canvas.toDataURL("image/png"));
+    };
+    img.src = url;
+  });
+};
+
+
+  const exportToPDF =async () => {
+    const logoKiri = await loadImageAsBase64('/logo-sattnav.png');
+    // const logoKanan = await loadImageAsBase64('/logo-sattnav.png');
+
     const doc = new jsPDF();
+    // Logo kiri
+    doc.addImage(logoKiri, 'PNG', 10, 8, 20, 20);
+
+// Logo kanan
+    // doc.addImage(logoKanan, 'PNG', doc.internal.pageSize.width - 30, 8, 20, 20);
+
     const monthYear = formatMonthYear(selectedMonth + '-01');
 
     doc.setFontSize(18);
@@ -344,7 +370,7 @@ const RekapPresensi = () => {
 
     autoTable(doc, {
       startY: 35,
-      head: [['Nama Guru/Kar', 'Hadir', 'Hari Kerja', 'Kehadiran', 'Terlambat', 'Tidak Absen Pulang']],
+      head: [['Nama Guru/Kar', 'Total Hadir', 'Total Hari Kerja', '% Kehadiran', 'Terlambat', 'Tidak Absen Pulang']],
       body: summaryData,
       theme: 'grid',
       headStyles: { fillColor: [41, 128, 185], fontSize: 10 },
