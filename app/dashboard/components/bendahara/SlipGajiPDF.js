@@ -252,7 +252,8 @@ const SlipGajiPDF = ({ data, tanggalCetak, presensiSummary, dataIjin }) => {
     Number(data.tunjangan_pendidikan)+
     Number(data.tunjangan_pensiun)+
     Number(data.tunjangan_jamlebih)+
-    Number(data.tunjangan_anak)
+    Number(data.tunjangan_anak)+
+    Number(data.tunjangan_nikah)
 
   // Hitung potongan
   const potonganIjinKeluar = ijinKeluarDipotong * tunjanganKehadiranBase*0.5;
@@ -422,10 +423,10 @@ const SlipGajiPDF = ({ data, tanggalCetak, presensiSummary, dataIjin }) => {
                 <Text>Tunjangan Anak</Text>
                 <Text>{formatRupiah(data.tunjangan_anak)}</Text>
               </View>
-              {/* <View style={styles.detailRow}>
-                <Text>Tunjangan Nikah</Text>
+              <View style={styles.detailRow}>
+                <Text>Tunjangan Lain-lain</Text>
                 <Text>{formatRupiah(data.tunjangan_nikah)}</Text>
-              </View> */}
+              </View>
               <View style={styles.separator} />
               <View style={styles.boldRow}>
                 <Text>Total Gaji</Text>

@@ -13,7 +13,8 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
     user_id: "",
     jabatan: "",
     departemen: "",
-    gaji_pokok: "",
+    jml_anak:0,
+    gaji_pokok: 0,
     tunjangan_bpjs: 0,
     tunjangan_jabatan: 0,
     tunjangan_makan: 0,
@@ -44,7 +45,8 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
         user_id: "",
         jabatan: "",
         departemen: "",
-        gaji_pokok: "",
+        jml_anak:0,
+        gaji_pokok: 0,
         tunjangan_bpjs: 0,
         tunjangan_jabatan: 0,
         tunjangan_makan: 0,
@@ -70,6 +72,24 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
     }
     fetchUsers();
   }, []);
+
+  // Hitung tunjangan otomatis
+useEffect(() => {
+  const gajiPokok = parseFloat(form.gaji_pokok) || 0;
+  const jmlAnak = parseInt(form.jml_anak) || 0;
+  
+  // Tunjangan Kepala Keluarga = 10% dari gaji pokok
+  const tunjanganKepalaKeluarga = gajiPokok * 0.1;
+  
+  // Tunjangan Anak = 5% × jumlah anak × gaji pokok
+  const tunjanganAnak = gajiPokok * 0.05 * jmlAnak;
+  
+  setForm(prev => ({
+    ...prev,
+    tunjangan_kepala_keluarga: tunjanganKepalaKeluarga,
+    tunjangan_anak: tunjanganAnak
+  }));
+}, [form.gaji_pokok, form.jml_anak]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -121,6 +141,16 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
             <input
               value={form.departemen}
               onChange={(e) => setForm({ ...form, departemen: e.target.value })}
+              className="border rounded w-full px-2 py-1"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm">Jumlah Anak</label>
+            <input
+              value={form.jml_anak}
+              type="number"
+              onChange={(e) => setForm({ ...form, jml_anak: e.target.value })}
               className="border rounded w-full px-2 py-1"
               required
             />
@@ -182,13 +212,22 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
                 className="border rounded w-full px-2 py-1"
               />
             </div>
-            <div>
+            {/* <div>
               <label className="block text-sm">Tunjangan Kepala Keluarga</label>
               <input
                 type="number"
                 value={form.tunjangan_kepala_keluarga}
                 onChange={(e) => setForm({ ...form, tunjangan_kepala_keluarga: e.target.value })}
                 className="border rounded w-full px-2 py-1"
+              />
+            </div> */}
+            <div>
+              <label className="block text-sm">Tunjangan Kepala Keluarga</label>
+              <input
+                type="number"
+                value={form.tunjangan_kepala_keluarga}
+                className="border rounded w-full px-2 py-1 bg-gray-400"
+                disabled
               />
             </div>
             <div>
@@ -218,7 +257,7 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
                 className="border rounded w-full px-2 py-1"
               />
             </div>
-            <div>
+            {/* <div>
               <label className="block text-sm">Tunjangan Anak</label>
               <input
                 type="number"
@@ -226,15 +265,24 @@ export default function GajiFormModal({ open, setOpen, onSuccess }) {
                 onChange={(e) => setForm({ ...form, tunjangan_anak: e.target.value })}
                 className="border rounded w-full px-2 py-1"
               />
+            </div> */}
+            <div>
+              <label className="block text-sm">Tunjangan Anak</label>
+              <input
+                type="number"
+                value={form.tunjangan_anak}
+                className="border rounded w-full px-2 py-1 bg-gray-400"
+                disabled
+              />
             </div>
             <div>
-              <label className="block text-sm ">Tunjangan Nikah</label>
+              <label className="block text-sm ">Tunjangan Lain-lain</label>
               <input
                 type="number"
                 value={form.tunjangan_nikah}
-                disabled
+                // disabled
                 onChange={(e) => setForm({ ...form, tunjangan_nikah: e.target.value })}
-                className="border rounded w-full px-2 py-1 bg-gray-400"
+                className="border rounded w-full px-2 py-1 "
               />
             </div>
             <div>

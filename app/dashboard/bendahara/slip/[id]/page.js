@@ -136,7 +136,8 @@ export default function DetailGajiPage() {
     Number(data.tunjangan_pendidikan)+
     Number(data.tunjangan_pensiun)+
     Number(data.tunjangan_jamlebih)+
-    Number(data.tunjangan_anak)
+    Number(data.tunjangan_anak)+
+    Number(data.tunjangan_nikah)
     ;
 
   const totalIjinDipotong = dataIjin?.summary?.total_ijin_keluar_dipotong || 0;
@@ -342,10 +343,10 @@ export default function DetailGajiPage() {
                 <span>Tunjangan Anak</span>
                 <span>Rp {Number(data.tunjangan_anak).toLocaleString()}</span>
               </div>
-              {/* <div className="flex justify-between">
-                <span>Tunjangan Nikah</span>
+              <div className="flex justify-between">
+                <span>Tunjangan Lain-lain</span>
                 <span>Rp {Number(data.tunjangan_nikah).toLocaleString()}</span>
-              </div> */}
+              </div>
               
               <Separator />
               <div className="flex justify-between font-semibold">

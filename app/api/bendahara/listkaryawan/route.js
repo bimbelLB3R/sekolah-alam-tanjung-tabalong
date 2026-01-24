@@ -25,6 +25,7 @@ export async function POST(req) {
       user_id,
       jabatan,
       departemen,
+      jml_anak,
       gaji_pokok,
       tunjangan_bpjs,
       tunjangan_jabatan,
@@ -48,13 +49,14 @@ export async function POST(req) {
     // Insert ke tabel gaji_karyawan
     await pool.query(
       `INSERT INTO gaji_karyawan 
-      (id, user_id, jabatan, departemen, gaji_pokok, tunjangan_bpjs, tunjangan_jabatan, tunjangan_makan, tunjangan_kehadiran, tunjangan_sembako, tunjangan_kepala_keluarga,tunjangan_pendidikan,tunjangan_pensiun,tunjangan_jamlebih,tunjangan_anak,tunjangan_nikah, potongan_makan,potongan_pensiun, effective_date)
-      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+      (id, user_id, jabatan, departemen,jml_anak, gaji_pokok, tunjangan_bpjs, tunjangan_jabatan, tunjangan_makan, tunjangan_kehadiran, tunjangan_sembako, tunjangan_kepala_keluarga,tunjangan_pendidikan,tunjangan_pensiun,tunjangan_jamlebih,tunjangan_anak,tunjangan_nikah, potongan_makan,potongan_pensiun, effective_date)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
       [
         gajiKaryawanId,
         user_id,
         jabatan,
         departemen,
+        jml_anak,
         gaji_pokok,
         tunjangan_bpjs,
         tunjangan_jabatan,
@@ -76,10 +78,11 @@ export async function POST(req) {
     // Insert ke tabel histori
     await pool.query(
       `INSERT INTO gaji_karyawan_histori 
-      (gaji_karyawan_id, gaji_pokok, tunjangan_bpjs, tunjangan_jabatan, tunjangan_makan, tunjangan_kehadiran, tunjangan_sembako, tunjangan_kepala_keluarga,tunjangan_pendidikan,tunjangan_pensiun,tunjangan_jamlebih,tunjangan_anak,tunjangan_nikah, potongan_makan,potongan_pensiun, effective_date)
-      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+      (gaji_karyawan_id,jml_anak, gaji_pokok, tunjangan_bpjs, tunjangan_jabatan, tunjangan_makan, tunjangan_kehadiran, tunjangan_sembako, tunjangan_kepala_keluarga,tunjangan_pendidikan,tunjangan_pensiun,tunjangan_jamlebih,tunjangan_anak,tunjangan_nikah, potongan_makan,potongan_pensiun, effective_date)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
       [
         gajiKaryawanId,
+        jml_anak,
         gaji_pokok,
         tunjangan_bpjs,
         tunjangan_jabatan,
@@ -112,6 +115,7 @@ export async function PUT(req) {
       id,
       jabatan,
       departemen,
+      jml_anak,
       gaji_pokok,
       tunjangan_bpjs,
       tunjangan_jabatan,
@@ -139,6 +143,7 @@ export async function PUT(req) {
       `UPDATE gaji_karyawan SET
         jabatan = ?,
         departemen = ?,
+        jml_anak=?,
         gaji_pokok = ?,
         tunjangan_bpjs = ?,
         tunjangan_jabatan = ?,
@@ -158,6 +163,7 @@ export async function PUT(req) {
       [
         jabatan,
         departemen,
+        jml_anak,
         gaji_pokok,
         tunjangan_bpjs,
         tunjangan_jabatan,
@@ -180,10 +186,11 @@ export async function PUT(req) {
     // Tambahkan histori perubahan
     await pool.query(
       `INSERT INTO gaji_karyawan_histori 
-      (gaji_karyawan_id, gaji_pokok, tunjangan_bpjs, tunjangan_jabatan, tunjangan_makan, tunjangan_kehadiran, tunjangan_sembako, tunjangan_kepala_keluarga,tunjangan_pendidikan,tunjangan_pensiun,tunjangan_jamlebih,tunjangan_anak,tunjangan_nikah, potongan_makan,potongan_pensiun, effective_date)
-      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+      (gaji_karyawan_id,jml_anak, gaji_pokok, tunjangan_bpjs, tunjangan_jabatan, tunjangan_makan, tunjangan_kehadiran, tunjangan_sembako, tunjangan_kepala_keluarga,tunjangan_pendidikan,tunjangan_pensiun,tunjangan_jamlebih,tunjangan_anak,tunjangan_nikah, potongan_makan,potongan_pensiun, effective_date)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
       [
         id,
+        jml_anak,
         gaji_pokok,
         tunjangan_bpjs,
         tunjangan_jabatan,
