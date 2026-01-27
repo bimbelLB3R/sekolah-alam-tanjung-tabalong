@@ -83,7 +83,7 @@ export async function POST(req) {
     
     if (jenis === "masuk") {
       // Jam batas: 07:30 WITA (Waktu Indonesia Tengah)
-      const jamBatas = "07:30:00";
+      const jamBatas = "07:15:00";
       
       // Bandingkan jam presensi dengan jam batas
       // Format: "HH:MM:SS"
