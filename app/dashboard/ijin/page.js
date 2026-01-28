@@ -67,54 +67,135 @@ export default function FormIjinKaryawan() {
     }
   };
 
-  const handleSubmit = async () => {
-    setIsLoading(true);
-    setShowSuccess(false);
+  // const handleSubmit = async () => {
+  //   setIsLoading(true);
+  //   setShowSuccess(false);
 
-    try {
-      // TODO: Ganti USER_ID dan PEMBERI_IJIN_ID dengan data dari session/auth
-      // Contoh: const session = await getSession();
-      const response = await fetch('/api/ijin-karyawan', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          user_id: user.id, // Ganti dengan session.user.id
-          pemberi_ijin_id: user.id // Ganti dengan atasan dari session
-        })
-      });
+  //   try {
+  //     // TODO: Ganti USER_ID dan PEMBERI_IJIN_ID dengan data dari session/auth
+  //     // Contoh: const session = await getSession();
+  //     const response = await fetch('/api/ijin-karyawan', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({
+  //         ...formData,
+  //         user_id: user.id, // Ganti dengan session.user.id
+  //         pemberi_ijin_id: user.id // Ganti dengan atasan dari session
+  //       })
+  //     });
       
-      const result = await response.json();
+  //     const result = await response.json();
       
-      if (!response.ok) {
-        throw new Error(result.message || 'Gagal submit data');
-      }
+  //     if (!response.ok) {
+  //       throw new Error(result.message || 'Gagal submit data');
+  //     }
 
-      console.log('Success:', result);
-    //   alert("Sukses : Berhasil mengajukan ijin!")
-      setShowSuccess(true);
+  //     console.log('Success:', result);
+  //   //   alert("Sukses : Berhasil mengajukan ijin!")
+  //     setShowSuccess(true);
       
-      // Reset form
-      setFormData({
+  //     // Reset form
+  //     setFormData({
+  //       user_id: user.id,
+  //       jenis_ijin: 'keluar',
+  //       tanggal_ijin: '',
+  //       jam_keluar: '',
+  //       jam_kembali: '',
+  //       alasan_ijin: '',
+  //       pemberi_ijin_id: ''
+  //     });
+
+  //     // Hide success message setelah 3 detik
+  //     setTimeout(() => setShowSuccess(false), 3000);
+
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     alert(error.message || 'Terjadi kesalahan saat mengajukan ijin');
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  // Improved handleSubmit dengan duplicate prevention & better UX
+
+const handleSubmit = async () => {
+  // Cegah double submit
+  if (isLoading) {
+    console.log('Sedang proses, mohon tunggu...');
+    return;
+  }
+
+  setIsLoading(true);
+  setShowSuccess(false);
+
+  try {
+    const response = await fetch('/api/ijin-karyawan', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...formData,
         user_id: user.id,
-        jenis_ijin: 'keluar',
-        tanggal_ijin: '',
-        jam_keluar: '',
-        jam_kembali: '',
-        alasan_ijin: '',
-        pemberi_ijin_id: ''
-      });
-
-      // Hide success message setelah 3 detik
-      setTimeout(() => setShowSuccess(false), 3000);
-
-    } catch (error) {
-      console.error('Error:', error);
-      alert(error.message || 'Terjadi kesalahan saat mengajukan ijin');
-    } finally {
-      setIsLoading(false);
+        // Hapus pemberi_ijin_id jika tidak dipakai (trigger database yang handle)
+        // pemberi_ijin_id: user.id
+      })
+    });
+    
+    const result = await response.json();
+    
+    // Handle different HTTP status codes
+    if (response.status === 409) {
+      // Duplicate submission
+      alert(`⚠️ Duplikat Terdeteksi!\n\n${result.message}\n\nAnda sudah mengajukan ijin untuk tanggal yang sama.`);
+      return;
     }
-  };
+    
+    if (response.status === 400) {
+      // Validation error
+      alert(`❌ Data Tidak Valid\n\n${result.message}`);
+      return;
+    }
+    
+    if (response.status === 404) {
+      // User not found
+      alert(`❌ Error\n\n${result.message}`);
+      return;
+    }
+    
+    if (!response.ok) {
+      throw new Error(result.message || 'Gagal submit data');
+    }
+
+    // Success!
+    console.log('Success:', result);
+    setShowSuccess(true);
+    
+    // Reset form setelah berhasil
+    setFormData({
+      user_id: user.id,
+      jenis_ijin: 'keluar',
+      tanggal_ijin: '',
+      jam_keluar: '',
+      jam_kembali: '',
+      alasan_ijin: '',
+      pemberi_ijin_id: ''
+    });
+
+    // Hide success message setelah 5 detik (lebih lama agar user baca)
+    setTimeout(() => setShowSuccess(false), 5000);
+
+  } catch (error) {
+    console.error('Error:', error);
+    
+    // Cek apakah network error
+    if (error.message === 'Failed to fetch') {
+      alert('❌ Koneksi Error\n\nTidak dapat terhubung ke server. Periksa koneksi internet Anda.');
+    } else {
+      alert(`❌ Terjadi Kesalahan\n\n${error.message || 'Terjadi kesalahan saat mengajukan ijin'}`);
+    }
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const isFormValid = () => {
     if (!formData.tanggal_ijin || !formData.alasan_ijin || formData.alasan_ijin.length < 10) {
