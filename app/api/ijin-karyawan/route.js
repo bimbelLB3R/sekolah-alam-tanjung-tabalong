@@ -222,43 +222,45 @@ export async function POST(request) {
     }
 
     // ========== VALIDASI DUPLICATE SUBMISSION ==========
-    // Cek apakah sudah ada ijin dengan jenis yang sama pada tanggal yang sama
-    const [existingIjin] = await pool.execute(
-      `SELECT 
-        id, 
-        jenis_ijin,
-        tanggal_ijin,
-        created_at
-      FROM ijin_karyawan 
-      WHERE user_id = ? 
-        AND jenis_ijin = ? 
-        AND tanggal_ijin = ?
-      ORDER BY created_at DESC
-      LIMIT 1`,
-      [user_id, jenis_ijin, tanggal_ijin]
-    );
-
-    if (existingIjin.length > 0) {
-      const existing = existingIjin[0];
-      
-      const tanggalIjinFormatted = new Date(tanggal_ijin).toLocaleDateString('id-ID', {
-        dateStyle: 'long',
-        timeZone: 'Asia/Makassar' // WITA
-      });
-      
-      return NextResponse.json(
-        { 
-          success: false, 
-          message: `Anda sudah mengajukan ijin ${jenis_ijin === 'tidak_masuk' ? 'tidak masuk' : 'keluar'} pada tanggal ${tanggalIjinFormatted}. `,
-          existing_ijin: {
-            id: existing.id,
-            jenis_ijin: existing.jenis_ijin,
-            tanggal_ijin: existing.tanggal_ijin,
-            created_at: existing.created_at
-          }
-        },
-        { status: 409 } // 409 Conflict
+    // Hanya cek duplikasi untuk ijin TIDAK_MASUK
+    if (jenis_ijin === 'tidak_masuk') {
+      const [existingIjin] = await pool.execute(
+        `SELECT 
+          id, 
+          jenis_ijin,
+          tanggal_ijin,
+          created_at
+        FROM ijin_karyawan 
+        WHERE user_id = ? 
+          AND jenis_ijin = 'tidak_masuk' 
+          AND tanggal_ijin = ?
+        ORDER BY created_at DESC
+        LIMIT 1`,
+        [user_id, tanggal_ijin]
       );
+
+      if (existingIjin.length > 0) {
+        const existing = existingIjin[0];
+        
+        const tanggalIjinFormatted = new Date(tanggal_ijin).toLocaleDateString('id-ID', {
+          dateStyle: 'long',
+          timeZone: 'Asia/Makassar' // WITA
+        });
+        
+        return NextResponse.json(
+          { 
+            success: false, 
+            message: `Anda sudah mengajukan ijin tidak masuk pada tanggal ${tanggalIjinFormatted}. Tidak dapat mengajukan ijin tidak masuk lebih dari satu kali untuk tanggal yang sama.`,
+            existing_ijin: {
+              id: existing.id,
+              jenis_ijin: existing.jenis_ijin,
+              tanggal_ijin: existing.tanggal_ijin,
+              created_at: existing.created_at
+            }
+          },
+          { status: 409 } // 409 Conflict
+        );
+      }
     }
     // ========== END VALIDASI DUPLICATE ==========
 
