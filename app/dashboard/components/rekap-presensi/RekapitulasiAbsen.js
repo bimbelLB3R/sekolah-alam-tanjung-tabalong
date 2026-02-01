@@ -143,7 +143,7 @@ const SummaryTable = ({ monthlyReport, selectedMonth }) => (
                 <span className="text-sm font-semibold text-gray-900">{item.hadir}</span>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-center">
-                <span className="text-sm text-gray-600">{item.totalHariKerja}</span>
+                <span className="text-sm text-gray-600" title='senin-jumat'>{item.totalHariKerja}</span>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-center">
                 <span className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full ${
@@ -325,7 +325,7 @@ const RekapPresensi = () => {
 
     return Object.values(groupedByUser);
   }, [data, selectedUser, selectedMonth]);
-  // console.log(monthlyReport)
+  console.log(monthlyReport)
 
   const loadImageAsBase64 = (url) => {
   return new Promise((resolve) => {

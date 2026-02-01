@@ -264,6 +264,10 @@ const SlipGajiPDF = ({ data, tanggalCetak, presensiSummary, dataIjin }) => {
     return `Rp ${Number(amount).toLocaleString("id-ID")}`;
   };
 
+    // Bulan lalu
+const lastMonth = new Date();
+lastMonth.setMonth(lastMonth.getMonth() - 1);
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -273,7 +277,7 @@ const SlipGajiPDF = ({ data, tanggalCetak, presensiSummary, dataIjin }) => {
           <View style={styles.headerCenter}>
             <Text style={styles.title}>Slip Gaji Karyawan</Text>
             <Text style={styles.subtitle}>
-              Periode: {new Date().toLocaleDateString("id-ID", { month: 'long', year: 'numeric' })}
+              Periode: {lastMonth.toLocaleDateString("id-ID", { month: 'long', year: 'numeric' })}
             </Text>
           </View>
           <Image style={styles.logoRight} src="/logo-sattnav.png" />
@@ -304,11 +308,11 @@ const SlipGajiPDF = ({ data, tanggalCetak, presensiSummary, dataIjin }) => {
           </View>
         </View>
 
-        {/* Data Kehadiran Bulan Ini */}
+        {/* Data Kehadiran Bulan lalu */}
         {presensiSummary && (
           <View style={styles.cardBlue}>
             <View style={styles.cardHeaderBlue}>
-              <Text style={styles.cardTitleBlue}>Data Kehadiran Bulan Ini</Text>
+              <Text style={styles.cardTitleBlue}>Data Kehadiran {lastMonth.toLocaleDateString("id-ID", { month: 'long', year: 'numeric' })}</Text>
             </View>
             <View style={styles.kehadiranGrid}>
               {/* Ijin Tidak Masuk */}

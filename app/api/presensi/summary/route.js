@@ -1,3 +1,6 @@
+
+// // tanpa params
+
 // // app/api/presensi/summary/route.js
 // import { NextResponse } from "next/server";
 // import pool from "@/lib/db";
@@ -6,8 +9,6 @@
 //   try {
 //     const { searchParams } = new URL(request.url);
 //     const userId = searchParams.get('user_id');
-//     const bulan = searchParams.get('bulan'); // format: YYYY-MM
-//     const tahun = searchParams.get('tahun'); // format: YYYY
     
 //     if (!userId) {
 //       return NextResponse.json(
@@ -16,22 +17,7 @@
 //       );
 //     }
 
-//     let dateFilter = "";
-//     const params = [userId];
-
-//     if (bulan && tahun) {
-//       // Filter by bulan dan tahun spesifik (YYYY-MM)
-//       dateFilter = "AND DATE_FORMAT(tanggal, '%Y-%m') = ?";
-//       params.push(`${tahun}-${bulan}`);
-//     } else if (tahun) {
-//       // Filter by tahun saja
-//       dateFilter = "AND YEAR(tanggal) = ?";
-//       params.push(tahun);
-//     } else {
-//       // Default: bulan dan tahun saat ini
-//       dateFilter = "AND MONTH(tanggal) = MONTH(CURRENT_DATE()) AND YEAR(tanggal) = YEAR(CURRENT_DATE())";
-//     }
-
+//     // Query untuk ambil data presensi bulan dan tahun saat ini
 //     const [rows] = await pool.query(
 //       `SELECT 
 //         COUNT(CASE WHEN jenis = 'masuk' AND keterangan = 'tepat waktu' THEN 1 END) as jumlah_tepat_waktu,
@@ -39,8 +25,10 @@
 //         COUNT(CASE WHEN jenis = 'masuk' THEN 1 END) as total_hadir,
 //         COUNT(CASE WHEN jenis = 'pulang' THEN 1 END) as total_pulang
 //        FROM presensi 
-//        WHERE user_id = ? ${dateFilter}`,
-//       params
+//        WHERE user_id = ? 
+//        AND MONTH(tanggal) = MONTH(CURRENT_DATE()) 
+//        AND YEAR(tanggal) = YEAR(CURRENT_DATE())`,
+//       [userId]
 //     );
 
 //     const summary = rows[0] || {
@@ -64,9 +52,7 @@
 //   }
 // }
 
-
-// tanpa params
-
+// ambil data bulan lalu
 // app/api/presensi/summary/route.js
 import { NextResponse } from "next/server";
 import pool from "@/lib/db";
@@ -83,7 +69,7 @@ export async function GET(request) {
       );
     }
 
-    // Query untuk ambil data presensi bulan dan tahun saat ini
+    // Query untuk ambil data presensi 1 bulan sebelumnya
     const [rows] = await pool.query(
       `SELECT 
         COUNT(CASE WHEN jenis = 'masuk' AND keterangan = 'tepat waktu' THEN 1 END) as jumlah_tepat_waktu,
@@ -92,8 +78,8 @@ export async function GET(request) {
         COUNT(CASE WHEN jenis = 'pulang' THEN 1 END) as total_pulang
        FROM presensi 
        WHERE user_id = ? 
-       AND MONTH(tanggal) = MONTH(CURRENT_DATE()) 
-       AND YEAR(tanggal) = YEAR(CURRENT_DATE())`,
+       AND tanggal >= DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH), '%Y-%m-01')
+       AND tanggal < DATE_FORMAT(CURRENT_DATE(), '%Y-%m-01')`,
       [userId]
     );
 

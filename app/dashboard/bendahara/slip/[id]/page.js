@@ -147,6 +147,10 @@ export default function DetailGajiPage() {
   const takeHomePay = totalGaji - totalPotongan;
   // console.log(totalPotongan)
 
+  // Bulan lalu
+const lastMonth = new Date();
+lastMonth.setMonth(lastMonth.getMonth() - 1);
+
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6 bg-white">
       {/* Tombol Export PDF */}
@@ -175,7 +179,7 @@ export default function DetailGajiPage() {
           <div className="text-center flex-1 px-4">
             <h1 className="text-xl font-bold uppercase">Slip Gaji Karyawan</h1>
             <p className="text-sm text-gray-600">
-              Periode: {new Date().toLocaleDateString("id-ID", { month: 'long', year: 'numeric' })}
+              Periode: {lastMonth.toLocaleDateString("id-ID", { month: 'long', year: 'numeric' })}
             </p>
           </div>
           <div className="w-16">
@@ -208,7 +212,7 @@ export default function DetailGajiPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-blue-900">
               <Calendar className="w-5 h-5" />
-              Data Kehadiran Bulan Ini
+              Data Kehadiran {lastMonth.toLocaleDateString("id-ID", { month: 'long', year: 'numeric' })}
             </CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">

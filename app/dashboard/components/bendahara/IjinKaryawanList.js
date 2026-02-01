@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Calendar, Filter, ChevronLeft, ChevronRight, RefreshCw } from 'lucide-react';
+import { Search, Calendar, Filter, ChevronLeft, ChevronRight, RefreshCw, Download, FileText, FileSpreadsheet } from 'lucide-react';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import * as XLSX from 'xlsx';
 
 export default function IjinKaryawanList() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({});
+  const [exporting, setExporting] = useState(false);
   
   // Filter states
   const [search, setSearch] = useState('');
@@ -40,6 +44,49 @@ export default function IjinKaryawanList() {
       console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Fetch all data for export (without pagination)
+  const fetchAllData = async () => {
+    try {
+      let allData = [];
+      let currentPage = 1;
+      let hasMore = true;
+
+      // Fetch data page by page until all data is retrieved
+      while (hasMore) {
+        const params = new URLSearchParams({
+          page: currentPage.toString(),
+          sort_by: sortBy,
+          sort_order: sortOrder,
+          ...(search && { search }),
+          ...(jenisIjin && { jenis_ijin: jenisIjin }),
+          ...(startDate && { start_date: startDate }),
+          ...(endDate && { end_date: endDate }),
+        });
+
+        const response = await fetch(`/api/ijin-karyawan/summary?${params}`);
+        const result = await response.json();
+
+        if (result.success && result.data.length > 0) {
+          allData = [...allData, ...result.data];
+          
+          // Check if there's more data
+          if (result.pagination && result.pagination.hasNext) {
+            currentPage++;
+          } else {
+            hasMore = false;
+          }
+        } else {
+          hasMore = false;
+        }
+      }
+
+      return allData;
+    } catch (error) {
+      console.error('Error fetching all data:', error);
+      return [];
     }
   };
 
@@ -92,13 +139,186 @@ export default function IjinKaryawanList() {
     return time.substring(0, 5);
   };
 
+  // Export to PDF
+  const exportToPDF = async () => {
+    setExporting(true);
+    try {
+      const allData = await fetchAllData();
+      
+      const doc = new jsPDF('l', 'mm', 'a4'); // landscape orientation
+      
+      // Add title
+      doc.setFontSize(18);
+      doc.setFont(undefined, 'bold');
+      doc.text('Data Ijin Karyawan', 14, 15);
+      
+      // Add filter info
+      doc.setFontSize(10);
+      doc.setFont(undefined, 'normal');
+      let yPos = 25;
+      
+      if (search) {
+        doc.text(`Pencarian: ${search}`, 14, yPos);
+        yPos += 5;
+      }
+      if (jenisIjin) {
+        doc.text(`Jenis Ijin: ${jenisIjin === 'keluar' ? 'Keluar' : 'Tidak Masuk'}`, 14, yPos);
+        yPos += 5;
+      }
+      if (startDate || endDate) {
+        doc.text(`Periode: ${startDate || '-'} s/d ${endDate || '-'}`, 14, yPos);
+        yPos += 5;
+      }
+      
+      doc.text(`Total Data: ${allData.length}`, 14, yPos);
+      doc.text(`Tanggal Export: ${new Date().toLocaleDateString('id-ID')}`, 14, yPos + 5);
+      
+      // Prepare table data
+      const tableData = allData.map((item, index) => [
+        index + 1,
+        item.nama_karyawan,
+        item.email_karyawan,
+        item.jenis_ijin === 'keluar' ? 'Keluar' : 'Tidak Masuk',
+        formatDate(item.tanggal_ijin),
+        item.jenis_ijin === 'keluar' 
+          ? `${formatTime(item.jam_keluar)} - ${formatTime(item.jam_kembali)}`
+          : '-',
+        item.alasan_ijin,
+        item.dipotong_tunjangan ? 'Ya' : 'Tidak'
+      ]);
+      
+      // Add table
+      autoTable(doc, {
+        startY: yPos + 10,
+        head: [['No', 'Nama', 'Email', 'Jenis Ijin', 'Tanggal', 'Waktu', 'Alasan', 'Potong Tunjangan']],
+        body: tableData,
+        styles: {
+          fontSize: 8,
+          cellPadding: 2,
+        },
+        headStyles: {
+          fillColor: [34, 197, 94], // green-600
+          textColor: 255,
+          fontStyle: 'bold',
+        },
+        alternateRowStyles: {
+          fillColor: [240, 253, 244], // green-50
+        },
+        columnStyles: {
+          0: { cellWidth: 10 },
+          1: { cellWidth: 35 },
+          2: { cellWidth: 40 },
+          3: { cellWidth: 25 },
+          4: { cellWidth: 25 },
+          5: { cellWidth: 30 },
+          6: { cellWidth: 50 },
+          7: { cellWidth: 25 },
+        },
+      });
+      
+      // Save PDF
+      doc.save(`Data_Ijin_Karyawan_${new Date().getTime()}.pdf`);
+    } catch (error) {
+      console.error('Error exporting to PDF:', error);
+      alert('Gagal export ke PDF');
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  // Export to Excel
+  const exportToExcel = async () => {
+    setExporting(true);
+    try {
+      const allData = await fetchAllData();
+      
+      // Prepare data for Excel
+      const excelData = allData.map((item, index) => ({
+        'No': index + 1,
+        'Nama Karyawan': item.nama_karyawan,
+        'Email': item.email_karyawan,
+        'Jenis Ijin': item.jenis_ijin === 'keluar' ? 'Keluar' : 'Tidak Masuk',
+        'Tanggal': formatDate(item.tanggal_ijin),
+        'Jam Keluar': item.jenis_ijin === 'keluar' ? formatTime(item.jam_keluar) : '-',
+        'Jam Kembali': item.jenis_ijin === 'keluar' ? formatTime(item.jam_kembali) : '-',
+        'Alasan': item.alasan_ijin,
+        'Potong Tunjangan': item.dipotong_tunjangan ? 'Ya' : 'Tidak'
+      }));
+      
+      // Create worksheet
+      const worksheet = XLSX.utils.json_to_sheet(excelData);
+      
+      // Set column widths
+      const columnWidths = [
+        { wch: 5 },  // No
+        { wch: 30 }, // Nama
+        { wch: 35 }, // Email
+        { wch: 15 }, // Jenis Ijin
+        { wch: 15 }, // Tanggal
+        { wch: 12 }, // Jam Keluar
+        { wch: 12 }, // Jam Kembali
+        { wch: 40 }, // Alasan
+        { wch: 15 }, // Potong Tunjangan
+      ];
+      worksheet['!cols'] = columnWidths;
+      
+      // Create workbook
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Data Ijin Karyawan');
+      
+      // Add filter info as a separate sheet
+      const filterInfo = [];
+      if (search) filterInfo.push({ Filter: 'Pencarian', Value: search });
+      if (jenisIjin) filterInfo.push({ Filter: 'Jenis Ijin', Value: jenisIjin === 'keluar' ? 'Keluar' : 'Tidak Masuk' });
+      if (startDate) filterInfo.push({ Filter: 'Tanggal Mulai', Value: startDate });
+      if (endDate) filterInfo.push({ Filter: 'Tanggal Akhir', Value: endDate });
+      filterInfo.push({ Filter: 'Total Data', Value: allData.length });
+      filterInfo.push({ Filter: 'Tanggal Export', Value: new Date().toLocaleDateString('id-ID') });
+      
+      const filterSheet = XLSX.utils.json_to_sheet(filterInfo);
+      XLSX.utils.book_append_sheet(workbook, filterSheet, 'Info Export');
+      
+      // Save file
+      XLSX.writeFile(workbook, `Data_Ijin_Karyawan_${new Date().getTime()}.xlsx`);
+    } catch (error) {
+      console.error('Error exporting to Excel:', error);
+      alert('Gagal export ke Excel');
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-linear-to-br from-green-50 to-emerald-50 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 border border-green-100">
-          <h1 className="text-3xl font-bold text-green-800 mb-2">Data Ijin Karyawan</h1>
-          <p className="text-green-600">Kelola dan pantau data ijin karyawan</p>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-green-800 mb-2">Data Ijin Karyawan</h1>
+              <p className="text-green-600">Kelola dan pantau data ijin karyawan</p>
+            </div>
+            
+            {/* Export Buttons */}
+            <div className="flex gap-2">
+              <button
+                onClick={exportToPDF}
+                disabled={exporting || data.length === 0}
+                className="flex items-center gap-2 px-4 py-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+              >
+                <FileText size={18} />
+                <span className="hidden sm:inline">Export PDF</span>
+              </button>
+              <button
+                onClick={exportToExcel}
+                disabled={exporting || data.length === 0}
+                className="flex items-center gap-2 px-4 py-2.5 bg-green-600 text-white rounded-xl hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+              >
+                <FileSpreadsheet size={18} />
+                <span className="hidden sm:inline">Export Excel</span>
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Filters */}
@@ -185,6 +405,14 @@ export default function IjinKaryawanList() {
             <span className="text-sm font-medium">Reset Filter</span>
           </button>
         </div>
+
+        {/* Export Status */}
+        {exporting && (
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 flex items-center gap-3">
+            <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-600 border-t-transparent"></div>
+            <span className="text-blue-700 font-medium">Sedang memproses export...</span>
+          </div>
+        )}
 
         {/* Data Table */}
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-green-100">
