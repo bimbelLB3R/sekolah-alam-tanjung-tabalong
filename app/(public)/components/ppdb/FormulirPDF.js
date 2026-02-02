@@ -1,5 +1,6 @@
 // components/pdf/FormulirPDF.jsx
 import React from 'react'
+import { useState,useEffect } from 'react'
 import { 
   Document, 
   Page, 
@@ -138,6 +139,27 @@ const styles = StyleSheet.create({
 })
 
 export default function FormulirPDF({ data }) {
+  const [level,setLevel]=useState();
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth(); // 0 = Jan
+
+  // PPDB Okt (9) – Jun (5)
+  const tahunMasuk = month >= 9 ? year + 1 : year;
+
+  const tahunPelajaran = `TAHUN PELAJARAN ${tahunMasuk}/${tahunMasuk + 1}`;
+  useEffect(() => {
+    if (!data?.jenjang) return;
+
+    if (data.jenjang === "SD") {
+      setLevel("Sekolah Dasar");
+    } else if (data.jenjang === "KB") {
+      setLevel("KB");
+    } else if (data.jenjang === "TK") {
+      setLevel("TK");
+    }
+  }, [data?.jenjang]);
+  
   // Format tanggal
   const formatDate = (dateStr) => {
     if (!dateStr) return ''
@@ -168,7 +190,7 @@ export default function FormulirPDF({ data }) {
           <View style={styles.headerText}>
             <Text style={styles.schoolName}>YAYASAN MUTIARA INSAN SARABAKAWA</Text>
             <Text style={styles.schoolNameSub}>
-              SEKOLAH ALAM TANJUNG TABALONG (SEKOLAH DASAR)
+              SEKOLAH ALAM TANJUNG TABALONG ({level})
             </Text>
             <Text style={styles.schoolAddress}>
               Jalan Tanjung Baru, Maburai Kecamatan Murung Pudak, Kabupaten Tabalong, Kalsel 71571
@@ -189,10 +211,10 @@ export default function FormulirPDF({ data }) {
           FORMULIR PENERIMAAN PESERTA DIDIK BARU
         </Text>
         <Text style={styles.subtitle}>
-          SEKOLAH ALAM TANJUNG TABALONG (SEKOLAH DASAR)
+          SEKOLAH ALAM TANJUNG TABALONG ({level})
         </Text>
         <Text style={styles.academicYear}>
-          TAHUN PELAJARAN 2026/2027
+          {tahunPelajaran}
         </Text>
 
         {/* No Pendaftaran Box */}
