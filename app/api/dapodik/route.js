@@ -1,12 +1,40 @@
-// app/api/biodata/route.js
+// app/api/dapodik/route.js
 import pool from "@/lib/db";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request) {
   try {
-    const [rows] = await pool.query(
-      `SELECT * FROM biodata_siswa ORDER BY created_at DESC`
-    );
+    const { searchParams } = new URL(request.url);
+    const jenjang = searchParams.get("jenjang");
+    const kelas = searchParams.get("kelas");
+
+    let query = `
+      SELECT DISTINCT
+        bs.*,
+        nk.kelas_lengkap,
+        nk.jenjang as jenjang_kelas,
+        nk.kelas as tingkat_kelas
+      FROM biodata_siswa bs
+      LEFT JOIN siswa_kelas sk ON bs.id = sk.siswa_id AND sk.aktif = 1
+      LEFT JOIN nama_kelas nk ON sk.kelas_id = nk.id
+      WHERE 1=1
+    `;
+    
+    const params = [];
+
+    if (jenjang && jenjang !== "all") {
+      query += ` AND (bs.jenjang = ? OR nk.jenjang = ?)`;
+      params.push(jenjang, jenjang);
+    }
+
+    if (kelas && kelas !== "all") {
+      query += ` AND nk.kelas = ?`;
+      params.push(kelas);
+    }
+
+    query += ` ORDER BY bs.created_at DESC`;
+
+    const [rows] = await pool.query(query, params);
 
     return NextResponse.json(rows, { status: 200 });
   } catch (error) {
@@ -30,7 +58,6 @@ export async function DELETE(request) {
       );
     }
 
-    // Cek apakah data ada
     const [checkData] = await pool.query(
       "SELECT id FROM biodata_siswa WHERE id = ?",
       [id]
@@ -43,7 +70,6 @@ export async function DELETE(request) {
       );
     }
 
-    // Hapus data
     await pool.query("DELETE FROM biodata_siswa WHERE id = ?", [id]);
 
     return NextResponse.json(
