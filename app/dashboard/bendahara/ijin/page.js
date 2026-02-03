@@ -83,8 +83,8 @@ export default function BendaharaPage() {
 
     // Filter by status tunjangan
     if (filterTunjangan !== 'all') {
-      const dipotong = filterTunjangan === 'dipotong';
-      filtered = filtered.filter(item => item.dipotong_tunjangan === dipotong);
+      const dipotong = Number(filterTunjangan);
+      filtered = filtered.filter(item => Number(item.dipotong_tunjangan) === dipotong);
     }
 
     setFilteredData(filtered);
@@ -225,8 +225,8 @@ export default function BendaharaPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Semua Status</SelectItem>
-                  <SelectItem value="dipotong">Dipotong</SelectItem>
-                  <SelectItem value="tidak_dipotong">Tidak Dipotong</SelectItem>
+                  <SelectItem value="1">Dipotong</SelectItem>
+                  <SelectItem value="0">Tidak Dipotong</SelectItem>
                 </SelectContent>
               </Select>
             </div>
