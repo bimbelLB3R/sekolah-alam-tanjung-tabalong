@@ -179,11 +179,11 @@ doc.addImage(
       index + 1,
       row.name || '-',
       row.jabatan || '-',
-      row.departemen || '-',
       `${calculated.tepatWaktu}/${calculated.terlambat}`,
       calculated.jumlahIjin,
       `Rp ${parseInt(row.gaji_pokok).toLocaleString('id-ID')}`,
       `Rp ${calculated.totalTunjangan.toLocaleString('id-ID')}`,
+      `Rp ${calculated.potonganMakan.toLocaleString('id-ID')}`,
       `Rp ${calculated.totalPotongan.toLocaleString('id-ID')}`,
       `Rp ${calculated.totalGaji.toLocaleString('id-ID')}`
     ];
@@ -200,7 +200,8 @@ doc.addImage(
       tepatWaktu: acc.tepatWaktu + calc.tepatWaktu,
       terlambat: acc.terlambat + calc.terlambat,
       totalKehadiran: acc.totalKehadiran + calc.totalKehadiran,
-      totalIjin: acc.totalIjin + calc.jumlahIjin
+      totalIjin: acc.totalIjin + calc.jumlahIjin,
+      potonganMakan: acc.potonganMakan + calc.potonganMakan
     };
   }, {
     gajiPokok: 0,
@@ -210,16 +211,18 @@ doc.addImage(
     tepatWaktu: 0,
     terlambat: 0,
     totalKehadiran: 0,
-    totalIjin: 0
+    totalIjin: 0,
+    potonganMakan:0
   });
 
   // Add total row
   tableData.push([
-    { content: 'TOTAL', colSpan: 4, styles: { fontStyle: 'bold', halign: 'center' } },
+    { content: 'TOTAL', colSpan: 3, styles: { fontStyle: 'bold', halign: 'center' } },
     { content: `${grandTotals.tepatWaktu}/${grandTotals.terlambat}`, styles: { fontStyle: 'bold', halign: 'center' } },
     { content: grandTotals.totalIjin.toString(), styles: { fontStyle: 'bold', halign: 'center' } },
     { content: `Rp ${grandTotals.gajiPokok.toLocaleString('id-ID')}`, styles: { fontStyle: 'bold' } },
     { content: `Rp ${grandTotals.totalTunjangan.toLocaleString('id-ID')}`, styles: { fontStyle: 'bold' } },
+    { content: `Rp ${grandTotals.potonganMakan.toLocaleString('id-ID')}`, styles: { fontStyle: 'bold' } },
     { content: `Rp ${grandTotals.totalPotongan.toLocaleString('id-ID')}`, styles: { fontStyle: 'bold' } },
     { content: `Rp ${grandTotals.totalGaji.toLocaleString('id-ID')}`, styles: { fontStyle: 'bold' } }
   ]);
@@ -230,11 +233,11 @@ doc.addImage(
       'No',
       'Nama Karyawan',
       'Jabatan',
-      'Departemen',
       'Hadir\n(TW/TL)',
       'Ijin',
       'Gaji Pokok',
       'Total\nTunjangan',
+      'Potongan\nMakan',
       'Total\nPotongan',
       'Total Gaji\nBersih'
     ]],
@@ -257,11 +260,11 @@ doc.addImage(
       0: { halign: 'center', cellWidth: 8 },      // No
       1: { halign: 'left', cellWidth: 40 },       // Nama
       2: { halign: 'left', cellWidth: 28 },       // Jabatan
-      3: { halign: 'left', cellWidth: 28 },       // Departemen
-      4: { halign: 'center', cellWidth: 15 },     // Hadir
-      5: { halign: 'center', cellWidth: 10 },     // Ijin
-      6: { halign: 'right', cellWidth: 30 },      // Gaji Pokok
-      7: { halign: 'right', cellWidth: 30 },      // Total Tunjangan
+      3: { halign: 'center', cellWidth: 15 },     // Hadir
+      4: { halign: 'center', cellWidth: 10 },     // Ijin
+      5: { halign: 'right', cellWidth: 30 },      // Gaji Pokok
+      6: { halign: 'right', cellWidth: 30 },      // Total Tunjangan
+      7: { halign: 'right', cellWidth: 30 },      // Potongan Makan
       8: { halign: 'right', cellWidth: 30 },      // Total Potongan
       9: { halign: 'right', cellWidth: 35 }       // Total Gaji
     },
@@ -315,6 +318,7 @@ doc.addImage(
     ['', ''],
     ['Total Gaji Pokok', `: Rp ${grandTotals.gajiPokok.toLocaleString('id-ID')}`],
     ['Total Tunjangan', `: Rp ${grandTotals.totalTunjangan.toLocaleString('id-ID')}`],
+    ['Potongan Makan', `: Rp ${grandTotals.potonganMakan.toLocaleString('id-ID')}`],
     ['Total Potongan', `: Rp ${grandTotals.totalPotongan.toLocaleString('id-ID')}`],
     ['Total Gaji Bersih', `: Rp ${grandTotals.totalGaji.toLocaleString('id-ID')}`],
     ['', ''],

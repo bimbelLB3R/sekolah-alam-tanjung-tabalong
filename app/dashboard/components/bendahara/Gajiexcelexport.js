@@ -81,12 +81,13 @@ export const generateGajiExcel = (data, attendanceData, izinData) => {
     // Hitung potongan
     const potonganMakan = totalTunjanganMakan; // Sama dengan total tunjangan makan
     const potonganPensiun = parseFloat(row.potongan_pensiun) || 0;
+    const potonganLainnya = parseFloat(row.potongan_makan) || 0;
     
     // Potongan ijin keperluan pribadi = 50% tunjangan kehadiran × jumlah ijin
     const jumlahIjin = getIjinCount(userId);
     const potonganIjin = jumlahIjin * (tunjanganKehadiran * 0.5);
     
-    const totalPotongan = potonganMakan + potonganPensiun + potonganIjin;
+    const totalPotongan = potonganMakan + potonganPensiun + potonganIjin +potonganLainnya;
     
     return {
       totalTunjanganMakan,
@@ -95,6 +96,7 @@ export const generateGajiExcel = (data, attendanceData, izinData) => {
       potonganMakan,
       potonganIjin,
       totalPotongan,
+      potonganLainnya,
       totalGaji: gajiPokok + totalTunjangan - totalPotongan
     };
   };
@@ -140,6 +142,7 @@ export const generateGajiExcel = (data, attendanceData, izinData) => {
       'Potongan Makan': calculated.potonganMakan,
       'Potongan Pensiun': parseFloat(row.potongan_pensiun) || 0,
       'Potongan Ijin': calculated.potonganIjin,
+      'Potongan Lainnya': calculated.potonganLainnya,
       'Total Potongan': calculated.totalPotongan,
       'Total Gaji Bersih': calculated.totalGaji,
       'Tanggal Efektif': row.effective_date || '-',
@@ -237,6 +240,7 @@ export const generateGajiExcel = (data, attendanceData, izinData) => {
     { wch: 18 }, // Potongan Makan
     { wch: 18 }, // Potongan Pensiun
     { wch: 18 }, // Potongan Ijin
+    { wch: 18 }, // Potongan Lainnya
     { wch: 18 }, // Total Potongan
     { wch: 20 }, // Total Gaji Bersih
     { wch: 15 }, // Tanggal Efektif
