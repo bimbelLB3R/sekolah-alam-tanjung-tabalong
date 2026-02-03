@@ -511,7 +511,7 @@ lastMonth.setMonth(lastMonth.getMonth() - 1);
         <View style={styles.signatureSection}>
           <View style={styles.signatureBox}>
             <Text style={styles.signatureLabel}>Bendahara</Text>
-            <Text style={styles.signatureName}>________________</Text>
+            <Text style={styles.signatureName}>Devi Maretha</Text>
           </View>
           <View style={styles.signatureBox}>
             <Text style={styles.signatureLabel}>Karyawan</Text>

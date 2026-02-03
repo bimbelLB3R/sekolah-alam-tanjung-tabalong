@@ -453,7 +453,7 @@ lastMonth.setMonth(lastMonth.getMonth() - 1);
           <div>
             <p>Bendahara</p>
             <div className="h-16" />
-            <p className="font-semibold border-b border-black inline-block px-8">________________</p>
+            <p className="font-semibold border-b border-black inline-block px-8">Devi Maretha</p>
           </div>
           <div>
             <p>Karyawan</p>
