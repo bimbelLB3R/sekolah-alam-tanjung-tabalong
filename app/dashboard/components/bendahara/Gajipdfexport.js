@@ -150,8 +150,9 @@ doc.addImage(
     // Potongan ijin
     const jumlahIjin = getIjinCount(userId);
     const potonganIjin = jumlahIjin * (tunjanganKehadiran * 0.5);
+    const potonganLain=parseFloat(row.potongan_makan);
     
-    const totalPotongan = potonganMakan + potonganPensiun + potonganIjin;
+    const totalPotongan = potonganMakan + potonganPensiun + potonganIjin+potonganLain;
     
     return {
       totalTunjanganMakan,
