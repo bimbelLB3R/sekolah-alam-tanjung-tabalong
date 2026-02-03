@@ -225,13 +225,19 @@ const styles = StyleSheet.create({
   },
 });
 
-const SlipGajiPDF = ({ data, tanggalCetak, presensiSummary, dataIjin }) => {
+const SlipGajiPDF = ({ data, tanggalCetak, presensiSummary, dataIjin,jabatan }) => {
   // Hitung tunjangan kehadiran berdasarkan jumlah tepat waktu
   const tunjanganKehadiranBase = Number(data.tunjangan_kehadiran) || 0;
   const tepatWaktu = presensiSummary?.tepatWaktu || 0;
   const totalHadir = presensiSummary?.totalHadir || 0;
   const terlambat = presensiSummary?.terlambat || 0;
-  const tunjanganKehadiranTotal = tunjanganKehadiranBase * tepatWaktu;
+
+  // const tunjanganKehadiranTotal = tunjanganKehadiranBase * tepatWaktu;
+  const tunjanganKehadiranTotal = presensiSummary 
+  ? (jabatan?.toLowerCase() === 'magang' ||jabatan?.toLowerCase() === 'staf dapur'
+      ? tunjanganKehadiranBase * presensiSummary.totalHadir 
+      : tunjanganKehadiranBase * presensiSummary.tepatWaktu)
+  : 0;
   
   // Data ijin
   const ijinTidakMasuk = dataIjin?.summary?.total_ijin_tidak_masuk || 0;
@@ -392,7 +398,20 @@ lastMonth.setMonth(lastMonth.getMonth() - 1);
                 </View>
                 <Text>{formatRupiah(totalTunjanganMakan)}</Text>
               </View>
+              {jabatan?.toLowerCase()==='magang'||jabatan?.toLowerCase()==='staf dapur'?(
               <View style={styles.detailRowHighlight}>
+                <View>
+                  <Text>Tunjangan Kehadiran</Text>
+                  <Text style={styles.subText}>
+                    {formatRupiah(tunjanganKehadiranBase)} × {totalHadir} hari
+                  </Text>
+                </View>
+                <Text style={{ fontWeight: "bold", color: "#16a34a" }}>
+                  {formatRupiah(tunjanganKehadiranTotal)}
+                </Text>
+              </View>
+              ):(
+                <View style={styles.detailRowHighlight}>
                 <View>
                   <Text>Tunjangan Hadir On Time</Text>
                   <Text style={styles.subText}>
@@ -403,6 +422,8 @@ lastMonth.setMonth(lastMonth.getMonth() - 1);
                   {formatRupiah(tunjanganKehadiranTotal)}
                 </Text>
               </View>
+              )}
+
               <View style={styles.detailRow}>
                 <Text>Tunjangan Sembako</Text>
                 <Text>{formatRupiah(data.tunjangan_sembako)}</Text>

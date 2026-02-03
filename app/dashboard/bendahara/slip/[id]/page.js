@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Building2, User, Wallet, Download, Calendar, CheckCircle, AlertCircle, HelpingHand } from "lucide-react";
@@ -10,10 +10,13 @@ import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { pdf } from "@react-pdf/renderer";
 import SlipGajiPDF from "@/app/dashboard/components/bendahara/SlipGajiPDF";
+import { toLowerCase } from "zod";
 
 export default function DetailGajiPage() {
   const { id } = useParams();
   const [data, setData] = useState(null);
+  const [jabatan, setJabatan] = useState(null);
+  const [tunjanganKehadiranBase, setTunjanganKehadiranBase] = useState(null);
   const [idKaryawan, setIdKaryawan] = useState(null);
   const [presensiSummary, setPresensiSummary] = useState(null);
   const [tanggalCetak, setTanggalCetak] = useState("");
@@ -45,7 +48,11 @@ export default function DetailGajiPage() {
       const res = await fetch(`/api/bendahara/listkaryawan/${id}`);
       const result = await res.json();
       const userIdKaryawan = result.user_id;
+      const jabatan=result.jabatan
+      const tunjanganKehadiranBase = Number(result.tunjangan_kehadiran) || 0;
+      setTunjanganKehadiranBase(tunjanganKehadiranBase);
       setData(result);
+      setJabatan(jabatan);
       setIdKaryawan(userIdKaryawan);
 
       if (result?.id) {
@@ -87,6 +94,7 @@ export default function DetailGajiPage() {
           tanggalCetak={tanggalCetak}
           presensiSummary={presensiSummary}
           dataIjin={dataIjin}
+          jabatan={jabatan}
         />
       ).toBlob();
 
@@ -118,8 +126,14 @@ export default function DetailGajiPage() {
   }
 
   // Hitung tunjangan kehadiran berdasarkan jumlah tepat waktu
-  const tunjanganKehadiranBase = Number(data.tunjangan_kehadiran) || 0;
-  const tunjanganKehadiranTotal = tunjanganKehadiranBase * presensiSummary.tepatWaktu;
+  // const tunjanganKehadiranBase = Number(data.tunjangan_kehadiran) || 0;
+  // const tunjanganKehadiranTotal = tunjanganKehadiranBase * presensiSummary.tepatWaktu;
+  const tunjanganKehadiranTotal = presensiSummary 
+  ? (jabatan?.toLowerCase() === 'magang' ||jabatan?.toLowerCase() === 'staf dapur'
+      ? tunjanganKehadiranBase * presensiSummary.totalHadir 
+      : tunjanganKehadiranBase * presensiSummary.tepatWaktu)
+  : 0;
+  
   
   // Hitung tunjangan makan per hari hadir
   const tunjanganMakanPerHari = Number(data.tunjangan_makan) || 0;
@@ -150,6 +164,10 @@ export default function DetailGajiPage() {
   // Bulan lalu
 const lastMonth = new Date();
 lastMonth.setMonth(lastMonth.getMonth() - 1);
+
+// Magang
+// console.log(jabatan);
+
 
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6 bg-white">
@@ -312,7 +330,20 @@ lastMonth.setMonth(lastMonth.getMonth() - 1);
                 </div>
                 <span>Rp {totalTunjanganMakan.toLocaleString()}</span>
               </div>
+                {/* jika magang, tidak dipotong keterlambatan */}
+              {jabatan?.toLowerCase()==='magang'||jabatan?.toLowerCase()==='staf dapur'?(
               <div className="flex justify-between bg-green-50 p-2 rounded">
+                <div className="flex flex-col">
+                  <span>Tunjangan Kehadiran</span>
+                  <span className="text-xs text-green-600">
+                    Rp {tunjanganKehadiranBase.toLocaleString()} × {presensiSummary.totalHadir} hari
+                  </span>
+                </div>
+                <span className="font-semibold text-green-600">
+                  Rp {tunjanganKehadiranTotal.toLocaleString()}
+                </span>
+              </div>):(
+                <div className="flex justify-between bg-green-50 p-2 rounded">
                 <div className="flex flex-col">
                   <span>Tunjangan Hadir On Time</span>
                   <span className="text-xs text-green-600">
@@ -323,6 +354,7 @@ lastMonth.setMonth(lastMonth.getMonth() - 1);
                   Rp {tunjanganKehadiranTotal.toLocaleString()}
                 </span>
               </div>
+              )}
               <div className="flex justify-between">
                 <span>Tunjangan Sembako</span>
                 <span>Rp {Number(data.tunjangan_sembako).toLocaleString()}</span>

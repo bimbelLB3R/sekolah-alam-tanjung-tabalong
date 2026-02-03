@@ -79,14 +79,14 @@ useEffect(() => {
   const jmlAnak = parseInt(form.jml_anak) || 0;
   
   // Tunjangan Kepala Keluarga = 10% dari gaji pokok
-  const tunjanganKepalaKeluarga = gajiPokok * 0.1;
+  // const tunjanganKepalaKeluarga = gajiPokok * 0.1;
   
   // Tunjangan Anak = 5% × jumlah anak × gaji pokok
   const tunjanganAnak = gajiPokok * 0.05 * jmlAnak;
   
   setForm(prev => ({
     ...prev,
-    tunjangan_kepala_keluarga: tunjanganKepalaKeluarga,
+    // tunjangan_kepala_keluarga: tunjanganKepalaKeluarga,
     tunjangan_anak: tunjanganAnak
   }));
 }, [form.gaji_pokok, form.jml_anak]);
@@ -226,8 +226,8 @@ useEffect(() => {
               <input
                 type="number"
                 value={form.tunjangan_kepala_keluarga}
-                className="border rounded w-full px-2 py-1 bg-gray-400"
-                disabled
+                onChange={(e) => setForm({ ...form, tunjangan_kepala_keluarga: e.target.value })}
+                className="border rounded w-full px-2 py-1"
               />
             </div>
             <div>
