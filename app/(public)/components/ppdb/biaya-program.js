@@ -31,9 +31,8 @@ const biayaData = [
   {
     jenjang: "Info Tambahan",
     items: [
-      "Biaya Pendaftaran Rp200.000",
-      "Sisa Pembayaran dapat dicicil hingga Juli 2026",
-      "Pembayaran dapat dilakukan ke Rek BSI 7236336349 a.n Sekolah Alam Tanjung Tabalong",
+      "Biaya Pendaftaran Rp200.000 (Pembayaran melalui Rek BSI 7236336349 a.n Sekolah Alam Tanjung Tabalong)",
+      "Pembayaran biaya masuk sekolah (Uang Pangkal, Uang Tahunan, Sarpras, Seragam, SPP, dan Komite) melalui rekening BSI 7127377337 a.n. Yayasan Mutiara Insan Saraba Kawa",
       "ABK wajib melampirkan surat keterangan psikolog atau yang berkepentingan",
       "Khusus ABK yang direkomendasikan menggunakan Guru Pendamping, membayar tambahan Rp1.500.000 /bulan di luar SPP atau menyediakan Guru Pendamping sendiri dengan ketentuan berlaku",
       "Kuota ABK terbatas di setiap kelasnya",
