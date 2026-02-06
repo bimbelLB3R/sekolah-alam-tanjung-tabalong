@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 import { 
   Calendar, 
   CheckCircle2, 
@@ -19,10 +20,15 @@ import {
   MapPin,
   FileText,
   AlertTriangle,
-  ChevronRight
+  ChevronRight,
+  ExternalLink,
+  Eye
 } from 'lucide-react';
+import TodoAttachmentUpload from '../components/allevents/todos/TodoAttachmentUpload';
+import TodoAttachmentList from '../components/allevents/todos/TodoAttachmentList';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
+import Link from 'next/link';
 
 export default function MyActivitiesPage() {
   const [user, setUser] = useState(null);
@@ -32,6 +38,7 @@ export default function MyActivitiesPage() {
   const [filter, setFilter] = useState('all');
   const [updatingTodo, setUpdatingTodo] = useState(null);
   const { toast } = useToast();
+  const router = useRouter();
 
   // Fetch user data
   useEffect(() => {
@@ -107,58 +114,71 @@ export default function MyActivitiesPage() {
   };
 
   // Update todo status
-  // Update todo status
-const handleUpdateTodoStatus = async (eventId, todoId, newStatus) => {
-  try {
-    setUpdatingTodo(todoId);
-    
-    const response = await fetch(`/api/allevents/${eventId}/todos`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({
-        todo_id: todoId,
-        status: newStatus,
-      }),
-    });
-
-    // Cek apakah response adalah JSON
-    const contentType = response.headers.get('content-type');
-    if (!contentType || !contentType.includes('application/json')) {
-      console.error('Response bukan JSON:', await response.text());
-      throw new Error('Server tidak mengembalikan JSON. Pastikan API route sudah benar.');
-    }
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.error || 'Gagal mengupdate status');
-    }
-
-    if (result.success) {
-      toast({
-        title: 'Berhasil',
-        description: 'Status todo berhasil diupdate',
-      });
+  const handleUpdateTodoStatus = async (eventId, todoId, newStatus) => {
+    try {
+      setUpdatingTodo(todoId);
       
-      // Refresh activities
-      await fetchActivities();
-    } else {
-      throw new Error(result.error || 'Update gagal');
+      const response = await fetch(`/api/allevents/${eventId}/todos`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          todo_id: todoId,
+          status: newStatus,
+        }),
+      });
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        console.error('Response bukan JSON:', await response.text());
+        throw new Error('Server tidak mengembalikan JSON.');
+      }
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Gagal mengupdate status');
+      }
+
+      if (result.success) {
+        toast({
+          title: 'Berhasil',
+          description: 'Status todo berhasil diupdate',
+        });
+        
+        await fetchActivities();
+      } else {
+        throw new Error(result.error || 'Update gagal');
+      }
+    } catch (error) {
+      console.error('Update todo error:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: error.message || 'Gagal mengupdate status todo',
+      });
+    } finally {
+      setUpdatingTodo(null);
     }
-  } catch (error) {
-    console.error('Update todo error:', error);
-    toast({
-      variant: 'destructive',
-      title: 'Error',
-      description: error.message || 'Gagal mengupdate status todo',
-    });
-  } finally {
-    setUpdatingTodo(null);
-  }
-};
+  };
+
+  // ✅ FUNGSI BARU: Cek apakah user adalah ketua
+  const isChairman = (committees) => {
+    if (!committees || !user?.name) return false;
+    console.log(committees);
+    
+    return committees.some(committee => 
+      committee.positionName && 
+      committee.positionName.toLowerCase().includes('ketua') 
+    );
+  };
+
+  // ✅ FUNGSI BARU: Handle navigasi ke detail event
+  const handleViewEventDetail = (eventId) => {
+    router.push(`/dashboard/allevents/${eventId}`);
+  };
 
   const getStatusBadge = (status) => {
     const statusConfig = {
@@ -212,8 +232,6 @@ const handleUpdateTodoStatus = async (eventId, todoId, newStatus) => {
     return activity.eventStatus === filter;
   });
 
-  // console.log(filteredActivities)
-
   const stats = {
     total: activities.length,
     planning: activities.filter(a => a.eventStatus === 'planning').length,
@@ -221,7 +239,6 @@ const handleUpdateTodoStatus = async (eventId, todoId, newStatus) => {
     completed: activities.filter(a => a.eventStatus === 'completed').length,
   };
 
-  // Group involvements by type
   const groupInvolvementsByType = (involvements) => {
     return {
       committees: involvements.filter(i => i.type === 'committee'),
@@ -230,7 +247,6 @@ const handleUpdateTodoStatus = async (eventId, todoId, newStatus) => {
     };
   };
 
-  // Group todos by status
   const groupTodosByStatus = (todos) => {
     return {
       pending: todos.filter(t => t.status === 'pending'),
@@ -239,7 +255,6 @@ const handleUpdateTodoStatus = async (eventId, todoId, newStatus) => {
     };
   };
 
-  // Loading state
   if (!mounted || !user || loading) {
     return (
       <div className="container mx-auto p-6 space-y-6">
@@ -343,6 +358,8 @@ const handleUpdateTodoStatus = async (eventId, todoId, newStatus) => {
             filteredActivities.map((activity) => {
               const grouped = groupInvolvementsByType(activity.involvements);
               const todosByStatus = groupTodosByStatus(grouped.todos);
+              const userIsChairman = isChairman(grouped.committees);
+              console.log(userIsChairman)
 
               return (
                 <Card key={activity.eventId} className="hover:shadow-md transition-shadow">
@@ -354,7 +371,16 @@ const handleUpdateTodoStatus = async (eventId, todoId, newStatus) => {
                           {activity.eventDescription}
                         </CardDescription>
                       </div>
-                      {getStatusBadge(activity.eventStatus)}
+                      <div className="flex items-center gap-2">
+                        {getStatusBadge(activity.eventStatus)}
+                        {/* ✅ BADGE KETUA */}
+                        {userIsChairman && (
+                          <Badge variant="default" className="bg-purple-600">
+                            <Users className="w-3 h-3 mr-1" />
+                            Ketua
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                   </CardHeader>
                   
@@ -371,10 +397,29 @@ const handleUpdateTodoStatus = async (eventId, todoId, newStatus) => {
                     {/* Committee Section */}
                     {grouped.committees.length > 0 && (
                       <div className="space-y-3">
-                        <div className="flex items-center gap-2">
-                          <Users className="w-5 h-5 text-blue-600" />
-                          <h3 className="font-semibold text-lg">Posisi Kepanitiaan</h3>
+                        <div className="">
+                          <div className="flex items-center gap-2">
+                            <Users className="w-5 h-5 text-blue-600" />
+                            <h3 className="font-semibold text-lg">Posisi Kepanitiaan</h3>
+                          </div>
+                          
+                          {/* ✅ TOMBOL LIHAT DETAIL UNTUK KETUA */}
+                          {userIsChairman && (
+                            <div className='flex gap-2 items-center'>
+                            <Button
+                              onClick={() => handleViewEventDetail(activity.eventId)}
+                              size="xs"
+                              className="text-xs p-2"
+                            >
+                              
+                              Lihat Detail Kegiatan
+                              <ExternalLink className="w-3 h-3" />
+                            </Button>
+                            <Link href={`/dashboard/allevents/${activity.eventId}/todos`} className='underline text-xs text-blue-600'>Lihat TODOS</Link>
+                            </div>
+                          )}
                         </div>
+
                         {grouped.committees.map((committee, idx) => (
                           <Card key={idx} className="bg-blue-50 border-blue-200">
                             <CardContent className="pt-4">
@@ -545,6 +590,7 @@ const handleUpdateTodoStatus = async (eventId, todoId, newStatus) => {
                           </TabsContent>
 
                           {/* Completed Todos */}
+                          {/* Completed Todos */}
                           <TabsContent value="completed" className="space-y-2 mt-3">
                             {todosByStatus.completed.length === 0 ? (
                               <p className="text-sm text-muted-foreground text-center py-4">
@@ -554,7 +600,7 @@ const handleUpdateTodoStatus = async (eventId, todoId, newStatus) => {
                               todosByStatus.completed.map((todo, idx) => (
                                 <Card key={idx} className="border-green-200 bg-green-50">
                                   <CardContent className="pt-4">
-                                    <div className="space-y-2">
+                                    <div className="space-y-3">
                                       <div className="flex items-start justify-between gap-2">
                                         <h4 className="font-medium line-through text-muted-foreground">
                                           {todo.title}
@@ -579,6 +625,30 @@ const handleUpdateTodoStatus = async (eventId, todoId, newStatus) => {
                                           </span>
                                         </div>
                                       )}
+
+                                      {/* Upload Section */}
+                                      <div className="mt-4 p-3 bg-white rounded-lg border border-green-200">
+                                        <h5 className="text-sm font-semibold mb-3">Dokumen Pendukung</h5>
+                                        
+                                        <TodoAttachmentList 
+                                          eventId={activity.eventId}
+                                          todoId={todo.id}
+                                          userId={user.id}
+                                        />
+
+                                        <div className="mt-3 pt-3 border-t">
+                                          <TodoAttachmentUpload
+                                            eventId={activity.eventId}
+                                            todoId={todo.id}
+                                            userId={user.id}
+                                            userName={user.name}
+                                            userEmail={user.email}
+                                            onUploadComplete={() => {
+                                              // Refresh attachment list secara otomatis
+                                            }}
+                                          />
+                                        </div>
+                                      </div>
                                     </div>
                                   </CardContent>
                                 </Card>

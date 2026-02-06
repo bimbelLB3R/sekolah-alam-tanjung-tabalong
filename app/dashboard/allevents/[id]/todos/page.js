@@ -178,7 +178,7 @@ export default function TodosPage() {
       </div>
     );
   }
-
+  console.log(filteredTodos);
   return (
     <div className="container mx-auto p-6 space-y-6">
       {/* Header */}
@@ -278,6 +278,9 @@ export default function TodosPage() {
         onUpdate={handleUpdateTodo}
         onDelete={handleDeleteTodo}
         onStatusChange={handleTodoStatusChange}
+         eventId={eventId}  // Dari params atau state
+          currentUser={user}  // Dari session/context
+          isLoading={loading}
       />
     </div>
   );

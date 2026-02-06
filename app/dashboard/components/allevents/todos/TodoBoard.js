@@ -1,9 +1,6 @@
-
-
-// components/todos/TodoBoard.jsx - UPDATED with autocomplete
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { todoSchema } from '@/lib/validations';
@@ -16,7 +13,10 @@ import {
   Clock,
   AlertCircle,
   Calendar,
-  User
+  User,
+  FileText,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -62,7 +62,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible';
 import { UserCombobox } from '@/components/ui/user-combobox';
+import TodoAttachmentList from './TodoAttachmentList';
+import TodoAttachmentUpload from './TodoAttachmentUpload';
 import { format, isPast } from 'date-fns';
 import { id as idLocale } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
@@ -82,6 +89,8 @@ const statusColumns = [
 
 export function TodoBoard({ 
   todos, 
+  eventId,  // Tambahkan eventId sebagai prop
+  currentUser, // Tambahkan currentUser sebagai prop
   onAdd, 
   onUpdate, 
   onDelete,
@@ -143,10 +152,8 @@ export function TodoBoard({
     await onStatusChange(todoId, newStatus);
   };
 
-  // Handler ketika user dipilih dari combobox
   const handleUserSelect = (user) => {
-    // assigned_to sudah otomatis ter-set dari UserCombobox
-    // Bisa tambah logic lain jika perlu
+    // Handler ketika user dipilih dari combobox
   };
 
   const groupedTodos = statusColumns.map(column => ({
@@ -193,6 +200,8 @@ export function TodoBoard({
                   <TodoCard
                     key={todo.id}
                     todo={todo}
+                    eventId={eventId}
+                    currentUser={currentUser}
                     onEdit={() => handleOpenDialog(todo)}
                     onDelete={() => setDeleteId(todo.id)}
                     onStatusChange={handleQuickStatusChange}
@@ -236,18 +245,30 @@ export function TodoBoard({
   );
 }
 
-// Todo Card Component
-function TodoCard({ todo, onEdit, onDelete, onStatusChange }) {
+// Todo Card Component - UPDATED with Attachments
+function TodoCard({ todo, eventId, currentUser, onEdit, onDelete, onStatusChange }) {
+  const [attachmentsOpen, setAttachmentsOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+  
   const priority = priorityConfig[todo.priority];
   const PriorityIcon = priority.icon;
   const isOverdue = todo.deadline && isPast(new Date(todo.deadline)) && todo.status !== 'completed';
+  const isCompleted = todo.status === 'completed';
+
+  const handleUploadComplete = () => {
+    // Refresh attachment list
+    setRefreshKey(prev => prev + 1);
+  };
 
   return (
     <Card className="hover:shadow-md transition-shadow">
       <CardContent className="p-4 space-y-3">
         {/* Header */}
         <div className="flex items-start justify-between gap-2">
-          <h5 className="font-medium text-sm flex-1 line-clamp-2">
+          <h5 className={cn(
+            "font-medium text-sm flex-1 line-clamp-2",
+            isCompleted && "line-through text-muted-foreground"
+          )}>
             {todo.title}
           </h5>
           <Badge className={priority.color} variant="secondary">
@@ -283,11 +304,19 @@ function TodoCard({ todo, onEdit, onDelete, onStatusChange }) {
               {isOverdue && <span>(Terlewat)</span>}
             </div>
           )}
+          {isCompleted && todo.completed_at && (
+            <div className="flex items-center gap-1 text-xs text-green-600">
+              <CheckCircle2 className="h-3 w-3" />
+              <span>
+                Selesai: {format(new Date(todo.completed_at), 'd MMM yyyy HH:mm', { locale: idLocale })}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Actions */}
         <div className="flex gap-2 pt-2 border-t">
-          {todo.status !== 'completed' && (
+          {!isCompleted && (
             <Button
               size="sm"
               variant="outline"
@@ -324,6 +353,58 @@ function TodoCard({ todo, onEdit, onDelete, onStatusChange }) {
             <Trash2 className="h-3 w-3 text-destructive" />
           </Button>
         </div>
+
+        {/* Attachments Section - Only for Completed Todos */}
+        {isCompleted && currentUser && (
+          <Collapsible
+            open={attachmentsOpen}
+            onOpenChange={setAttachmentsOpen}
+            className="border-t pt-3"
+          >
+            <CollapsibleTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full justify-between text-xs"
+              >
+                <div className="flex items-center gap-2">
+                  <FileText className="h-3 w-3" />
+                  <span>Dokumen Pendukung</span>
+                </div>
+                {attachmentsOpen ? (
+                  <ChevronUp className="h-3 w-3" />
+                ) : (
+                  <ChevronDown className="h-3 w-3" />
+                )}
+              </Button>
+            </CollapsibleTrigger>
+            
+            <CollapsibleContent className="mt-3 space-y-3">
+              {/* Attachment List */}
+              <div className="bg-gray-50 rounded-lg p-3">
+                <TodoAttachmentList
+                  key={refreshKey}
+                  eventId={eventId}
+                  todoId={todo.id}
+                  userId={currentUser.id}
+                />
+              </div>
+
+              {/* Upload Section */}
+              <div className="bg-white rounded-lg p-3 border">
+                <h6 className="text-xs font-semibold mb-2">Upload Dokumen</h6>
+                <TodoAttachmentUpload
+                  eventId={eventId}
+                  todoId={todo.id}
+                  userId={currentUser.id}
+                  userName={currentUser.name}
+                  userEmail={currentUser.email}
+                  onUploadComplete={handleUploadComplete}
+                />
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+        )}
       </CardContent>
     </Card>
   );
@@ -386,7 +467,6 @@ function TodoDialog({
             />
 
             <div className="grid grid-cols-2 gap-4">
-              {/* UPDATED: User Combobox with Autocomplete */}
               <FormField
                 control={form.control}
                 name="assigned_to"
