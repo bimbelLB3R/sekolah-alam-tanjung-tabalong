@@ -13,7 +13,7 @@ export async function GET() {
   day: "2-digit",
 }).format(new Date());
 
-    console.log(today)
+    // console.log(today)
     const [rows] = await pool.query(`
       SELECT  
         p.id,

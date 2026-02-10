@@ -77,22 +77,51 @@ export async function POST(req) {
         );
       }
     }
+// bebas jam
+    const [roleRows] = await connection.query(
+  `
+  SELECT r.name AS role
+  FROM users u
+  JOIN roles r ON u.role_id = r.id
+  WHERE u.id = ?
+  LIMIT 1
+  `,
+  [userId]
+);
+
+const role = roleRows[0]?.role;
+
 
     // === HITUNG KETERANGAN (hanya untuk jenis 'masuk') ===
     let keterangan = null;
     
-    if (jenis === "masuk") {
-      // Jam batas: 07:30 WITA (Waktu Indonesia Tengah)
-      const jamBatas = "07:15:00";
+    // if (jenis === "masuk") {
+    //   // Jam batas: 07:30 WITA (Waktu Indonesia Tengah)
+    //   const jamBatas = "07:15:00";
       
-      // Bandingkan jam presensi dengan jam batas
-      // Format: "HH:MM:SS"
-      if (jam > jamBatas) {
-        keterangan = "terlambat";
-      } else {
-        keterangan = "tepat waktu";
+    //   // Bandingkan jam presensi dengan jam batas
+    //   // Format: "HH:MM:SS"
+    //   if (jam > jamBatas) {
+    //     keterangan = "terlambat";
+    //   } else {
+    //     keterangan = "tepat waktu";
+    //   }
+    // }
+        if (jenis === "masuk") {
+        const jamBatas = "07:15:00";
+
+        // role yang bebas jam
+        const roleBebasJam = ["staff", "superadmin"];
+
+        if (roleBebasJam.includes(role)) {
+          keterangan = "tepat waktu";
+        } else if (jam > jamBatas) {
+          keterangan = "terlambat";
+        } else {
+          keterangan = "tepat waktu";
+        }
       }
-    }
+
 
     // === UPLOAD KE S3 (hanya jika validasi lolos) ===
     const fileBuffer = Buffer.from(await file.arrayBuffer());
