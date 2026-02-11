@@ -130,6 +130,7 @@ export async function POST(request) {
 
     // Generate presigned URL for upload
     const uploadUrl = await getPresignedUploadUrl(s3Key, fileType);
+    console.log('Upload url',uploadUrl);
     console.log('✅ Presigned URL generated');
 
     // Create file record in database

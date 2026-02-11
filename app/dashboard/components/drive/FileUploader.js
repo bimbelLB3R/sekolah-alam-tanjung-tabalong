@@ -107,7 +107,7 @@ export default function FileUploader({ folderId = null, onUploadComplete }) {
         method: 'PUT',
         body: file,
         headers: {
-          'Content-Type': file.type || 'application/octet-stream',
+          'Content-Type': file.type,
         },
       });
 

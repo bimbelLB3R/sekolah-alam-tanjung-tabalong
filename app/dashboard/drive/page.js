@@ -53,6 +53,8 @@ export default function DrivePage() {
       setLoading(false);
     }
   };
+  console.log(files);
+  console.log(folders)
 
   const fetchStorageUsage = async () => {
     try {
@@ -94,7 +96,7 @@ export default function DrivePage() {
   };
 
   const handleFolderOpen = (folderId) => {
-    router.push(`/drive/${folderId}`);
+    router.push(`/dashboard/drive/${folderId}`);
   };
 
   // Filter items based on search
