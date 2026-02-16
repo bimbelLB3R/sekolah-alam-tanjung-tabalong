@@ -108,7 +108,7 @@ const role = roleRows[0]?.role;
     //   }
     // }
         if (jenis === "masuk") {
-        const jamBatas = "07:15:00";
+        const jamBatas = "08:00:00";
 
         // role yang bebas jam
         const roleBebasJam = ["staff", "superadmin"];
