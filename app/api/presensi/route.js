@@ -1,6 +1,3 @@
-
-
-
 // app/api/presensi/route.js
 import { NextResponse } from "next/server";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
@@ -16,7 +13,7 @@ const s3 = new S3Client({
 
 export async function POST(req) {
   let connection;
-  
+
   try {
     const formData = await req.formData();
     const file = formData.get("photo");
@@ -50,9 +47,9 @@ export async function POST(req) {
     if (existingPresensi.length > 0) {
       connection.release();
       return NextResponse.json(
-        { 
-          success: false, 
-          error: `Anda sudah melakukan absen ${jenis} hari ini` 
+        {
+          success: false,
+          error: `Anda sudah melakukan absen ${jenis} hari ini`,
         },
         { status: 400 }
       );
@@ -69,59 +66,52 @@ export async function POST(req) {
       if (checkMasuk.length === 0) {
         connection.release();
         return NextResponse.json(
-          { 
-            success: false, 
-            error: "Anda harus absen masuk terlebih dahulu" 
+          {
+            success: false,
+            error: "Anda harus absen masuk terlebih dahulu",
           },
           { status: 400 }
         );
       }
     }
-// bebas jam
+
+    // === AMBIL ROLE USER ===
     const [roleRows] = await connection.query(
-  `
-  SELECT r.name AS role
-  FROM users u
-  JOIN roles r ON u.role_id = r.id
-  WHERE u.id = ?
-  LIMIT 1
-  `,
-  [userId]
-);
+      `SELECT r.name AS role
+       FROM users u
+       JOIN roles r ON u.role_id = r.id
+       WHERE u.id = ?
+       LIMIT 1`,
+      [userId]
+    );
 
-const role = roleRows[0]?.role;
+    const role = roleRows[0]?.role;
 
+    // === AMBIL JAM BATAS DARI DATABASE (bukan hardcode) ===
+    const [settingRows] = await connection.query(
+      `SELECT setting_value FROM system_settings 
+       WHERE setting_key = 'jam_batas_masuk' 
+       LIMIT 1`
+    );
+
+    // Fallback ke "07:15:00" jika belum ada pengaturan di DB
+    const jamBatas = settingRows[0]?.setting_value ?? "07:15:00";
 
     // === HITUNG KETERANGAN (hanya untuk jenis 'masuk') ===
     let keterangan = null;
-    
-    // if (jenis === "masuk") {
-    //   // Jam batas: 07:30 WITA (Waktu Indonesia Tengah)
-    //   const jamBatas = "07:15:00";
-      
-    //   // Bandingkan jam presensi dengan jam batas
-    //   // Format: "HH:MM:SS"
-    //   if (jam > jamBatas) {
-    //     keterangan = "terlambat";
-    //   } else {
-    //     keterangan = "tepat waktu";
-    //   }
-    // }
-        if (jenis === "masuk") {
-        const jamBatas = "08:00:00";
 
-        // role yang bebas jam
-        const roleBebasJam = ["staff", "superadmin"];
+    if (jenis === "masuk") {
+      // Role yang bebas jam (tidak terikat jam batas)
+      const roleBebasJam = ["staff", "superadmin"];
 
-        if (roleBebasJam.includes(role)) {
-          keterangan = "tepat waktu";
-        } else if (jam > jamBatas) {
-          keterangan = "terlambat";
-        } else {
-          keterangan = "tepat waktu";
-        }
+      if (roleBebasJam.includes(role)) {
+        keterangan = "tepat waktu";
+      } else if (jam > jamBatas) {
+        keterangan = "terlambat";
+      } else {
+        keterangan = "tepat waktu";
       }
-
+    }
 
     // === UPLOAD KE S3 (hanya jika validasi lolos) ===
     const fileBuffer = Buffer.from(await file.arrayBuffer());
@@ -148,21 +138,20 @@ const role = roleRows[0]?.role;
 
     connection.release();
 
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       photoUrl,
       keterangan: keterangan || "N/A",
-      message: keterangan === "terlambat" 
-        ? "Presensi berhasil, namun Anda terlambat" 
-        : "Presensi berhasil!"
+      message:
+        keterangan === "terlambat"
+          ? "Presensi berhasil, namun Anda terlambat"
+          : "Presensi berhasil!",
     });
-
   } catch (err) {
     console.error("Presensi error:", err);
-    
-    // Release connection jika ada error
+
     if (connection) connection.release();
-    
+
     return NextResponse.json(
       { success: false, error: err.message },
       { status: 500 }

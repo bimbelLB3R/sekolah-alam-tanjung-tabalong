@@ -1,5 +1,6 @@
 // app/dashboard/settings/page.js
 import GPSSettingToggle from "../components/setting/GpsSettingToogle";
+import JamBatasSettings from "../components/setting/JamBatasSetting";
 
 export default function SettingsPage() {
   return (
@@ -8,6 +9,7 @@ export default function SettingsPage() {
       
       <div className="space-y-4">
         <GPSSettingToggle  />
+        <JamBatasSettings/>
         {/* Setting lainnya */}
       </div>
     </div>
