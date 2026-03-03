@@ -1,6 +1,7 @@
 // app/dashboard/settings/page.js
 import GPSSettingToggle from "../components/setting/GpsSettingToogle";
 import JamBatasSettings from "../components/setting/JamBatasSetting";
+import RolePermissionsManager from "../components/setting/RolePermissionsManager";
 
 export default function SettingsPage() {
   return (
@@ -12,6 +13,13 @@ export default function SettingsPage() {
         <JamBatasSettings/>
         {/* Setting lainnya */}
       </div>
+      {/* Pengaturan Akses */}
+        <div>
+          <h2 className="text-lg font-semibold mb-3 text-muted-foreground">
+            Pengaturan Akses & Keamanan
+          </h2>
+          <RolePermissionsManager />
+        </div>
     </div>
   );
 }

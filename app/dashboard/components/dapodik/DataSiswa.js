@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { formatName } from "@/lib/formatName"
+import { isoToDateInputWITA } from "@/lib/formatDateIsoToInput"
 
 export default function DataSiswa({ userRoleName, data, loading, onFilterChange }) {
   const [page, setPage] = useState(1)
@@ -172,6 +173,7 @@ export default function DataSiswa({ userRoleName, data, loading, onFilterChange 
                     <th className="border px-3 py-2">Jenjang</th>
                     <th className="border px-3 py-2">Kelas</th>
                     <th className="border px-3 py-2 text-center">Aksi</th>
+                    <th className="border px-3 py-2 text-center">Tanggal Input</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -217,6 +219,9 @@ export default function DataSiswa({ userRoleName, data, loading, onFilterChange 
                               )}
                             </Button>
                           </div>
+                        </td>
+                        <td className="border px-3 py-2">
+                          {isoToDateInputWITA(row.created_at) || "-"}
                         </td>
                       </tr>
                     ))

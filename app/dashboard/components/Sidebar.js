@@ -235,10 +235,12 @@ export default function Sidebar({ isOpen, onClose }) {
 
 
 // Fungsi cek izin -> SAMA dengan middleware
-function hasAccess(roleName, href) {
+ function hasAccess(roleName, href) {
   
   if (!roleName) return false
   if (!href) return false; // guard penting
+  // Load permissions dari DB (bukan hardcode)
+    // const rolePermissions = await getRolePermissions();
   const allowed = rolePermissions[roleName] || []
   // console.log(allowed)
   // superadmin
