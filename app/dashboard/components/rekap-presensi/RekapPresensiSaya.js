@@ -226,7 +226,7 @@ const RekapPresensiSaya = () => {
     doc.setFontSize(12);
     doc.text('Sekolah Alam Tanjung Tabalong', 105, 21, { align: 'center' });
     doc.setFontSize(11);
-    doc.text(`Nama: ${user?.nama || '-'}   |   Periode: ${monthYear}`, 105, 28, { align: 'center' });
+    doc.text(`Nama: ${user?.name || '-'}   |   Periode: ${monthYear}`, 105, 28, { align: 'center' });
 
     // Summary box
     autoTable(doc, {
@@ -262,7 +262,7 @@ const RekapPresensiSaya = () => {
       doc.text(`Halaman ${i}/${pages} — Dicetak: ${formatDateTime(new Date())}`, 105, doc.internal.pageSize.height - 8, { align: 'center' });
     }
 
-    doc.save(`Presensi-${user?.nama || 'saya'}-${selectedMonth}.pdf`);
+    doc.save(`Presensi-${user?.name || 'saya'}-${selectedMonth}.pdf`);
   };
 
   const exportToExcel = () => {
@@ -270,7 +270,7 @@ const RekapPresensiSaya = () => {
 
     // Summary sheet
     const summaryRows = [[
-      'Nama', user?.nama || '-',
+      'Nama', user?.name || '-',
     ], [
       'Periode', formatMonthYear(selectedMonth + '-01'),
     ], [], [
@@ -300,7 +300,7 @@ const RekapPresensiSaya = () => {
     wsDetail['!cols'] = [{ wch: 20 }, { wch: 12 }, { wch: 12 }, { wch: 16 }, { wch: 16 }];
     XLSX.utils.book_append_sheet(wb, wsDetail, 'Detail Presensi');
 
-    XLSX.writeFile(wb, `Presensi-${user?.nama || 'saya'}-${selectedMonth}.xlsx`);
+    XLSX.writeFile(wb, `Presensi-${user?.name || 'saya'}-${selectedMonth}.xlsx`);
   };
 
   // ── Render states ────────────────────────────────────────────────────────────
