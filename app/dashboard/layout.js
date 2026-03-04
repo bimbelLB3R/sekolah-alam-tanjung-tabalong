@@ -14,7 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User, Settings, LogOut, Camera, HelpCircleIcon, Hand } from "lucide-react";
+import { User, Settings, LogOut, Camera, HelpCircleIcon, Hand, ChartColumnBig } from "lucide-react";
 
 export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -117,6 +117,12 @@ export default function DashboardLayout({ children }) {
                       <Link href="/dashboard/presensi">
                         <Camera className="mr-2 h-4 w-4" />
                         Presensi
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/dashboard/my-attendance">
+                        <ChartColumnBig className="mr-2 h-4 w-4" />
+                        Rekap Kehadiran
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={handleLogout}>
